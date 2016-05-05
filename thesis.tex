@@ -1,0 +1,83 @@
+\documentclass[oneside]{book}
+\input{preamble}
+% \usepackage{chapterbib}
+
+\graphicspath{{momentummodel/paperfigures/}{questionnaire/}}
+
+\input{knitr-preamb}
+
+\author{Kevin Stadler}
+\title{Trends and directionality in language change}
+
+\begin{document}
+
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+\tableofcontents
+
+% chapter 1
+\include{introduction/intro}
+
+% chapter 2
+\chapter{Language change}
+\label{ch:review}
+\include{introduction/review}
+
+% chapter 3
+%\chapter[Momentum-based selection in the population]{Momentum-based selection in the population: a computational model}
+\chapter[Momentum-based selection in real time]{Modelling momentum-based selection in real time}
+\label{ch:model1}
+\include{momentummodel/model1}
+
+% chapter 4
+\chapter[Momentum-awareness in the individual]{Momentum-awareness in the individual: empirical evidence}
+\label{ch:questionnaire}
+\include{questionnaire/shetland}
+
+% chapter 5
+\chapter[Momentum-based selection in apparent time]{Modelling momentum-based selection in apparent time}
+\section{Language change across the lifespan}
+\section{Variable learning rates in the USM}
+\section{Inferring momentum based on apparent time}
+\section{Results}
+
+% chapter 6+
+\include{conclusion/bigpicture}
+
+%\bibliographystyle{unsrt}
+\bibliographystyle{apalike}
+\bibliography{../library}
+
+\chapter*{Index}
+\printindex
+
+\appendix
+\chapter{Historiography of concepts}
+\label{app:concepts}
+% s-shaped curves
+% sporadicity of changes / actuation problem
+% age vectors
+
+\chapter{Derivations of mathematical results}
+\label{app:math}
+%\include{introduction/USMmath}
+
+\chapter{Questionnaire materials}
+\label{app:questionnaire}
+This appendix contains the various materials used for the questionnaire data collection and analysis: Section~\ref{app:paperquestionnaire} provides the four questionnaire sheets described in Chapter~\ref{ch:questionnaire} that were handed to participants on site, in all four randomisations~(16 pages total). The online version of the questionnaire is still available at \url{http://spellout.net/ibexexps/kstadler/shetland/experiment.html}, and the source code both for the IBEX online questionnaire as well as the generation of the randomised questionnaire sheets is provided in Section~\ref{app:questionnairecode}. Section~\ref{app:questionnairedatacode} provides the R code used to load and arrange the questionnaire and acceptability judgment data that form the basis of the statistical analyses in chapter~\ref{ch:questionnaire}.
+
+\section{Paper questionnaires}
+\label{app:paperquestionnaire}
+%\includepdf{questionnaire/questionnaire}
+%\include{questionnaire/questions}
+\section{Questionnaire source code}
+\label{app:questionnairecode}
+\subsection{Paper questionnaire}
+\subsection{Online questionnaire}
+\section{Questionnaire data processing code}
+\label{app:questionnairedatacode}
+
+\end{document}
