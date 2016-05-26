@@ -1,0 +1,87 @@
+
+
+One formal model of neutral evolution (i.e. copying of linguistic traits in the absence of any replicator or interactor selection) that makes particular reference to the temporal dynamics of changes is Reali \& Griffiths model of regularisation by Bayesian learners~(\citeyear{Reali2009,Reali2010}).
+
+\subsubsection{Model description}
+
+At its core, \citeauthor{Reali2009} present a model of frequency learning by Bayesian inference. In their particular framing, an individual is trying to infer the relative frequency $\theta_i$ of a variant $i$ based on some input data as well as prior beliefs about what the true value of $\theta_i$ is likely to be. These prior beliefs act as \emph{inductive biases} and are captured by the \emph{prior}, embodied by a probability distribution $P(\theta_i)$ defined over all possible values of $\theta \in [0,1]$.
+
+For the simple case of two competing variants, even though the individual is technically inferring two proportions $\theta_1, \theta_2$, we can limit our analysis to the problem of inferring $\theta_1$, since trivially $\theta_2=1-\theta_1$~\footnote{The model can easily be extended from the binomial outcome with a Beta to multinomial outcomes with a Dirichlet prior but, without loss of generality, we will limit our demonstration to the case of two competing variants for sake of simplicity.}.
+
+Because we are dealing with a \emph{neutral} model that is not a priori biased in favour or against either of the two variants, the shape of the prior distribution over the support will have to be symmetric. For this reason the authors choose the \emph{Beta distribution} with identical shape parameters. Left with just a single distribution parameter~$\alpha$ which controls the degree of \emph{regularisation}, they define their prior distribution as
+$$P(\theta_1)=Beta(\frac{\alpha}{2},\frac{\alpha}{2})\;.$$
+
+Figure~\ref{fig:priors} shows the effect of the regularisation parameter~$alpha$ on the prior distribution. For a value of $\frac{\alpha}{2}=1$ the prior distribution is completely uniform: not only is the individual not biased towards any of the variants (the distribution is symmetric), they are not biased towards any particular frequency region either. The same isn't true when $\frac{\alpha}{2}\ne 1$: for values~$<1$, the inference of $\theta_1$ is explicitly geared towards more extreme relative frequencies closer to $0$ or $100\%$ usage -- the model implements a \emph{regularisation bias}. The opposite is the case when~$>1$ which favours inferring values of $\theta$ around the $0.5$ mark, representing mixed usage of the competing variants.
+
+<<setup, echo=FALSE>>=
+source("../knitr-setup.R")#, results="hide"
+@
+
+<<priors, fig.cap="Examples of Beta distribution priors with three different levels of the regularisation parameter~$\\alpha$.">>=
+
+par(mfrow=c(1,3), pty="s")
+for (alpha in alphas)
+  curve(dbeta(x, alpha/2, alpha/2), xlab=expression(theta[1]), main=bquote("prior P(" ~ theta[1] ~ ";" ~ frac(alpha, 2) ~ "=" ~ .(alpha/2) ~ ")"), ylim=c(0, 3.5), xaxs="i", yaxs="i")
+@
+
+The particular choice of prior distribution~(Beta or Dirichlet for the multinomial case) has elegant mathematical properties: given an input sample of size $N$, $0\le x_1 \le N$ of which were instances of variant~1, the posterior distribution is again a Beta distribution, namely
+$$P(\theta_1|x_1)=Beta(x_1+\frac{\alpha}{2}, N-x_1+\frac{\alpha}{2})\;.$$
+
+% The mean of this posterior distribution is at $\frac{x_1+\frac{\alpha}{2}}{N+\alpha}$, close to the observed relative frequency $\frac{x_1}{N}$.
+
+Following this learning or inference step, there is still the question of how the posterior distribution $P(\theta_1|x_1)$ is translated into actual production behaviour, from which we can derive testable model predictions. % after all, we need production behaviour to make a full iterated learning model.
+\citeauthor{Reali2009} consider the two most typical ways of deriving a specific value~$\theta_i$ from the posterior~$P(\theta_1|x_1)$: \emph{sampling} and \emph{maximum a posteriori}.
+
+
+
+
+The mode (the value with the probability density function is highest) is at
+$$\hat{\theta_1}=\frac{x_1+\frac{alpha}{2}}{N+\alpha}\;,$$
+and \citet{Reali2010} show how assuming a Bayesian learner who deterministally chooses $\theta_1$ by maximum a posteriori (\emph{MAP}) is equivalent to a population of individuals undergoing genetic drift as described by the Wright-Fisher model~\citep{Wright1948,Wright1955,Ewens2004}.
+
+\subsubsection{Representing Bayesian Iterated Learning as a Markov chain model}\index{Markov chain}
+
+While the model presented above captures frequency learning by Bayesian inference within one individual, it is interesting to ask how the productions of a population of such learners would develop over time when one individual's output serves as the learning input of another. To do this, we can analyse the relationship between learning input and production output as a \emph{Markov chain}. Markov chain models are a simply tool for understanding systems which can be in one of a finite number of states that they switch between probabilistically.
+
+More formally, a Markov model can be defined by specifying conditional transition probabilities $P(X_{t+1}=x|X_t=x_t)$ between a number of discrete states $x\in\mathcal{S}$, which we call the Markov chain's \emph{state space}. The Markov model is completely described by a function $P: \mathcal{S}\times\mathcal{S} \rightarrow [0,1]$ where the transition probabilities \emph{out} of any given state have to sum to one, i.e.
+$$\sum_{x_{t+1}\in\mathcal{S}} P(X_{t+1}=x_{t+1}|X_t=x) \;\forall\; x \in \mathcal{S}\;.$$
+
+%Markov chain modelling is a general tool, and
+In the case of the Bayesian inference model above, there are two equally valid ways in which it could be translated into a Markov model, based on how the state space $\mathcal{S}$ is construed. The logical alternation between learning parameter $\theta_1$ and production of $x1$ tokens allows for both a characterisation of the Markov chain from one individual's posterior distribution $P(\theta_1|x_1)$ to another or, alternatively, from one individual's productions $x_1$ to another.
+
+The state space of the respective Markov models would be either defined by the set of all possible posterior distributions, or alternatively by the set of all possible productions. In the former case the respective transition probabilities would then capture the probability of an individual's posterior distribution resulting in the following individual having a particular posterior distribution or, in the case of the production-centric view, simply the probability of one individual producing a certain number of tokens of variant~1 given how many tokens of that type the previous learner produced.
+
+For sake of simplicity and increased interpretability, 
+
+To define the state space, we have to set a fixed size of productions~$N$, from which a new learner has to infer the underlying production frequency~$\theta_1$.
+
+
+An example of such a transition matrix for a particular combination of $N, \alpha$ is found in Table~\ref{tbl:transitionmatrix}. The matrix is created based on the assumption that learners derive their estimate of $\theta_1$ by maximum a posteriori, i.e. by deterministically selecting the mode of the posterior distribution $P(\theta|x_1)$, which is $\theta_k=\frac{x_1+\frac{\alpha}{2}}{N+\alpha}$.
+
+<<transitionmatrix, fig.cap="Stationary distribution of the Markov chain transition matrix shown in Table~\\ref{tbl:transitionmatrix}.">>=
+library(markovchain)
+# assume (deterministic) maximum a posteriori calculation of theta
+bilm.transition.matrix <- function(N, alpha)
+  new("markovchain", name=paste("BILM by MAP, alpha", alpha, sep="="), states=paste("$x=", 0:N, "$", sep=""), byrow=FALSE, transitionMatrix=sapply(0:N, function(n)dbinom(0:N, N, (n + alpha / 2) / (N + alpha))))
+
+# assume sampling from the posterior Reali & Griffiths 2009 (p.321)
+bilm.transition.matrix.sample <- function(N, alpha)
+    new("markovchain", name=paste("BILM by sampling, alpha", alpha, sep="="), states=paste("$x=", 0:N, "$", sep=""), byrow=TRUE, transitionMatrix=sapply(0:N, function(target)choose(N, target)*beta(0:N+target+alpha/2, 2*N-0:N-target+alpha/2) / beta(0:N+alpha/2, N-0:N+alpha/2)))
+
+# corresponding to the probability of this Markov chain to be in that state at any particular point in time.
+N <- 4
+alphahalved <- .2
+
+latextable <- function(m, ...) {
+  colnames(m) <- paste(substring(colnames(m), 1, 2), substring(colnames(m), 3), sep="'")
+  print(xtable(m, ..., digits=4))
+}
+
+#cat("\\begin{table}[ht]")
+latextable(as(bilm.transition.matrix(N, 2*alphahalved), "matrix"), caption=paste("\\label{tbl:transitionmatrix}Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", N, "$ and $\\alpha=", alpha, "$. The rows represent the probabilities of producing any of the given samples, equivalent to $Bin(x';N,p=f^?(x))$", sep=""), floating.environment="subtable")
+
+latextable(as(bilm.transition.matrix.sample(N, 2*alphahalved), "matrix"), caption=paste("\\label{tbl:transitionmatrixsample}Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", N, "$ and $\\alpha=", alpha, "$. The rows represent the probabilities of producing any of the given samples, assuming that the production is sampled from the posterior.", sep=""), floating.environment="subtable")
+#cat("\\end{table}")
+
+barplot(bilm.stationary(2*alphahalved, N), names.arg=paste("x", 0:N, sep="="))
+@
