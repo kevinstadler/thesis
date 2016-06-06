@@ -6,5 +6,18 @@ opts_chunk$set(echo=FALSE, message=FALSE, results="asis", fig.align="center", fi
 
 opts_knit$set(eval.after='fig.subcap')
 
+tightmargin <- function(...)
+  par(mgp=c(2, 1, 0), mar=c(3, 3.3, 2, 0.8), ...) # b l t r
+
+library(magrittr)
 library(xtable)
-options(xtable.sanitize.text.function=identity, xtable.sanitize.rownames.function=identity, xtable.sanitize.colnames.function=identity)#, xtable.booktabs=TRUE)
+
+mathematise <- function(...)
+  paste("$", ..., "$", sep="")
+
+options(xtable.sanitize.text.function = identity,
+  xtable.sanitize.rownames.function = mathematise,
+  xtable.sanitize.colnames.function = mathematise,
+  xtable.table.placement = "htbp")#, xtable.booktabs=TRUE)
+
+par(mgp=c(2.3, 1, 0))

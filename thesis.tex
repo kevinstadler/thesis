@@ -1,8 +1,34 @@
 \documentclass[oneside]{book}
 \input{preamble}
-% \usepackage{chapterbib}
 
-\graphicspath{{momentummodel/paperfigures/}{questionnaire/}}
+\usepackage{bibentry}
+\nobibliography*
+
+% \usepackage{chapterbib}
+\usepackage{tocbibind}
+
+\graphicspath{{momentummodel/figures/}{questionnaire/}{introduction/}{conclusion/}}
+
+\usepackage{epigraph} % csquotes
+
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{listingbackground}{rgb}{0.9,0.9,0.9}
+\lstset{
+  title=\lstname,
+  basicstyle=\small\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\ttfamily,
+  showstringspaces=false,
+  keepspaces=true,
+  breaklines=true,
+  backgroundcolor=\color{listingbackground},
+  commentstyle=\color{darkgray},
+  keywordstyle=\color{blue},
+  stringstyle=\color{red}
+}
+%\newcommand{\includeR}[1]{\lstinputlisting[language=R]{#1}}
+\newcommand{\includeR}[1]{#1}
 
 \input{knitr-preamb}
 
@@ -17,6 +43,40 @@
 %\end{abstract}
 
 \tableofcontents
+
+\listoffigures
+\listoftables
+
+\chapter*{Acknowledgments}
+
+Only a few years ago I would have cringed at the idea of writing an Acknowledgments section listing endless swathes of names, a taster of my obsession with change for the sake of change that you can spend the next 300~pages reading about if you like.
+
+I guess it's only appropriate to start by thanking the people responsible for the fact that the thing in front of you is actually finished: over the past four years my supervisors Simon, Kenny and Richard (and not to forget adjunct supervisor Jenny) showed absolutely no mercy with my impatience at my own work and curiosity and eagerness to move on to other topics. It was a real joy to be supervised by them, and also to witness the copious amounts of concordant swearing that no one knew could emanate from such a group of authority.
+
+My LEC/CLE cohort
+
+My collaborator and future business partner Elyse Jamieson %, not just for collecting the data in Chapter~\ref{ch:shetland}, tolerating my attempts at writing Shets emails, generally keeping up the craic and all the money we're gonna make.
+
+collagues at the AI lab of the VUB, all the friends I made at the various LOT schools and of course the SFI Complex Systems Summer School in 2013, in particular Bruno Pace, and all the others who I feel academically indebted to and whose legacy I hope to continue (Joachim de Beule deserves special mention here).
+
+This is probably a good point to acknowledge all the people who, while not accompanying us on the journey, manage to send us off in a direction with a kick in the bum so forceful that its energy lasts for years: at the start of most anyone's curiosity stand teachers who manage to convey topics in a gripping way, and I know for a fact that I wouldn't be anywhere near where I am today if I hadn't taken Hans Christian Luschützky's introduction to Indo-European many years ago (don't ask how many).
+
+Writing pal Rachael
+Fellow INTJ Vanessa for intermittent intense chats and sharing my obsession with the New Mexican desert (amongst many other things). (Oh and this entire thesis basically started off from a single paper that she once name-dropped in one of our PhD supervisions in my first year. No biggie.)
+
+Who would be more deserving of a special mention than co-PhD, desk sharer, yoga instructor, band mate, therapist, travel companion, fellow SHEEP and general 6-year-old Jasmeen.
+
+Megan, Theodora, Mote, Julia, Steffi.
+
+Black medicine on the Bruntsfield Links for the heated office space, and the various Mosque Kitchens for providing most of my nutritional input during my time in Edinburgh.
+
+Last but not least I want to thank all the people who've made sure that life around me has always been a lot of fun. Musical co-conspirators Kieran, my fellow sick kids of edinburgh (Max, Valerie and Doris), and Dani, whose inability to finish things might be proof that we are twins after all.
+
+The many (many) flatmates who've tolerated me over the years, everyone that I've had really intense conversations with in the past two years, all the other people who kept me sane and, most of all, all those who drove me crazy.
+
+\newpage
+\thispagestyle{empty}
+\epigraph{``Language moves down time in a current of its own making.''}{\citep[p.160]{Sapir1921}}
 
 % chapter 1
 \include{introduction/intro}
@@ -38,32 +98,47 @@
 \include{questionnaire/shetland}
 
 % chapter 5
-\chapter[Momentum-based selection in apparent time]{Modelling momentum-based selection in apparent time}
-\section{Language change across the lifespan}
-\section{Variable learning rates in the USM}
-\section{Inferring momentum based on apparent time}
-\section{Results}
+%\chapter[Momentum-based selection in apparent time]{Modelling momentum-based selection in apparent time}
+%\section{Language change across the lifespan}
+%\section{Variable learning rates in the USM}
+%\section{Inferring momentum based on apparent time}
+%\section{Results}
 
 % chapter 6+
 \include{conclusion/bigpicture}
 
 %\bibliographystyle{unsrt}
-\bibliographystyle{apalike}
+\bibliographystyle{momentummodel/ldc}
 \bibliography{../library}
 
-\chapter*{Index}
 \printindex
 
 \appendix
 \chapter{Historiography of concepts}
 \label{app:concepts}
 % s-shaped curves
-% sporadicity of changes / actuation problem
+ % sporadicity of changes / actuation problem
 % age vectors
+% pandoc -no-header historiography.md
+%\input{historiography}
 
-\chapter{Derivations of mathematical results}
+\chapter{Markov chain model code}
+\label{app:markovmodel}
+\includeR{introduction/markovchain.R}
+
+%\lstinputlisting[language=R]{introduction/realigriffiths2010.R}
+
+%\lstinputlisting[language=R]{conclusion/asymmetricvariation.R}
+
+\chapter[Further analysis of the USM]{Further analysis of the Utterance Selection Model}
 \label{app:math}
+
+\section{Replicator selection: mathematical derivations}
 %\include{introduction/USMmath}
+
+\section{Momentum-based selection: further analysis}
+%\input{momentummodel/momentumappendix}
+%\subsection{Interaction of $\alpha, \gamma$}
 
 \chapter{Questionnaire materials}
 \label{app:questionnaire}
@@ -76,8 +151,16 @@ This appendix contains the various materials used for the questionnaire data col
 \section{Questionnaire source code}
 \label{app:questionnairecode}
 \subsection{Paper questionnaire}
+
+\includeR{../momentum/questionnaire/shetland/questionnaire.Rmd}
 \subsection{Online questionnaire}
+
+\section{Questionnaire data}
+\includeR{questionnaire/shetland.csv}
+
 \section{Questionnaire data processing code}
 \label{app:questionnairedatacode}
+
+\includeR{questionnaire/shetland-data.R}
 
 \end{document}
