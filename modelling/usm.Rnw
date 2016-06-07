@@ -1,0 +1,42 @@
+\section[Comparing accounts with the USM]{Comparing accounts with the Utterance Selection Model of language change}\index{Utterance Selection Model (USM)}
+\label{sec:usm}
+
+%\section{Comparing accounts using the Utterance Selection Model}
+%Introduce USM generally, including EWMA-formulation and general learning/alignment properties
+
+The version of the Utterance Selection Model~(USM) discussed here grew out of \citeauthor{Croft2000}'s more general formulation of language change as evolutionary competition between utterances. While in its original, theoretical formulation in~\citet{Croft2000} it is truely full \emph{utterances} which are undergoing replication, in its mathematical-computational incarnation the USM is best understood as a quantitative model of the competition between different variants of one sociolinguistic variable, as described in Section~\ref{sec:sociolinguisticvariable}.\index{Sociolinguistic variable}
+
+At its core, every agent in the USM is completely characterised by its variable use over variants, specified by the proportions with which each variant is used, all of which together sum to 1. For sake of simplicity we will limit ourselves to the canonical case of two competing variants, where the behaviour of an agent $i$ can be captured by a single variable $0.0 < x_i < 1.0$ representing its usage of a variant, the competing variant taken to be $1-x_i$. These internal proportions drive language users' production of variants by randomly sampling from a binomial (or, in the case of more than two variants, multinomial) distribution.
+
+The core element of the USM is how these internal variables are influenced by observing realisations of the same linguistic variable by interactions with other speakers in the environment. Whenever an agent $i$ with an internal frequency of use $x_i$ engages in an interaction with another speaker $x_j$, they each produce and exchange $T$ tokens of the variable under investigation by sampling from a binomial distribution $B(T,x_i)$ and $B(T,x_j)$ respectively. Based on these two samples $n_i$ and $n_j$, the agents combine the relative frequencies $\frac{n_i}{T}$ and $\frac{n_j}{T}$ into a \emph{perceived frequency} $y_i$ according to the following formula:
+
+$$y_i' = (1-H_{ij})f(\frac{n_i}{T})+H_{ij}f(\frac{n_j}{T})$$
+
+Of most interest to us is $f(u)$, which can be any arbitrary function mapping from $(0,1)$ to $(0,1)$. The role of $f(u)$ is to alter the objective relative frequency of tokens produced in the interaction, and different functions for this parameter will be the main subject in the remaining sections. Following an interaction, both agents update their internal frequency according to the following USM update rule~\cite[p.298]{Blythe2012}:%$\cite[p.4]{Baxter2006}:
+
+$$x_i' = \frac{x_i+\lambda y_i}{1+\lambda}$$
+
+where $\lambda$ is the agents' learning rate. What this rule does is changing an agent's internal frequency by moving it a small step towards the relative perceived frequency as determined by the interaction. Since we assume gradual assimilation rather than abrupt and erratic behaviour, $\lambda$ is small, typically in the range of $0.01$.
+
+%\cite[p.4]{Baxter2006}:
+%$$x_i' = \frac{x_i+\lambda(n_i+H_{ij}n_j)}{1+\lambda(1+H_{ij})}, H_{ij} \in [0,\infty)$$
+
+$$x_i' = \frac{x_i+\lambda((1-H_{ij})n_i+H_{ij}n_j)}{1+\lambda} = \frac{x_i}{1+\lambda} + \frac{\lambda(\dots)}{1+\lambda}$$% H_{ij} \in [0,1]$$
+
+%$$H_{ij} = \lambda h$$
+
+%It should be acknowledged that this general learning rule was chosen due to its mathematical properties, which make it amenable to analysis using tools from statistical physics.
+
+% TODO
+
+Having covered the general mechanism of the USM, we can now investigate the predicted dynamics under the presence (or absence) of different biases.
+
+\subsection{Neutral evolution}\index{Neutral evolution}\label{sec:usmneutral}
+
+Equivalence to the island model~\citep{Blythe2007divided}
+
+\citep{Blythe2012neutral}
+
+\subsection{Replicator selection}\index{Replicator selection}\label{sec:usmreplicator}
+
+\subsection{Interactor selection}

@@ -37,17 +37,14 @@
 
 \begin{document}
 
+\frontmatter
+
 \maketitle
 
-%\begin{abstract}
-%\end{abstract}
+\chapter{Abstract}
+\input{abstract}
 
-\tableofcontents
-
-\listoffigures
-\listoftables
-
-\chapter*{Acknowledgments}
+\chapter{Acknowledgments}
 
 Only a few years ago I would have cringed at the idea of writing an Acknowledgments section listing endless swathes of names, a taster of my obsession with change for the sake of change that you can spend the next 300~pages reading about if you like.
 
@@ -55,9 +52,11 @@ I guess it's only appropriate to start by thanking the people responsible for th
 
 My LEC/CLE cohort
 
-My collaborator and future business partner Elyse Jamieson %, not just for collecting the data in Chapter~\ref{ch:shetland}, tolerating my attempts at writing Shets emails, generally keeping up the craic and all the money we're gonna make.
+my nemesis Yasamin Motamedi
 
-collagues at the AI lab of the VUB, all the friends I made at the various LOT schools and of course the SFI Complex Systems Summer School in 2013, in particular Bruno Pace, and all the others who I feel academically indebted to and whose legacy I hope to continue (Joachim de Beule deserves special mention here).
+My collaborator and future business partner Elyse Jamieson. Not only were they responsible for the collection of much of the data discussed in Chapter~\ref{ch:shetland}, they also tolerated my attempts at writing Shets emails, generally keeping up the craic and all the money we're gonna make.
+
+collagues at the AI lab of the VUB, all the friends I made at the various LOT schools and of course the SFI Complex Systems Summer School in 2013, in particular Bruno Pace, as well as everyone else who I feel academically indebted to and whose legacy I hope to continue (Joachim de Beule deserves special mention here).
 
 This is probably a good point to acknowledge all the people who, while not accompanying us on the journey, manage to send us off in a direction with a kick in the bum so forceful that its energy lasts for years: at the start of most anyone's curiosity stand teachers who manage to convey topics in a gripping way, and I know for a fact that I wouldn't be anywhere near where I am today if I hadn't taken Hans Christian Luschützky's introduction to Indo-European many years ago (don't ask how many).
 
@@ -68,33 +67,43 @@ Who would be more deserving of a special mention than co-PhD, desk sharer, yoga 
 
 Megan, Theodora, Mote, Julia, Steffi.
 
+Robin St. Clair, who saved me from a lot of pain during my write-up (and after).
+
 Black medicine on the Bruntsfield Links for the heated office space, and the various Mosque Kitchens for providing most of my nutritional input during my time in Edinburgh.
 
-Last but not least I want to thank all the people who've made sure that life around me has always been a lot of fun. Musical co-conspirators Kieran, my fellow sick kids of edinburgh (Max, Valerie and Doris), and Dani, whose inability to finish things might be proof that we are twins after all.
+Last but not least I want to thank all the people who've made sure that life around me has always been a lot of fun. Musical co-conspirators Kieran, my fellow sick kids of edinburgh (Max, Valerie and Doris), and Dani (whose inability to finish things rivals my own, proof that we are twins after all), the many (many) flatmates who've tolerated me over the years, everyone that I've had really intense conversations with in the past two years, anyone who ever went flaneuring with me (on foot or by bike), all the other people who kept me sane and, most of all, all those who drove me crazy.
 
-The many (many) flatmates who've tolerated me over the years, everyone that I've had really intense conversations with in the past two years, all the other people who kept me sane and, most of all, all those who drove me crazy.
+\tableofcontents
+
+\listoffigures
+\listoftables
 
 \newpage
 \thispagestyle{empty}
 \epigraph{``Language moves down time in a current of its own making.''}{\citep[p.160]{Sapir1921}}
 
-% chapter 1
-\include{introduction/intro}
+\mainmatter
 
-% chapter 2
+% chapter 1
 \chapter{Language change}
 \label{ch:review}
+\include{introduction/intro}
 \include{introduction/review}
+
+% chapter 2
+\chapter{Modelling language change}
+\label{ch:modelling}
+\include{modelling/modelling}
 
 % chapter 3
 %\chapter[Momentum-based selection in the population]{Momentum-based selection in the population: a computational model}
 \chapter[Momentum-based selection in real time]{Modelling momentum-based selection in real time}
-\label{ch:model1}
+\label{ch:momentummodel}
 \include{momentummodel/model1}
 
 % chapter 4
 \chapter[Momentum-awareness in the individual]{Momentum-awareness in the individual: empirical evidence}
-\label{ch:questionnaire}
+\label{ch:shetland}
 \include{questionnaire/shetland}
 
 % chapter 5
@@ -105,6 +114,8 @@ The many (many) flatmates who've tolerated me over the years, everyone that I've
 %\section{Results}
 
 % chapter 6+
+\chapter[Asymmetric generation of variants]{Competing selection pressures and the generation of linguistic variants}
+\label{ch:bigpicture}
 \include{conclusion/bigpicture}
 
 %\bibliographystyle{unsrt}
@@ -124,11 +135,9 @@ The many (many) flatmates who've tolerated me over the years, everyone that I've
 
 \chapter{Markov chain model code}
 \label{app:markovmodel}
-\includeR{introduction/markovchain.R}
-
-%\lstinputlisting[language=R]{introduction/realigriffiths2010.R}
-
-%\lstinputlisting[language=R]{conclusion/asymmetricvariation.R}
+\includeR{R/markovchain.R}
+%\includeR[language=R]{introduction/realigriffiths2010.R}
+%\includeR[language=R]{conclusion/asymmetricvariation.R}
 
 \chapter[Further analysis of the USM]{Further analysis of the Utterance Selection Model}
 \label{app:math}
