@@ -1,8 +1,9 @@
-vars <- c("neg", "imp", "ynq", "whq")
+vars <- c("imp", "ynq", "whq", "neg")
 varcolors <- c("darkgrey", "orange", "blue", "green")
 names(varcolors) <- vars
 changingcolors <- varcolors[2:4]
-vardesc <- c(neg="Negation (stable control)", imp="Imperatives", ynq="yes/no questions", whq="Wh questions")
+longvars <- c(imp="imperatives", ynq="yes/no questions", whq="wh questions", neg="negation")
+vardesc <- c(imp="Imperatives", ynq="yes/no questions", whq="Wh questions", neg="Negation (stable control)")
 
 lvls <- c("onlyout", "moreout", "both", "morein", "onlyin")
 collapsedlvls <- c("fewin", "morein", "onlyin")
@@ -22,10 +23,13 @@ nicelvls <- c("only out", "more out", "both", "more in", "only in")
 helmertvars <- c("whq", "question", "notchanging")
 helmertlevels <- function(var) contr.helmert(4)[5 - as.numeric(var),]
 arrangedata <- function(d) {
+  d$gender <- factor(c(F="female", M="male")[d$gender], levels=c("female", "male"))
+
   d$self <- factor(d$self, levels=lvls, ordered=TRUE)
   d$jitteredself <- jitter(as.numeric(d$self))
   d$other <- factor(d$other, levels=lvls, ordered=TRUE)
   d$var <- factor(d$var, levels=vars)
+  d$longvar <- factor(longvars[d$var], levels=longvars)
   # helmert coding (not reverse, as returned by contr.helmert())
   d[,helmertvars] <- helmertlevels(d$var)
   d$oldervar <- factor(d$oldervar, levels=c("out", "same", "in")) # TODO consider this ordered or not?

@@ -81,7 +81,7 @@ So while the changes are in a sense nearing completion, all members of the speec
 %\subcaptionbox{Shetland's location in the North Sea}{\includegraphics[height=\twosubht]{figure/shetlandcontext}}%
 %\subcaptionbox{The islands of Shetland\label{fig:whalsay}}{\includegraphics[height=\twosubht]{figure/shetlandold}}%
 \includegraphics[width=\textwidth]{figure/shetlandcontext}
-\caption{Shetland's location in the North Sea. (c) OpenStreetMap contributors}
+\caption[Shetland's location in the North Sea]{Shetland's location in the North Sea. \textcircled{c} OpenStreetMap contributors}
 \label{fig:shetland}
 \end{figure}
 
@@ -355,11 +355,11 @@ lattice::trellis.par.set(defaultsettings)
 lattice::lattice.options(default.args=list(aspect=0.8), par.strip.text=list(col="black"))#, strip=lattice::strip.custom(strip.names=c(TRUE, TRUE)))
 
 # No mention of 'scales'. But xyplot has an argument 'default.scales' which you can set globally: add this  default.scales = def.scal to the arguments in your xyplot call.
-groupedhistogram <- function(formula, ..., data=d, type="percent", scales=defaultscales, col=defaultbarcol, aspect=0.8, xlab="", ylab="percent of total") { # to count or not to count?
+groupedhistogram <- function(formula, ..., data=d, type="percent", scales=defaultscales, col=defaultbarcol, aspect=0.8, xlab="difference score", ylab="percent of responses") { # to count or not to count?
   lattice::histogram(formula, ..., data=data, aspect=aspect, type=type, scales=scales, col=col, xlab=xlab, ylab=ylab, between=list(x=0.7, y=0.7))
 }
 
-groupedhistogram(~ self | var + agecat, col=temp.colors(5), ylab="actual usage response (%)", xlab="", ylim=c(0, 93))
+groupedhistogram(~ self | longvar + agecat, col=temp.colors(5), ylab="actual usage response (%)", xlab="", ylim=c(0, 93))
 
 #plot(party::ctree(self~loc+age+gender+var+firstvar, data=changing))
 # imp branch off first, then neg branches off, predicted by location
@@ -406,14 +406,14 @@ ages <- round(aggregate(participants$age, by=list(participants$agecat), FUN=mean
 # https://cran.r-project.org/web/packages/ordinal/vignettes/clmm2_tutorial.pdf
 # this doesn't work because of the dropped level, use helmert coding instead:
 #predictions <- expand.grid(age=ages, var=vars, self=levels(d$self))
-predictions <- expand.grid(age=ages, self=lvls, var=vars)
-predictions[,helmertvars] <- helmertlevels(as.numeric(predictions$var))
+predictions <- expand.grid(age=ages, self=lvls, longvar=longvars)
+predictions[,helmertvars] <- helmertlevels(as.numeric(predictions$longvar))
 
 predictions$response <- predict(helmertagevarchangingmdl, predictions)
 
 predictions$age <- factor(paste("age=", predictions$age, sep=""), levels=paste("age=", ages, sep=""))
 
-lattice::barchart(100*response ~ self | var + age, data=predictions, col=defaultbarcol, scales=defaultscales, ylab="predicted usage response (%)", ylim=c(0, 93), box.width=1, aspect=1, between=list(x=1, y=1))
+lattice::barchart(100*response ~ self | longvar + age, data=predictions, col=defaultbarcol, scales=defaultscales, ylab="predicted usage response (%)", ylim=c(0, 93), box.width=1, aspect=1, between=list(x=1, y=1))
 
 #par(mfcol=c(3,3), mar=rep(1,4)))
 #rms: p <- predict(m, expand.grid(age=c(20,50,80)), type="fitted.ind")
@@ -428,17 +428,17 @@ When it comes to reporting on the linguistic usage levels of other individuals i
 Again, we performed ordered logistic regression models with participant as a random effect, reported in Tables~\ref{table:otherresponsesmodel} and~\ref{table:otherresponsesmodelcomparison}.
 In contrast to the self-usage reports, we find no effect of age for any of the variables~(models~1+2). Instead, the models reveal that the only significant predictors of the reported usage levels are the type of sociolinguistic variable~(model~3) as well as the participant's gender, with females again estimating slightly \emph{higher} usage of the incoming variant in the community~(model~4). Importantly we find no significant interaction between the type of variable and any of the other predictors, i.e. the effect of gender again pertains to all four variables, and not just the changing ones~(model~5).
 
-<<otherresponses, fig.cap="Comparison of own vs. community-level usage estimates.", fig.subcap=c("Overall distribution of reported own usage, per sociolinguistic variable", "Responses to the question ``How much do you think are people around you using either of the variants?''. While the distribution of responses to the imperative question is again consistently flatter than for the other responses, in comparison to the self-usage stimates shown in (a) there is a clear shift away from both of the extreme response options, indicating that individuals perceive the population average to be variable rather than categorical.")>>=
+<<otherresponses, fig.cap="Comparison of own vs community-level usage estimates.", fig.subcap=c("Overall distribution of reported own usage, per sociolinguistic variable", "Responses to the question ``How much do you think are people around you using either of the variants?''. While the distribution of responses to the imperative question is again consistently flatter than for the other responses, in comparison to the self-usage stimates shown in (a) there is a clear shift away from both of the extreme response options, indicating that individuals perceive the population average to be variable rather than categorical.")>>=
 
 # main="Estimated own usage of the competing variants"
-#groupedhistogram(~ self | var, data=d, layout=c(4,1), ylim=c(0, 85))
-groupedhistogram(~ self | var + gender, ylim=c(0, 90))
+#groupedhistogram(~ self | longvar, data=d, layout=c(4,1), ylim=c(0, 85))
+groupedhistogram(~ self | longvar + gender, ylim=c(0, 90))
 
 # main="Estimated population-wide usage of the competing variants"
-groupedhistogram(~ other | var + gender, data=d, ylim=c(0, 90))
+groupedhistogram(~ other | longvar + gender, data=d, ylim=c(0, 90))
 
 #fourboxplots(age ~ other)
-#groupedhistogram(~ other | var + agecat, data=changing, ylab="actual usage response (%)", ylim=c(0, 85))
+#groupedhistogram(~ other | longvar + agecat, data=changing, ylab="actual usage response (%)", ylim=c(0, 85))
 # age only significant for y/n questions
 # report that questions pattern together and imp+neg pattern together?
 
@@ -469,9 +469,9 @@ The data from the first two questions implicitly contains another piece of infor
 If we look at the distribution of this measure in Figure~\ref{fig:selfdiff}, we see that the participants' age is a good predictor of this difference between themselves and the community. %The binary partitioning suggested by conditional inference shows that the majority of under-58-year-olds regard themselves as `ahead' of their community in terms of using the incoming variants, whereas those over 58 are most likely to report being level with the community~(
 Ordinal logistic regression models paralleling those fit to the self-usage reports in Table~\ref{table:selfresponsesmodelordinalcomparison} above confirm this picture: as can be seen in Tables~\ref{table:selfdiffmodel} and~\ref{table:selfdiffmodelcomparison}, the most parsimonious model predicts the difference between individuals' reported own and community usage based on the type of sociolinguistic variable as well as an interaction between variable and age, where age only affects the difference for the three changing variables.
 
-<<selfdiff, fig.cap="Relative difference in number of ordinal categories between participants' reported \\emph{own} vs. community usage levels of the competing variants, by sociolinguistic variable and age group. Positive numbers indicate that a speaker reported a higher usage of the incoming variant for themselves than for the community, and vice versa. While the 5-point response scale allows for differences of up to $\\pm4$, no speaker indicated their own usage to be more than two ordinal categories away from the community level. Younger speakers are more likely to perceive themselves to be ahead of the community level usage~(more red), while older speakers are most likely to report their usage to be level with the community~(white) or behind~(blue).">>=
+<<selfdiff, fig.cap="Relative difference in number of ordinal categories between participants' reported \\emph{own} vs community usage levels of the competing variants, by sociolinguistic variable and age group. Positive numbers indicate that a speaker reported a higher usage of the incoming variant for themselves than for the community, and vice versa. While the 5-point response scale allows for differences of up to $\\pm4$, no speaker indicated their own usage to be more than two ordinal categories away from the community level. Younger speakers are more likely to perceive themselves to be ahead of the community level usage~(more red), while older speakers are most likely to report their usage to be level with the community~(white) or behind~(blue).">>=
 # TODO exclude whalsay data points? also show full +-4 scale and don't truncate at 2?
-groupedhistogram(~ selfdiff | var + agecat, data=d, col=temp.colors(9), ylim=c(0, 85), drop.unused.levels=FALSE) # , xlab="difference in number of ordinal categories between individuals' 'self' and 'other' reponses"
+groupedhistogram(~ selfdiff | longvar + agecat, data=d, col=temp.colors(9), ylim=c(0, 85), drop.unused.levels=FALSE) # , xlab="difference in number of ordinal categories between individuals' 'self' and 'other' reponses"
 
 #counts <- table(d$selfdiff, d$var)
 #par(xpd=NA, mar=par("mar")+c(0,0,0,3))
@@ -519,7 +519,7 @@ The ordered logistic regression models reported in Tables~\ref{table:variantagem
 # (TODO include N per variable?)
 #$N=\Sexpr{colSums(table(d$oldervarfreq, d$var))}$
 
-groupedhistogram( ~ oldervar | var + agecat, data=d, col=temp.colors(3), ylim=c(0, 90))
+groupedhistogram( ~ oldervar | longvar + agecat, data=d, col=temp.colors(3), ylim=c(0, 90))
 # xlab="Which of the variants do you think is older?"
 
 # these should be reported as a multinomial logistic, not ordinal, although
@@ -573,7 +573,7 @@ In contrast to the responses to question~3, the age of our informants does not a
 <<apparenttime, fig.cap="Relative difference between the reported usage of the two variants between `older' and `younger' speakers, for each of the four variables. The relative difference indicates the number of ordinal categories that separates an individuals' responses for the two age groups along the 5-point scale, where positive numbers (in shades of red) correspond to reporting higher usage of the majority variant among younger speakers, and vice versa. The most extreme points of the scale at $\\pm4$ correspond to reporting the `older' and `younger' speakers to be categorical users of opposing variants, the mid-point at $0$ to reporting the same usage levels for both.">>=
 # Response `0' means that the informant reported the same usage levels for both the `older' and `younger' speaker groups, reponse `1' means that younger speakers were reported to be one ordinal category more advanced in their usage of the incoming variant, etc.
 
-groupedhistogram(~ apparentdiff | var, data=d, layout=c(4,1), drop.unused.levels=FALSE, col=temp.colors(9), ylim=c(0, 48))
+groupedhistogram(~ apparentdiff | longvar, data=d, layout=c(4,1), drop.unused.levels=FALSE, col=temp.colors(9), ylim=c(0, 48))
 
 # individual younger/older responses: only variable makes a difference, nothing else!
 nullmdl <- clme(old ~ 1, random=id)
@@ -856,9 +856,9 @@ The raw data of the responses split by variable and gender is shown in Figure~\r
 <<genderreports, fig.cap="Raw data for responses regarding self-usage by sociolinguistic variable and gender. For the changing variables, females generally report a higher level usage of the incoming majority variants.">>=
 
 # TODO do groups and make stacked?
-groupedhistogram(~ self | var + gender, ylim=c(0, 90))
+groupedhistogram(~ self | longvar + gender, ylim=c(0, 90))
 
-#groupedhistogram(~ other | var + gender, data=d)
+#groupedhistogram(~ other | longvar + gender, data=d)
 #par(mfrow=c(2,1), mar=par("mar")-c(4,2,2,2))
 #mosaicplot(table(d$var, d$gender, d$self), color=temp.colors(5), main="Reported self-usage")
 #mosaicplot(table(d$var, d$gender, d$other), color=temp.colors(5), main="Reported population usage")
