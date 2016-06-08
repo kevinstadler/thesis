@@ -3,11 +3,11 @@
 
 One formal model of neutral evolution (i.e. copying of linguistic traits in the absence of any replicator or interactor selection) that makes particular reference to the temporal dynamics of changes is Reali \& Griffiths model of regularisation by Bayesian learners~(\citeyear{Reali2009,Reali2010}).
 
-\subsubsection{Model description}\index{Bayesian inference}\index{Iterated Learning}
+\subsection{Model description}\index{Bayesian inference}\index{Iterated Learning}
 
 At its core, \citeauthor{Reali2009} present a model of frequency learning by Bayesian inference. In their particular framing, an individual is trying to infer the relative frequencies $\theta_i$ of different variants $1\ldots i$ based on some input data as well as prior beliefs about what the true values of $\theta_i$ are likely to be. These prior beliefs act as \emph{inductive biases} and are captured by the \emph{prior}, represented by a probability distribution $f(\theta_i)$ defined over all possible values of $\theta_i \in [0,1]$.
 
-For the simple case of two competing variants, even though the individual is technically inferring two complementary relative frequencies $\theta_1, \theta_2$, we can limit our analysis to the problem of inferring $\theta_1$, since trivially $\theta_2=1-\theta_1$~\footnote{The model can easily be extended from the binomial outcome with a Beta to multinomial outcomes with a Dirichlet prior but, without loss of generality, we will limit our demonstration to the case of two competing variants for sake of simplicity.}. TODO and also we write $\theta$ for $\theta_1$.
+For the simple case of two competing variants, even though the individual is technically inferring two complementary relative frequencies $\theta_1, \theta_2$, we can limit our analysis to the problem of inferring $\theta_1$, since trivially $\theta_2=1-\theta_1$. The model can easily be extended from the \emph{binomial}~(two-variant) outcome to \emph{multinomial} outcomes, i.e. with three or more competing variants but, without loss of generality, we will limit our demonstration to the case of two competing variants. To simplify notation we will henceforth also write $\theta$ to refer to $\theta_1$.
 
 While any continuous probability distribution over the interval $[0,1]$ could serve as a prior, the authors choose the \emph{Beta distribution}, whose probability density function is defined as
 \begin{equation}
@@ -19,8 +19,9 @@ Because we are interested in a \emph{neutral} model that is not a priori biased 
 \begin{equation}
 \Theta \sim Beta(\frac{\alpha}{2},\frac{\alpha}{2})\;.
 \end{equation}
-with just a single parameter, referred to as $\frac{\alpha}{2}$, which controls the degree of \emph{regularisation}.
-Figure~\ref{fig:priors} shows the effect of this parameter on the prior distribution. For a value of $\frac{\alpha}{2}=1$ the prior distribution is uniform: not only is the individual not biased towards any of the variants (the distribution is symmetric), their estimate of the underlying frequency~$\theta$ is not biased towards any particular frequency region in~$[0,1]$ either. The same isn't true when $\frac{\alpha}{2}\ne 1$: for values~$<1$, the inference of $\theta$ is explicitly geared towards more extreme relative frequencies closer to $0$ or $100\%$ usage -- the model implements a \emph{regularisation bias}. The opposite is the case when~$>1$ which \emph{a priori} favours values of $\theta$ around the $0.5$ mark, representing completely mixed usage of the competing variants.
+with just a single parameter, $\alpha$, which controls the degree of \emph{regularisation}. Figure~\ref{fig:priors} shows the effect of this parameter on the prior distribution. For a value of $\frac{\alpha}{2}=1$ the prior distribution is uniform: not only is the individual not biased towards any of the variants (the distribution is symmetric), their estimate of the underlying frequency~$\theta$ is not biased towards any particular frequency region in~$[0,1]$ either. The same isn't true when $\frac{\alpha}{2}\ne 1$: for values~$<1$, the inference of $\theta$ is explicitly geared towards more extreme relative frequencies closer to $0$ or $100\%$ usage -- the model implements a \emph{regularisation bias}. The opposite is the case when~$>1$ which \emph{a priori} favours values of $\theta$ around the $0.5$ mark. Agents employing such a setting are inclined to infer more mixed usage of the competing variants than suggested by their learning data alone.
+
+% In the case of $K\ge3$ competing variants the Beta distribution prior with shape parameters $\frac{\alpha}{2}$ is simply replaced by a Dirichlet prior with parameters $\frac{\alpha}{K}$.
 
 <<setup, echo=FALSE>>=
 source("../knitr-setup.R")
@@ -110,10 +111,10 @@ for (alpha in alphas)
 
 % With these three different models up our sleeve, we can turn to actual productions.
 
-\subsubsection{Representing Bayesian Iterated Learning as a Markov chain model}\index{Markov chain}
+\subsection{Representing Bayesian Iterated Learning as a Markov chain}\index{Markov chain}
 \label{sec:markov}
 
-While the model presented above captures frequency learning by Bayesian inference within one individual, it is interesting to ask how the productions of a population of such learners would develop over time when one individual's output serves as the learning input of another. To do this, we can analyse the interactions between repeated learning input and production output as a \emph{Markov chain}, a simple modelling tool for understanding systems which can be in one of a finite number of states that they switch between probabilistically.
+While the model presented above captures frequency learning by Bayesian inference within one individual, it is interesting to ask how the productions of a sequence of such learners would develop over time when one individual's output serves as the learning input of another. To do this, we can analyse the interactions between repeated learning input and production output as a \emph{Markov chain}, a simple modelling tool for understanding systems which can be in one of a finite number of states that they switch between probabilistically.
 
 More formally, a Markov model can be defined by specifying conditional transition probabilities $P(X_{t+1}=x'|X_t=x)$ between a number of discrete states $x,x'\in\mathcal{S}$, which we call the Markov model's \emph{state space}. The Markov model is completely described by a function $P: \mathcal{S}\times\mathcal{S} \rightarrow [0,1]$ where the transition probabilities \emph{out} of any given state have to sum to one, i.e.
 \begin{equation}
@@ -127,7 +128,9 @@ In the case of the Bayesian inference model above, there are two equally valid w
 
 To define the state space, we have to set a fixed size of productions~$N$, from which a new learner has to infer the underlying production frequency~$\theta$.
 
-An example of such a transition matrix for a particular combination of $N, \alpha$ is found in Table~\ref{tbl:transitionmatrix}. The matrix is created based on the assumption that learners derive their estimate of $\theta$ by deterministically selecting the mean $\hat{\theta}$ of the posterior distribution $f(\theta|x)$.
+An example of such a transition matrix for $N=\Sexpr{N}, \alpha=\Sexpr{2*alphahalved}$ is found in Table~\ref{tbl:transitionmatrixsample}. This particular matrix is created based on the assumption that learners sample their data directly from the posterior distribution they computed from the input they received.
+
+Compare this to Table~\ref{tbl:transitionmatrixmap}, which is based on a chain of learners that deterministically select the mode $\theta_{MAP}$ of the posterior distribution $f(\theta|x)$ as their estimate of $\theta$. Their data production probabilities are consequently distributed according to a Binomial distribution with $p=\theta_{MAP}$, so the rows of this transition matrix are equivalent to this Binomial distribution.
 
 <<transitionmatrix>>=
 # corresponding to the probability of this Markov chain to be in that state at any particular point in time.
@@ -135,108 +138,108 @@ matrixN <- 4
 alphahalved <- alphas[1] / 2
 
 #cat("\\begin{table}[ht]")
-latextable(bilm.transition.matrix.sample(matrixN, 2*alphahalved)[], caption=c(paste("Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", matrixN, "$ and $\\alpha/2=", alphahalved, "$. The rows represent the probabilities of producing any of the given samples, assuming that the production is sampled from the posterior.", sep=""), "Markov chain transition matrix for the Bayesian Iterated Learning model with sampling from the posterior"), label="tbl:transitionmatrixsample", floating.environment="subtable")
+latextable(bilm.transition.matrix.sample(matrixN, 2*alphahalved)[], caption=c(paste("Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", matrixN, "$ and $\\alpha/2=", alphahalved, "$. The rows represent the probabilities of producing any of the given samples, assuming that the production is sampled from the posterior.", sep=""), "Markov chain transition matrix for the Bayesian Iterated Learning model with sampling from the posterior"), label="tbl:transitionmatrixsample")
 
-latextable(bilm.transition.matrix.average(matrixN, 2*alphahalved)[], caption=c(paste("Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", matrixN, "$ and $\\alpha/2=", alphahalved, "$. The rows represent the probabilities of producing any of the given samples, equivalent to $Bin(x';N,p=\\hat{\\theta})$", sep=""), "Markov chain transition matrix for the Bayesian Iterated Learning model selecting the mean of the posterior"), label="tbl:transitionmatrix", floating.environment="subtable")
+#latextable(bilm.transition.matrix.average(matrixN, 2*alphahalved)[], caption=c(paste("Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", matrixN, "$ and $\\alpha/2=", alphahalved, "$. The rows represent the probabilities of producing any of the given samples, equivalent to $Bin(x';N,p=\\hat{\\theta})$", sep=""), "Markov chain transition matrix for the Bayesian Iterated Learning model selecting the mean of the posterior"), label="tbl:transitionmatrixaverage", floating.environment="subtable")
+
+latextable(bilm.transition.matrix.map(matrixN, 2*alphahalved)[], caption=c(paste("Markov chain transition matrix for the Bayesian Iterated Learning model with $N=", matrixN, "$ and $\\alpha/2=", alphahalved, "$. The rows represent the probabilities of producing any of the given samples, equivalent to $Bin(x';N,p=\\theta_{MAP})$", sep=""), "Markov chain transition matrix for the Bayesian Iterated Learning model selecting the mean of the posterior"), label="tbl:transitionmatrixmap")
 
 #cat("\\end{table}")
 @
 
-The system that we described by specifying the transition probabilities between individual states is a random process called a \emph{Markov chain}, so-called because the probability of entering a particular state only depends on the system's \emph{current}, but no other (prior) states. This image of a \emph{chain} maps neatly onto the Iterated Learning Model, where every new learner receives input from exactly one teacher, who they then replace.
+The system that we describe by specifying the transition probabilities between individual states is a random process called a \emph{Markov chain}. Stochastic systems of this kind are said to obey the \emph{Markov property}, which means that the probability of entering a particular state only depends on the system's \emph{current} state, but not on any other prior states or state sequences that preceded the current one. This image of a \emph{chain} maps neatly onto the Iterated Learning Model, where every new learner receives input from exactly one teacher, who they then replace.
 
-This assumption allows us to easily determine some of the dynamics of the system. For example, assuming that our system would run indefinitely, we can calculate the probability of the system to be in a particular state at any given point in time. These so-called \emph{stationary distributions} of the systems visualised previously in Figure~\ref{fig:meanmapping} are shown in Figure~\ref{fig:stationarydistribution}.
+This assumption allows us to easily determine some of the dynamics of the system. For example, assuming that our system would run indefinitely, we can calculate the probability of the system to be in a particular state at any given point in time. The so-called \emph{stationary distribution} of the different systems whose input/mean-output mapping we visualised previously in Figure~\ref{fig:meanmapping} are shown in Figure~\ref{fig:stationarydistribution}.
 
 <<stationarydistribution, fig.cap="Stationary distributions of the Markov chain transition matrices.", fig.subcap=c("sampling", "average\\label{fig:averagerstationarydistribution}", "MAP. The different colouring for $\\alpha/2\\le 1$ indicate that in this case the Markov model has two absorbing states, corresponding to categorical usage of either of the variants.")>>=
-tightmargin(mfcol=c(1,3), pty="s")
-for (alpha in alphas)
-  plotstationary(bilm.transition.matrix.sample(N, alpha), ylim=c(0, 0.5), main=formatalpha(alpha))
-for (alpha in alphas)
-  plotstationary(bilm.transition.matrix.average(N, alpha), ylim=c(0, 0.5), main=formatalpha(alpha))
-for (alpha in alphas)
-  plotstationary(bilm.transition.matrix.map(N, alpha), ylim=c(0, 0.5), main=formatalpha(alpha))
+tightmargin(mfcol=c(1, length(alphas)), pty="s")
+subfigs <- c("(i)", "(ii)", "(iii)")
+for (i in 1:length(alphas))
+  plotstationary(bilm.transition.matrix.sample(N, alphas[i]), ylim=c(0, 0.5), main=bquote(.(subfigs[i]) ~ .(formatalpha(alphas[i]))))
+for (i in 1:length(alphas))
+  plotstationary(bilm.transition.matrix.average(N, alphas[i]), ylim=c(0, 0.5), main=bquote(.(subfigs[i]) ~ .(formatalpha(alphas[i]))))
+for (i in 1:length(alphas))
+  plotstationary(bilm.transition.matrix.map(N, alphas[i]), ylim=c(0, 0.5), main=bquote(.(subfigs[i]) ~ .(formatalpha(alphas[i]))))
 
 # TODO could you try and destabilise the stationary distribution by randomly varying the sample size (i.e. have two parallel state spaces for the Markov model, one with N productions and one with N+1 (giving N*(N+1) states total)?)
-@
 
-\subsubsection{Neutral evolution and s-shaped curves}
-
-<<naiveconditioning, fig.cap=paste("State probability distribution for all Markov chains of length $", N, "$ where the population starts off categorically using one variant and finishes only using the other. Left figures: conditioning on the initial state only, right figures: conditioning on both the initial and final fixation states. Three different values of $\\alpha/2=", paste(alphas/2, collapse=", "), "$~(from top to bottom). The `average' state that the chain is in at any given point in time is marked in white.")>>=
-twotypes <- c("Results with learners accepting the \\emph{mean} of the posterior as their hypothesis for~$\\theta$", "Results when learners sample from the posterior distribution $p(\\theta|x)$")
-twotypesstring <- paste("\\emph{(a)}", twotypes[1], ". \\emph{(b)}", twotypes[2], ".", sep="")
-
+# for HMM chains below
 N <- 50
+ngenerations <- 50
+@
 
-# the backwards-transition matrix is actually identical to the forward
-# one, so we just need to reverse (mirror) it along both axes
-apply.conditioning <- function(markovchain)
-  markovchain * markovchain[nrow(markovchain):1, ncol(markovchain):1]
+From these stationary distributions we can confirm that the regularisation parameter $\alpha$ works as intended: TODO
 
-chain.mean <- function(markovchain)
-  apply(markovchain, 1, function(row) weighted.mean(0:(length(row)-1), row))
+\subsection{Neutral evolution and s-shaped curves}
 
-plot.mean <- function(data)
-  lines(0:(nrow(data)-1), chain.mean(data), lty=2, col="white")
+So far our analysis of the stationary distribution limits us to describing the expected state of a model, but abstracted away from time.
 
-# draw a b/w heatmap based on a matrix of positive numbers, with higher color resolution closer to 0
-logheatmap <- function(data, xlab="generation", ylab="frequency", graylevels=25, ...)
-  image(data, x=0:(dim(data)[1]-1), y=0:(dim(data)[2]-1), xlab=xlab, ylab=ylab, col=gray(graylevels:0/graylevels), breaks=c(0, 1.5^(-graylevels:0))*max(data), ...)
+One particular claim of \citet{Reali2010} concerning temporal dynamics is that even the neutral evolution model described by Bayesian regularisers will produce s-shaped curves. While we would not expect completely symmetric replication such as produced by neutral evolution to produce particularly directed transitions, they argue that this depends on which data is considered. In particular, since historical linguists only (or at least primarily) describe changes which have gone to completion, our assessment of whether a model produces s-shaped curves should equally be limited to data of this kind. They consequently go on to analyse only those chains that start off in a state where the first generation uses one of the competing variants categorically, while the last ends up in the opposite state where its productions contain only the other variant.
 
-plot.doubleconditioned <- function(data) {
-  doubleconditioned <- apply.conditioning(data)
-  logheatmap(doubleconditioned/rowSums(doubleconditioned))
-  plot.mean(doubleconditioned)
-}
+In order to get a better understanding of the underlying dynamics of our Markov model, we will therefore need to switch to an analysis that allows us to condition the Markov chains to be in specific states at specific points in time. One tool to do exactly this are \emph{Hidden Markov Models}~(HMMs). As the name suggests, HMMs are closely related to the Markov models described above. While in `normal' Markov chains the state sequence is directly visible to the observer, Hidden Markov Models allow us to specify a certain level of uncertainty over the model's state at any given point in time. Of particular importance to is that, instead of just randomly generating state sequences, HMMs allow us to make probabilistic inferences about the most likely states or state sequences that our model is likely to be in.
 
-tightmargin(pty="s", mfrow=c(3, 2))
-for (alpha in alphas) {
-  data <- markov.chain(bilm.transition.matrix.average(N, alpha), 50)
-  logheatmap(data)
-  plot.mean(data)
-  plot.doubleconditioned(data)
+In what follows, I used R's \texttt{HMM} package~\citep{HMM1.0} to both replicate and extend the results reported in~\citet{Reali2010}. Firstly, Figure~\ref{fig:naiveconditioning} shows a replication of the original analysis from their paper. All four subplots show the state probability distribution for Markov chains of length $\Sexpr{ngenerations}$ where the input data presented to the first generation consisted of $\Sexpr{N}$ instances of only one variant. The probability distribution is represented as a heat map where, for any specific generation, darker colors indicate a higher probability of being in a state at that time. The probabilities of all states per generation sum to 1. The particular probability distributions shown here were calculated for chains of learners which use the inferred mean $\hat{\theta}$ of the posterior distribution to sample data for the following generation, but results for learners sampling directly from the posterior are qualitatively similar.
+
+<<naiveconditioning, fig.cap=paste("State probability distribution for all Markov chains of length $", ngenerations, "$ where the input to the first generation consists of tokens of only one variant. The dashed white line indicates the trajectory through the `average' states that the chain is in at any given point in time. \\emph{(i)}~conditioning on the first generation's input only \\emph{(ii)}~conditioning on both the first and final generations' data.", sep=""), fig.subcap=paste(twotypes[2], " with $\\alpha=", alphas[-2], "$.", sep="")>>=
+twotypes <- c("Results when learners sample from the posterior distribution $p(\\theta|x)$", "Results with learners accepting the \\emph{mean} of the posterior as their hypothesis for~$\\theta$")
+twotypesstring <- paste("\\emph{(a)}~", twotypes[1], ". \\emph{(b)}~", twotypes[2], ".", sep="")
+
+source("../R/hmm.R")
+
+for (alpha in alphas[-2]) {
+  tightmargin(pty="s", mfrow=c(1, 2))
+  plotposterior(noconditioning(bilm.transition.matrix.average(N, alpha), ngenerations), addmostlikely=FALSE, main="(i)")
+  plotposterior(naiveconditioning(bilm.transition.matrix.average(N, alpha), ngenerations), addmostlikely=FALSE, main="(ii)")
 }
 @
 
-The trajectory for regularising $\alpha=0.05$ shown above is the \emph{average} of all transitions produced by the model, but this is not necessarily representative of a \emph{typical} trajectory.
+Subfigures~(i) on the left show the development of the chains when conditioning on this initial state only. These two plots, which differ only in their setting of~$\alpha$, neatly highlight the contrast between the two different regimes of the regularisation parameter $alpha$: in Figure~\ref{fig:naiveconditioning1} we set $\alpha=\Sexpr{alphas[1]}$, corresponding to \emph{regularisation}. In this setting, chains of learners are drawn to produce either of the two variants (near-)categorically. Note that, even though the system starts off with only one variant as its input, the chance introduction of tokens of the competing variant leads some chains to eventually regularise in the `other direction': whenever tokens of the other variant accumulate through random sampling, the chains start to be equally drawn towards the other fully regular state, i.e.~categorical usage of the formerly unattested variant.
+
+While even after \Sexpr{ngenerations}~generations the majority of chains is still at or near the usage frequency that was presented to the first participant, increasingly chains will start to `bunch up' against the top-most state corresponding to categorical usage of the other variant. Indeed, in the limit we should expect the the right-most `slice' of Figure~\ref{fig:naiveconditioning1}(i) to become completely symmetric around the halfway-mark, as it approaches the Markov chain's stationary distribution shown above in Figure~\ref{fig:stationarydistribution2}(i).
+
+In contrast, the left panel of Figure~\ref{fig:naiveconditioning2} with $\alpha=\Sexpr{alphas[3]}$ represents the \emph{de-regularisation} regime, where individuals prefer to use both variants equally. This is borne out by the fact that chains of such learners are quickly drawn towards the middle states, indicating mixed usage.
+
+Subfigures~(ii) on the right-hand side show the expected distribution of states when conditioning on both the initial and final states of the chain, where the last individual only produces tokens of the competing variant that was not attested in the first generation's input data. While the probability distribution over possible states at most intermediate generations is extremely wide, \citeauthor{Reali2010} point to the \emph{average trajectory}~(shown in white) that is calculated by computing the \emph{average state} of all chains at any given generation. They point out that, intriguingly, the shape of this average trajectory is dependent on the regularisation parameter $\alpha$. In particular, the model produces s-shaped trajectories exactly when chains are geared towards regularising input, which experimental evidence suggests is in fact a feature of human language learning~\citep{HudsonKam2005,Reali2009,Smith2010}.
+
+%TODO refer to \label{sec:realigriffithsequivalence} to point out trouble of N parameter
+
+It is crucial to point out here is that this \emph{average} of all transitions is not necessarily representative of the model's \emph{typical} transitions~\citep{Blythe2012neutral}. In order to get an idea of what individual trajectories of Iterated Learning chains actually look like, we can simply generate state sequences of the underlying Markov model randomly and filter them according to the start and end conditions~(see Appendix~\ref{app:markovmodel} for the code).
+
+Figure~\ref{fig:naiveconditioningtransitions} shows three randomly generated chains that fulfill both the start and end condition specified above. The trajectories were generated using exactly the same parameter setting as the one underlying the s-shaped average trajectory shown in Figure~\ref{fig:naiveconditioning}. Already here we can see that individual trajectories are much more noisy, less directed and s-shaped than the numerically computed `average transition' above suggests.
 
 <<naiveconditioningtransitions, fig.cap=paste("Three randomly generated Markov chains initiated at $0/N$ and terminating at $N/N$ after 100 iterations.", twotypesstring)>>=
+source("../R/randomtransitions.R")
+
 nchains <- 3
 ngenerations <- 50
 
 tightmargin(mfrow=c(1, 2), pty="s")
-plotchains(generate.transitioning.chains(bilm.transition.matrix.sample(N, 2*alphahalved), 50, nchains), main="(a)")
-plotchains(generate.transitioning.chains(bilm.transition.matrix.average(N, 2*alphahalved), 50, nchains), main="(b)")
+plotchains(generate.transitioning.chains(bilm.transition.matrix.sample(N, 2*alphahalved), ngenerations, nchains), main="(a)")
+plotchains(generate.transitioning.chains(bilm.transition.matrix.average(N, 2*alphahalved), ngenerations, nchains), main="(b)")
 @
 
-Figure~\ref{fig:naiveconditioningtransitions} shows three randomly generated chains that fulfill the start and end condition, giving an idea of the kinds of trajectories that would be generated by individual changes that are undergoing iterated learning. The trajectories were generated using exactly the same parameter setting as the one underlying s-shaped average trajectory shown in Figure~\ref{fig:naiveconditioning}. Already here we can see that individual trajectories are much more noisy, less directed and s-shaped than the analytical solution above suggests. %These stochastic trajectories also remind us that
-It is also not obvious that the condition for changes to have undergone completion after exactly \Sexpr{ngenerations} generations is well-motivated -- even a single-generation jump from from 0/50 to 50/50 has a non-zero (if extremely small) probability and would arguably not be s-shaped. These open questions warrant further enquiry into the dynamics of \citeauthor{Reali2009}'s model.
+What is also evident is that not all of the `transitions' are actually of the length that we specified: many chains either remain at the initial state for some time, or otherwise converge on categorical usage of the other variant early and remain there until the remaining generations have passed. This points to the general problem that the specific number of generations~(\Sexpr{ngenerations}) was not actually motivated. %Even a single-generation jump from from 0/50 to 50/50 has a non-zero~(if extremely small) probability and would arguably not be s-shaped.
+To understand the dynamics of this model even better we should therefore take a closer look at the expected duration of transitions.
 
-\paragraph{Expected number of generations for a transition to complete}
+\subsubsection{Expected number of generations for a transition to complete}
 
-In order to make sure we get an accurate picture of the \emph{typical} trajectory exhibited by regularising Iterated Leaners, we first need to know the likelihood of a transition completing in a given number of generations. Figures~\ref{fig:naiveconditioningprobabilities}a+b show both the per-iteration probability~(left) as well as the cumulative probability~(right) of a chain of iterated learners reaching categorical usage of the initially non-existent, incoming variant over time, for the same parameter settings as above.
+In order to get a more accurate picture of the typical trajectory exhibited by regularising Iterated Leaners, we first need to know the likelihood of a transition completing in a given number of generations. Figures~\ref{fig:naiveconditioningprobabilities}a+b show both the per-iteration probability~(left) as well as the cumulative probability~(right) of a chain of Iterated Learners reaching categorical usage of the initially non-existent, incoming variant over time.
+%To be able to compare different strategies of sampling data from the posterior, using the same~(regularising) parameter settings as above.
 
-<<naiveconditioningprobabilities, fig.cap="Probability of having completed (at least) one transition over time, for two different types of Bayesian Iterated Learners", fig.subcap=twotypes>>=
+<<naiveconditioningprobabilities, fig.cap=paste("Probability of having completed at least one transition over time, for ", twotypes[2])>>=
 
 # get stuck once it reaches 50/50
-stickytopsampler <- bilm.transition.matrix.sample(N, 2*alphahalved)[-(N+1),] %>%
-rbind(c(rep(0, N), 1)) %>%
-newchain
-plotcompletionprobabilities(stickytopsampler)
+#plotcompletionprobabilities(bilm.transition.matrix.sample(N, 2*alphahalved))
 
-# same thing but with sampler
-
-stickytopaverager <- bilm.transition.matrix.average(N, 2*alphahalved) %>%
-makestickytop %>%
-newchain
-#absorbingStates(stickytopaverager)
-
-data <- plotcompletionprobabilities(stickytopaverager)
+# same thing but with averager
+data <- plotcompletionprobabilities(bilm.transition.matrix.average(N, 2*alphahalved))
 
 averageduration <- weighted.mean(0:(length(data)-1), data)
 @
 
-For the \emph{averaging} learner with parameters $\frac{\alpha}{2}=\Sexpr{alphahalved}$ and $N=\Sexpr{N}$ the chain is most likely to first reach categorical usage of the incoming variant at the distribution's mode after \Sexpr{which.max(data)} generations, while on average the first transition takes \Sexpr{round(averageduration)} iterations. Knowing this we can now generate some of these more `typical' trajectories.
-% We can even go one step further to address another issue with \citeauthor{Reali2009}'s analysis, namely the fact that many of the trajectories actually only initiate after the first generation, but go to completion before the target number of generations and then remain there.
-During the random generation we will even go one step further by limiting ourselves to only to those transitions that first complete after \emph{exactly} the specific number of generations, i.e.~we exclude ones that reach the 50/50 state early and stay there~(see Appendix~\ref{app:markovmodel} for implementational details). Three such example transitions can be seen in Figure~\ref{fig:complexconditioningtransitions}.
+For the \emph{averaging} learner with parameters $\frac{\alpha}{2}=\Sexpr{alphahalved}$ and $N=\Sexpr{N}$ the chain is most likely to first reach categorical usage of the incoming variant at the distribution's mode after \Sexpr{which.max(data)} generations, while on average the first transition takes \Sexpr{round(averageduration)} iterations to complete. Knowing this we can now generate some of these more `typical' trajectories.
+
+During the random generation we will even go one step further by limiting ourselves to only those transitions that first complete after \emph{exactly} the specific number of generations, i.e.~we exclude ones that reach a frequency of~\Sexpr{N} of the incoming variant early and stay there. Three such example transitions can be seen in Figure~\ref{fig:complexconditioningtransitions}.
 
 <<complexconditioningtransitions, fig.cap=paste("Three randomly generated transitions terminating exactly after the average number of generations it takes learners to complete a transition.", twotypesstring)>>=
 tightmargin(mfrow=c(1, 2), pty="s")
@@ -245,48 +248,46 @@ plotchains(generate.transitioning.chains.exact(bilm.transition.matrix.average(N,
 #plotchains(generate.transitioning.chains(2, round(weighted.mean(0:8000, data[,51])), 50, 0.05))
 @
 
-\paragraph{Average trajectory of transitions that have the exact same duration}
+\subsubsection{Average trajectory of transitions that have the exact same duration}
 
 As can be seen from the contrast between Figures~\ref{fig:naiveconditioningtransitions} and~\ref{fig:complexconditioningtransitions}, the number of generations until a new variant has fixated isn't actually representative of the \emph{duration} of a transition, since transitions might remain at 0/50 for some time before picking up, or also return back to 0 before picking up again. If we are interested in the length of the actual transition (i.e.~starting to count when the new variant is first innovated, signified by the model moving out of the 0/50 state) the distribution of transition durations actually looks as shown in Figure~\ref{fig:complexconditioningprobabilities}.
 
 <<complexconditioningprobabilities, fig.cap="Probability of having completed a transition in exactly the number of generations without ever reverting to the initial state.", fig.subcap=twotypes>>=
-# also drop chain if it reverts back to the initial 0/50 state
 
-# TODO do same thing for sampler?
-
-stickytopandbottomaverager <- newchain(rbind(c(1, rep(0, N)), stickytopaverager[-1,]))
-#absorbingStates(stickytopandbottomaverager)
-
-# distribution of states where the diffusion of the incoming variant started
-# in generation 1 (normalisation optional)
-transitionjustpickedup <- c(0, stickytopaverager[1,-1]) / sum(stickytopaverager[1,-1])
+sampler <- bilm.transition.matrix.sample(N, 2*alphahalved)
+averager <- bilm.transition.matrix.average(N, 2*alphahalved)
 
 ngenerations <- 500
-data <- plotcompletionprobabilities(stickytopandbottomaverager, generations=ngenerations, initstate=transitionjustpickedup)
+
+# also drop chain if it reverts back to the initial 0/50 state
+plotcompletionprobabilities(sampler, exactduration=TRUE, generations=ngenerations)
+
+data <- plotcompletionprobabilities(averager, generations=ngenerations, exactduration=TRUE)
 averageduration <- weighted.mean(0:(ngenerations-1), data)
 @
 
 The mode of this distribution is much lower at \Sexpr{which.max(data)}~generations (with the mean at~\Sexpr{round(averageduration)}). The following code plots the temporal development and average trajectory of the Markov chains which are conditioned on actuating in the very first generation and fixating at the maximum number of generations (and no earlier) without ever returning to the initial state. It produces average trajectory plots for two different durations, the left one for the \emph{mode} of the distribution of transition durations, the right one for the~(higher) \emph{mean} duration.
 
-<<doubleconditioned, fig.cap="Average trajectory of all transitions with the exact same duration, identical to the mode~(left) and average~(right) duration of all completed transitions.", fig.subcap=twotypes>>=
-m <- bilm.transition.matrix.sample(N, 2*alphahalved)
-par(mfrow=c(1, 2), pty="s")
-stats <- completionstats(m) # default generations should be fine
-plot.doubleconditioned(markov.chain.exactduration(m, stats[1]))
-plot.doubleconditioned(markov.chain.exactduration(m, stats[2]))
+<<doubleconditioned, fig.cap="Average trajectory of all transitions with the exact same duration. \\textit{(i)}~duration equal to the \\emph{most likely} duration of a transition \\textit{(ii)}~duration equal to the average duration of all completed transitions.", fig.subcap=twotypes>>=
+stats <- completionstats(sampler, exactduration=TRUE)
 
-m <- bilm.transition.matrix.average(N, 2*alphahalved)
 par(mfrow=c(1, 2), pty="s")
-stats <- completionstats(m) # default generations should be fine
-plot.doubleconditioned(markov.chain.exactduration(m, stats[1]))
-plot.doubleconditioned(markov.chain.exactduration(m, stats[2]))
+plotposterior(exactconditioning(sampler, stats[1]), main="(i)")
+plotposterior(exactconditioning(sampler, stats[2]), main="(ii)")
+
+
+stats <- completionstats(averager, exactduration=TRUE)
+
+par(mfrow=c(1, 2), pty="s")
+plotposterior(exactconditioning(averager, stats[1]), main="(i)")
+plotposterior(exactconditioning(averager, stats[2]), main="(ii)")
 @
 
 Even the average of these more strictly conditioned trajectories doesn't look particularly s-shaped anymore. Moreover, while shorter transitions (like ones of the length of the mode, left figure) still have the fastest rate of change at the mid-point, \emph{longer} transitions (like ones of the mean length for a transition using the given parameters) are actually more like an~$S$ bent in the 'wrong' direction\footnote{Individual trajectories fulfilling this stricter conditioning of exact start and end points are exceedingly rare and hence computationally expensive to generate randomly, which is therefore not done here.}.
 
 To summarise, neither the dynamics of individual transitions, nor a closer investigation of the \emph{average} trajectories under different conditioning assumptions suggests that this model of neutral evolution based on regularising Bayesian learners exhibits particularly s-shaped curves.
 
-\subsubsection{Effect of population size on average duration of transitions}
+\subsection{Effect of population size on average duration of transitions}
 
 No matter what the shape of the average trajectory might be, for the sake of cross-validating the general results of the neutral evolution models as implemented here as well as by the Utterance Selection Model, we can compare the two models' predictions regarding how the expected duration of transitions develops as a function of the population size.
 
@@ -317,7 +318,7 @@ legend("bottomright", pch=2:5, legend=c("mean (average of the posterior)", "mode
 
 Whichever way the parameter is to be construed in \citeauthor{Reali2009}'s model, its effect on both the average as well as most likely duration of a directed transition can be seen in Figure~\ref{fig:populationsize}. Even under this very different type of model we can reproduce the results from the neutral evolution regime of the Utterance Selection Model as discussed in Section~\ref{sec:usmneutral}: the duration of transitions from (near)-categorical usage of one variant to another under neutral evolution, where neither variant has any selection bias acting in their favour, increases linearly with the size of the population.
 
-\subsubsection{Conclusion}
+\subsection{Conclusion}
 
 Neutral evolution, whether with or without regularisation, doesn't make for particularly beautiful or directed s-shaped curves.
 

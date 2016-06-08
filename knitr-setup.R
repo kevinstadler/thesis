@@ -20,4 +20,4 @@ options(xtable.sanitize.text.function = identity,
   xtable.sanitize.colnames.function = mathematise,
   xtable.table.placement = "htbp")#, xtable.booktabs=TRUE)
 
-par(mgp=c(2.3, 1, 0))
+par(mgp=c(2.3, 1, 0), font.main=1)
