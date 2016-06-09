@@ -1,0 +1,23 @@
+\section{S-shaped curves in language change}
+\label{sec:scurves}\index{s-shaped curves}
+
+In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
+
+
+this sentiment is repeated in \citet[pp.181+186]{Lindgren1953} as well as later in~\citet{Greenberg1954,Weinreich1968,Bailey1973}.
+
+The origin of the \emph{logistic curve} as the idealised can be traced back to~\citet{Altmann1983}, from where it was perpetuated by Andy Kroch~(\citeyear{Kroch1982,Kroch1989a,Kroch1989b}).
+
+It should be noted that the amount of empirical data that motivated \citeauthor{Altmann1983}'s use of the logistic function \citep[taken from][]{Graudina1964}, would probably not stand the test of the quantitative standards expected of empirical research in the present day.
+
+<<graudina>>=
+source("../knitr-setup.R")
+
+plot(scurves::dataset("Grau64"))
+@
+
+extracting information from trajectories~\citep{Ghanbarnejad2014}
+
+growth curve modelling~\citep{Winter2016}
+
+% this acts as a motivation for the next section -> evaluate competing models quantitatively!

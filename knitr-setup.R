@@ -1,8 +1,10 @@
 library(knitr)
+
+defaultpar <- function(before=TRUE, options, envir, ...)
+  if (before) par(family="serif", font.main=1, mgp=c(2.1, 0.8, 0), ...)
+
+knit_hooks$set(plotsetup=defaultpar)
 knit_hooks$set(crop = hook_pdfcrop)
-knit_hooks$set(plotsetup = function(before, options, envir) {
-    if (before) par(family="serif", font.main=1, mgp=c(2.3, 1, 0))
-})
 
 # fullpage's 453pt = 6.29in
 # normal textwidth 390pt = 5.4in
@@ -14,7 +16,7 @@ opts_chunk$set(echo=FALSE, message=FALSE, results="asis", fig.align="center", fi
 opts_knit$set(eval.after=c("fig.cap", "fig.subcap"))
 
 tightmargin <- function(...)
-  par(mar=c(3, 3.3, 2, 0.8), ...) # b l t r
+  defaultpar(mar=c(3, 3.3, 2, 0.8), ...) # b l t r
 
 library(xtable)
 

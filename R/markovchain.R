@@ -129,6 +129,12 @@ plotcompletionprobabilities <- function(transitionmatrix, ...) {
   invisible(ps) # for postprocessing
 }
 
+
+#graylevels=round(0.75*length(hmmargs$hmm$States)) / round(0.75*ncol(data))
+plotchain <- function(data, xlab="generation", ylab="frequency", graylevels=24, ...)
+  image(data, x=0:(nrow(data)-1), y=0:(ncol(data)-1), xlab=xlab, ylab=ylab, col=gray(graylevels:0/graylevels), breaks=c(0, 1.5^(-graylevels:0))*max(data), ...)
+
+
 # typesetting
 
 formatalpha <- function(alpha)

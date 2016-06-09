@@ -9,9 +9,10 @@ chain.mean <- function(markovchain)
 
 # draw a b/w heatmap based on a matrix of positive numbers, with higher color resolution closer to 0
 # the first argument is a list with elements 'hmm' and 'observation'
-plotposterior <- function(hmmargs, xlab="generation", ylab="frequency", graylevels=round(0.75*length(hmmargs$hmm$States)), addmean=TRUE, addmostlikely=TRUE, ...) {
+
+plotposterior <- function(hmmargs, addmean=TRUE, addmostlikely=TRUE, ...) {
   data <- t(do.call(posterior, hmmargs))
-  image(data, x=0:(nrow(data)-1), y=0:(ncol(data)-1), xlab=xlab, ylab=ylab, col=gray(graylevels:0/graylevels), breaks=c(0, 1.5^(-graylevels:0))*max(data), ...)
+  plotchain(data, ...)
   if (addmean)
     lines(0:(nrow(data)-1), chain.mean(data), lty=2, col="white")
   if (addmostlikely)

@@ -12,35 +12,50 @@ The Wright-Fisher model is a general tool from population genetics which is used
 
 \subsection{The Wright-Fisher model}
 %While originally designed to describe the dynamics of biological evolution in a sexually reproducing population, the model is very general
-In its very simplest form the model describes the dynamics of competition between two variants in a finite population of size $N$.
-Call the two variants 0 and 1 and their respective absolute frequencies $n_0$ and $n_1$. The entire population of $N$ individuals is replaced at discrete time steps so that it is always the case that $n_0 + n_1 = N$.
+In its very simplest form the Wright-Fisher model~\citep[for its original formulation see][]{Wright1931} describes the dynamics of competition between two variants in a finite population of size $N$.
+Call the two variants 0 and 1 and their respective absolute frequencies $n_0$ and $n_1$. The entire population of $N$ individuals is replaced at discrete time steps so that it is always the case that $n_0 + n_1 = N$. To simplify notation and assuming a constant population size~$N$, we can again drop the indices referring to individual variants: we will henceforth write $n$ to mean $n_1$, from which the frequency of the competing variant can be trivially computed.
 
-Assuming a constant population size~$N$, the current state of the population can be described simply by the relative frequency of variant~1,
+The state of the population at time~$t$ can be described simply by the relative frequency of that variant,~i.e.
 \begin{equation}
-x = \frac{n_1}{N}\;,
-\end{equation}
-from which the absolute frequency $n_1$ as well as the $n_0$ of the competing variant can be derived trivially.
-
-Under the assumption that the generations are non-overlapping, the probability distribution over the likely frequencies $n_1$ in the next generation is simply distributed according to a Binomial distribution
-
-\begin{equation}
-N_1 \sim Bin(N, \phi(x))\;.
+x_t = \frac{n_t}{N}\;.
 \end{equation}
 
-In the absence of any selection pressures or mutation that would introduce new variants, the probability of replicating an instance of a particular variant is equivalent to the relative frequency of that variant in the previous generation, i.e.~$\phi(x)=x$. % TODO this is obviously boring
+The Wright-Fisher model assumes that the individual generations of the population as it evolves over time are \emph{non-overlapping}. In other words, the generation makeup at the following timestep, $n_{t+1}$, is determined by creating a new population of $N$ tokens, each of which the replication of a randomly selected `ancestor' from the previous generation.
+The probability distribution over the likely frequencies $n_{t+1}$ in the next generation is consequently distributed according to a Binomial distribution
+
+\begin{equation}
+\label{eq:binomialsampling}
+n_{t+1} \sim Bin(N, f(x_t))\;.
+\end{equation}
+
+In the absence of any other pressures, the probability of replicating an instance of a particular variant is simply equivalent to the relative frequency of that variant in the previous generation, i.e.~$f(x_t)=x_t$. The behaviour of this simplest form of the Wright-Fisher model describes the dynamics of completely neutral drift which was not only fundamental in informing the \emph{neutral theory} of genetic evolution~\citep{Kimura1968,Kimura1983}, but still forms an important baseline for evaluating the presence or absence of evolutionary pressures in empirical data sets to this day. % TODO reference?
+
+Without any mechanisms to preferentially select any of the variants, or mutations that would introduce new variants, this is a very simple model of the \emph{diffusion} of traits through replication. Before we turn to more complex versions of the Wright-Fisher model which incorporate the influence of mutation and selection pressures, it is insightful to have a closer look at the similarity between diffusion models from biology and the Utterance Selection Model as described in Section~\ref{sec:usm}.\index{diffusion}
+
+\subsubsection{Relationship to the Utterance Selection Model}
+
+The similarity between Equation~\ref{eq:binomialsampling} and the data production function of the Utterance Selection Model in Equation~\ref{eq:usmsampling} is not just superficial: in its most general formulation the Wright-Fisher model is in fact identical to the trivial case of a single USM agent who is soliloquising with learning rate~$\alpha=1$ and USM sample resolution $T=N$.
+
+More fully-fledged versions of the USM with populations of speakers also find parallels in more complex models of biological evolution. \citet{Blythe2007divided} showed how the learning and alignment dynamics of the USM are in fact identical to Wright's \emph{island} model, an extension of the simple Wright-Fisher model above used to study the diffusion of variants between subdivided populations with limited migration between them~\citep{Wright1931}.
+
+While diffusion models are interesting in themselves and many results concerning fixation times can be derived from them analytically~\citep[see e.g.]{Baxter2008,Blythe2012copying}, we shall return to the simpler model of just one population with fixed turnover, which simplifies the analysis of different mutation and selection pressures that we are interested in here.
+
+%While the diffusion model interesting in itself as a baseline or \emph{null model} of change, we are currently more interested in the different ways in which \emph{biases} or \emph{pressures} can act on a population of replicating units.
 
 \subsubsection{The Wright-Fisher model with mutation}\index{mutation}
 \label{sec:realigriffithsequivalence}
 
-Under the Wright-Fisher model with \emph{mutation}, the probability of producing an instance of variant~$0$ at the next generation is not completely equivalent to its current prevalence $x$. Instead, with probability~$\mu_{01}$, one of the $n_0$ type~0 variants present in the population will spontaneously mutate into an instance of variant~1 during its replication. Conversely, there is a probability of~$\mu_{10}$ that one of the instances of the other variant~(of which there are $n_1$) will spontaneously mutate into a variant~0. Under this assumption, the relative probability of producing an instant of variant~1 at the next generation is
+% best reference it seems: http://numerical.recipes/whp/notes/wrightfisher.pdf
+
+Under the Wright-Fisher model with \emph{mutation}, the probability of producing an instance of variant~$0$ at the next generation is not completely equivalent to its current prevalence $x$. Instead, with probability~$\mu_{1}$, one of the $n_0$ type~0 variants present in the population will spontaneously mutate into an instance of variant~1 during its replication. Conversely, there is a probability of~$\mu_{0}$ that one of the instances of the other variant~(of which there are $n_1$) will spontaneously mutate into a variant~0. Under this assumption, the relative probability of producing an instant of variant~1 at the next generation is
 
 \begin{equation}\label{eq:mutation}
-\phi(x) = x\cdot(1-\mu_{10}) + (1-x)\cdot\mu_{01} \;.
+\phi(x) = x\cdot(1-\mu_0) + (1-x)\cdot\mu_1 \;.
 \end{equation}
 
 It is this version of the Wright-Fisher model that is mathematically equivalent to \citeauthor{Reali2010}'s model of Bayesian inference, in particular to the version of the model where the learners derive a hypothesis from their input sample of size $N$ by deterministically selecting the mean~$\hat{\theta}$ of the posterior distribution~$p(\theta|x)$. In this case, the learner's production behaviour is identical to that of a population of~$N$ individuals who are replicating with mutation rates set to
 \begin{equation}
-\mu_{10} = \mu_{01} = \frac{\alpha}{2\cdot(\alpha+N)}\;.
+\mu_0 = \mu_1 = \frac{\alpha}{2\cdot(\alpha+N)}\;.
 \end{equation}
 
 % according to both the regularisation parameter~$\alpha$ as well as the population size~$N$,
@@ -49,7 +64,7 @@ It is this version of the Wright-Fisher model that is mathematically equivalent 
 
 %This equivalence comes in the wake of other studies which have highlighted that evolution by natural selection can be seen as an inference dynamics~\citep{Harper2009}.
 
-The Wright-Fisher model with mutation allows for pressures in favour of specific variants, by setting the mutation rates $\mu_{01} \ne \mu_{10}$.
+The Wright-Fisher model with mutation allows for pressures in favour of specific variants, by setting the mutation rates $\mu_1\ne\mu_0$.
 %In particular, by setting only one of the rates to 0 one can simulate the accumulation of `noise'
 But it does not support \emph{selection} of variants, as would be needed for a replicator or momentum selection bias.
 
@@ -58,27 +73,87 @@ But it does not support \emph{selection} of variants, as would be needed for a r
 To allow selection on top of mutation, we have to move on to the Wright-Fisher model with mutation and selection, which takes the form
 
 \begin{equation}\label{eq:mutationselection}
-\phi(x) = \frac{x\cdot(1+s)\cdot(1-\mu_{10}) + (1-x)\cdot\mu_{01}}{x\cdot(1+s) + 1 - x} \;.
+f(x) = \frac{x\cdot(1+s)\cdot(1-\mu_0) + (1-x)\cdot\mu_1}{x\cdot(1+s) + 1 - x} \;.
 \end{equation}
 
-The parameter $s\ge 0$ in this equation represents a \emph{selection coefficient} which causes the probability of the $n_1$~tokens of variant~$1$ that are present in the population to be preferentially selected, i.e. their likelihood of replication is increased at the expense of the competing variant. In contrast to the mutation pressures~$\mu$, the effectiveness of the selection coefficient depends on the current prevalence of the selected variant in the population. In particular, the selection pressure in favour of an advantageous variant is completely ineffective as long as no tokens of that variant are present in the population. In other words, the selection coefficient cannot introduce new variants. Also, selection acts strongest when there is most variation, i.e. when both variants are equally represented in the population.
+The parameter $s\ge 0$ in this equation represents a \emph{selection coefficient} which causes the probability of the $n_1$~tokens of variant~$1$ that are present in the population to be preferentially selected, i.e. their likelihood of replication is increased at the expense of the competing variant. In contrast to the mutation pressures~$\mu$, the effectiveness of the selection coefficient depends on the current prevalence of the selected variant in the population. In particular, the selection pressure in favour of an advantageous variant is completely ineffective as long as no tokens of that variant are present in the population. In other words, the selection coefficient cannot introduce new variants. Also, selection acts strongest when there is most variation, i.e.~when both variants are equally represented in the population.
 
-\subsection{Modelling different types of pressures with the Wright-Fisher model}
+The precise impact of the different parameters will become more evident as we study the dynamics caused by applying the different pressures. To investigate the dynamics of these different types of Wright-Fisher models, we can again turn to the Markov model framework introduced in Section~\ref{sec:markovmodel} as a tool for analysis.
 
+\subsection[Modelling the interaction of different pressures]{Modelling the interaction of different pressures with the Wright-Fisher model}
 
+\subsubsection{Diffusion without innovation or selection}
 
-<<asymmetricmutation, fig.cap=paste("Probability of a transition occuring with mutation in one direction only, $N=", N, ", \\mu_{01}=", m01, "$.", sep="")>>=
-m01 <- .005
+With pure diffusion, i.e.~in the absence of any innovation of new variants, both categorical states are \emph{absorbing} states. The exact probability of ending up in either absorbing state depends on the initial condition, as can be seen in Figure~\ref{fig:symmetricmutation1}.
+
+<<symmetricmutation, echo=FALSE, fig.cap=paste("Stationary distribution of the Wright-Fisher model.", fig.subcap=c("Pure diffusion, i.e.~$\\mu_0=\\mu_1=0$. Both `pure' states are absorbing states, the probability of the population ending up in either depends on the initial frequency of the two variants: ", "Symmetric mutation, i.e.~$\\mu_0=\\mu_1>0$. The shape of the stationary distribution depends on the mutation rate and population size $N$.">>=
+source("../knitr-setup.R")
+source("../R/markovchain.R")
+#source("../R/hmm.R")
+
 N <- 50
-plotcompletionprobabilities(binomialsampling.markov.matrix(repl.mut.eq(N=N, m1=m01)), exactduration=TRUE)
+mus <- c(.005, .01, .1)
+
+tightmargin(mfrow=c(1, 3))
+# TODO 3 different initstates - do manual markov chain?
+plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N)))
+plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N)))
+plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N)))
+
+tightmargin(mfrow=c(1, 3))
+for (mu in mus)
+  plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N, m0=mu, m1=mu)), main=bquote(mu ~ "=" ~ .(mu)))
 @
 
-<<symmetricmutation, fig.cap=paste("Probability of a transition occuring with symmetric mutation in both directions, $N=", N, ", \\mu_{01}=\\mu_{10}=", m01, "$.", sep="")>>=
-plotcompletionprobabilities(binomialsampling.markov.matrix(repl.mut.eq(N=N, m0=m01, m1=m01)))#, exactduration=TRUE)
+\subsubsection{Symmetric mutation}
+
+The case of symmetric mutation, where the probabilities of spontaneously inventing either of the competing variants are equal~($\mu_0 = \mu_1$) has been shown to be equivalent to \citeauthor{Reali2010}'s Bayesian Iterated Learning chain of \emph{averaging} learners. For a quantitative analysis of the dynamics under such settings, see Section~\ref{sec:realigriffiths}. To recapitulate, under moderately low mutation rates the stationary distribution is similar to the one of the pure diffusion model, only that the non-zero probability of randomly producing an unattested variant means that variation is never fully eliminated from the system. Depending on the mutation rate $\mu$ and the population size $N$ as well as their relationship. Under small mutation rates, the stationary distribution will either primarily exhibit states with no variation, whereas high mutation rates will lead the populations to mostly consist of an even mix of all variants. A summary of the different regimes of the stationary distribution is shown in Figure~\ref{fig:symmetricmutation2}.
+
+\subsubsection{Asymmetric mutation as a model of the accumulation of errors}
+
+As mentioned before, one typically speaks of a \emph{bias} when one variant is treated differently from the other on some level, i.e.~when there is some \emph{asymmetry} between variants. The simplest way to introduce asymmetry into the Wright-Fisher model is by setting the two variants' mutation or innovation probabilities unequal, i.e.~$\mu_0\ne\mu_1$.
+
+Such a scenario maps closely onto the earliest theories of language change discussed in Chapter~\ref{ch:review}: assuming that a linguistic variant `comes out as another' some of the time, for example due to coarticulation effects, maps neatly onto a scenario with moderately low mutation rates, where one vastly outweights the other one. % ~(in the most extreme case by setting one of them to~0)
+In other words, the Wright-Fisher model with mutation lends itself as a model of change through the gradual accumulation of errors.
+
+Figure~\ref{fig:asymmetricmutation} shows the Markov chain analysis of that there thing. TODO
+
+<<asymmetricmutation, fig.cap=paste("Dynamics of the Wright-Fisher model with strong mutation in one direction, $N=", N, ", \\mu_1=", m1, ", \\mu_0=", m0, "$.", sep=""), fig.subcap=c("Development of the chain", "Stationary distribution")>>=
+source("../R/hmm.R")
+Ns <- c(20, 50, 100)
+m1 <- mus[1]
+m0 <- m1/100
+ngenerations <- 200
+
+tightmargin(mfrow=c(1, 3), pty="s")
+for (N in Ns)
+  repl.mut.eq(N=N, m0=m0, m1=m1) %>%
+  binomialsampling.markov.matrix %>%
+  markov.chain(., ngenerations) %>%
+  plotchain
+
+tightmargin(mfrow=c(1, 3), pty="s")
+for (N in Ns)
+  repl.mut.eq(N=N, m0=m0, m1=m1) %>%
+  binomialsampling.markov.matrix %>%
+  plotstationary(., ylim=0:1)
+
+#plotcompletionprobabilities( # exactduration=TRUE
 @
 
+\subsubsection{The dynamics of selection}\index{selection,replicator selection}
+
+<<selection>>=
+@
+
+The presence of a selection bias for individual variants, equivalent to a \emph{replicator selection},
+We can reproduce the same (or at least similar) dynamics as for the Utterance Selection Model~(see Section~\ref{sec:usm}).
 
 \subsection{A Markov chain state space for momentum}
+
+The simple models above recapitulate the criticisms presented in Section~\ref{sec:review}: accumulation of error and selection predict~(deterministic) selection only in one way, with no chance of returning.
+
+Interaction between them does what?
 
 On the face of it, the idea of momentum and the assumptions of a Markov model discussed in Section~\ref{sec:markov} seem at odds: the Markov assumption states explicitly that 
 
@@ -232,22 +307,19 @@ For the upper and lower rows in the diagram, corresponding to a positive~(top)
 
 A concrete example of a Markov chain transition matrix for such a momentum model with $N=5, \alpha=?, b=$ is given in Table~\ref{tbl:momentumtransitionmatrix}.
 
-<<setup, echo=FALSE, results="asis">>=
-source("../knitr-setup.R")
-source("../R/markovchain.R")
+<<momentum>>=
 
 momentum.matrix.pos <- function(sourcemomentum, targetmomentum, maxmomentum=1) {
   Nm <- 1+2*maxmomentum
   N <- max(nrow(sourcemomentum), nrow(targetmomentum))
   # column (target) offsets
-#  col <- matrix(rep(1+3*0:(N-1), each=N), nrow=N) + targetmomentum
-#  3*N*col + rep(2+3*0:(N-1), N)+sourcemomentum
   col <- matrix(rep(maxmomentum+Nm*0:(N-1), each=N), nrow=N) + targetmomentum
   Nm*N*col + rep(1+maxmomentum+Nm*0:(N-1), N)+sourcemomentum
 }
 
 # 'up/down' momentum, i.e. momentum term always one of -1, 0, 1
 updown.momentum.matrix <- function(N, ..., b=0) {
+  # unbiased (binomial) sampling a la Wright-Fisher
   tm <- repl.mut.matrix(N, ...)
   m <- matrix(0, nrow=3*nrow(tm), ncol=3*nrow(tm))
 
@@ -269,7 +341,7 @@ updown.momentum.matrix <- function(N, ..., b=0) {
 alpha <- .1
 b <- .3
 
-latextable(updown.momentum.matrix(3, alpha0=alpha, b=b)[], caption=paste("\\label{tbl:momentumtransitionmatrix}Markov chain transition matrix with momentum."))
+latextable(updown.momentum.matrix(3, alpha0=alpha, b=b)[], caption="Markov chain transition matrix with momentum.", label="tbl:momentumtransitionmatrix")
 @
 
 How do the dynamics of this momentum selection model differ from the original, mutation-only model? A direct comparison of the two models' stationary distributions for various settings of the regularisation parameter~$\alpha$ is shown in Figure~\ref{fig:momentumstationary}.
