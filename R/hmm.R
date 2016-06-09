@@ -15,7 +15,7 @@ plotposterior <- function(hmmargs, xlab="generation", ylab="frequency", grayleve
   if (addmean)
     lines(0:(nrow(data)-1), chain.mean(data), lty=2, col="white")
   if (addmostlikely)
-    points(0:(nrow(data)-1), as.numeric(do.call(viterbi, hmmargs)), pch=20, col="white") # 4 for cross
+    points(0:(nrow(data)-1), as.numeric(do.call(viterbi, hmmargs)), pch=".", col="white") # 4 for cross, 20 for small bullet
 }
 
 # all states emit the same symbol, initstate conditioning is done by startProbs

@@ -1,0 +1,313 @@
+\section[Momentum with asymmetric generation of variants]{A simple momentum model with asymmetric generation of variants}
+\label{sec:asymmetricvariation}
+
+%One argument put forward in the previous sections was that, in order to explain asymmetries, it is not necessary to construe the prevalent conventions as having been selected for for that purpose.
+
+In this section I will present a simple model to investigate how a symmetric momentum bias, a selection bias favouring trending conventions whether they are beneficial or deterious, interacts with asymmetric \emph{generation} of variants. The model is an extension of the Markov chain model of Bayesian Iterated Learning that was analysed in-depth in Section~\ref{sec:realigriffiths}.
+
+To recapitulate, \citet{Reali2009} proposed a model of regularisation by Iterated Learning. In their model, a Bayesian learner infers the underlying relative frequencies of several competing variants based on a sample of productions they observe from a teacher. By iteratively passing one learner's output on to the next and analysing the \emph{stationary distribution} of this Markov chain, they showed that by setting the parameter~$\alpha$ to values that lead individual learners to slightly increase the variability of their own productions, the chains end up \emph{regularising} the input distribution: over time, the population ends up mostly producing input distributions where one of the competing variables is used categorically.
+
+Moreover, in~\citet{Reali2010} the authors showed that under some circumstances this model of Bayesian Iterated Learning is equivalent to the Wright-Fisher model of biological evolution with mutation~\citep[see e.g.][]{Hartl2007}.
+The Wright-Fisher model is a general tool from population genetics which is used to predict the expected change in the frequency of competing alleles in a population given specific \emph{mutation} (and in its extended form also \emph{selection}) probabilities.
+
+\subsection{The Wright-Fisher model}
+%While originally designed to describe the dynamics of biological evolution in a sexually reproducing population, the model is very general
+In its very simplest form the model describes the dynamics of competition between two variants in a finite population of size $N$.
+Call the two variants 0 and 1 and their respective absolute frequencies $n_0$ and $n_1$. The entire population of $N$ individuals is replaced at discrete time steps so that it is always the case that $n_0 + n_1 = N$.
+
+Assuming a constant population size~$N$, the current state of the population can be described simply by the relative frequency of variant~1,
+\begin{equation}
+x = \frac{n_1}{N}\;,
+\end{equation}
+from which the absolute frequency $n_1$ as well as the $n_0$ of the competing variant can be derived trivially.
+
+Under the assumption that the generations are non-overlapping, the probability distribution over the likely frequencies $n_1$ in the next generation is simply distributed according to a Binomial distribution
+
+\begin{equation}
+N_1 \sim Bin(N, \phi(x))\;.
+\end{equation}
+
+In the absence of any selection pressures or mutation that would introduce new variants, the probability of replicating an instance of a particular variant is equivalent to the relative frequency of that variant in the previous generation, i.e.~$\phi(x)=x$. % TODO this is obviously boring
+
+\subsubsection{The Wright-Fisher model with mutation}\index{mutation}
+\label{sec:realigriffithsequivalence}
+
+Under the Wright-Fisher model with \emph{mutation}, the probability of producing an instance of variant~$0$ at the next generation is not completely equivalent to its current prevalence $x$. Instead, with probability~$\mu_{01}$, one of the $n_0$ type~0 variants present in the population will spontaneously mutate into an instance of variant~1 during its replication. Conversely, there is a probability of~$\mu_{10}$ that one of the instances of the other variant~(of which there are $n_1$) will spontaneously mutate into a variant~0. Under this assumption, the relative probability of producing an instant of variant~1 at the next generation is
+
+\begin{equation}\label{eq:mutation}
+\phi(x) = x\cdot(1-\mu_{10}) + (1-x)\cdot\mu_{01} \;.
+\end{equation}
+
+It is this version of the Wright-Fisher model that is mathematically equivalent to \citeauthor{Reali2010}'s model of Bayesian inference, in particular to the version of the model where the learners derive a hypothesis from their input sample of size $N$ by deterministically selecting the mean~$\hat{\theta}$ of the posterior distribution~$p(\theta|x)$. In this case, the learner's production behaviour is identical to that of a population of~$N$ individuals who are replicating with mutation rates set to
+\begin{equation}
+\mu_{10} = \mu_{01} = \frac{\alpha}{2\cdot(\alpha+N)}\;.
+\end{equation}
+
+% according to both the regularisation parameter~$\alpha$ as well as the population size~$N$,
+
+%The fact that equivalence can only be established as a function of both of the Bayesian model's parameters is slightly awkward, as it means that, to achieve the same regularisation behaviour~(by means of setting~$\alpha$) in a population, 
+
+%This equivalence comes in the wake of other studies which have highlighted that evolution by natural selection can be seen as an inference dynamics~\citep{Harper2009}.
+
+The Wright-Fisher model with mutation allows for pressures in favour of specific variants, by setting the mutation rates $\mu_{01} \ne \mu_{10}$.
+%In particular, by setting only one of the rates to 0 one can simulate the accumulation of `noise'
+But it does not support \emph{selection} of variants, as would be needed for a replicator or momentum selection bias.
+
+\subsubsection{Wright-Fisher model with mutation and selection}
+
+To allow selection on top of mutation, we have to move on to the Wright-Fisher model with mutation and selection, which takes the form
+
+\begin{equation}\label{eq:mutationselection}
+\phi(x) = \frac{x\cdot(1+s)\cdot(1-\mu_{10}) + (1-x)\cdot\mu_{01}}{x\cdot(1+s) + 1 - x} \;.
+\end{equation}
+
+The parameter $s\ge 0$ in this equation represents a \emph{selection coefficient} which causes the probability of the $n_1$~tokens of variant~$1$ that are present in the population to be preferentially selected, i.e. their likelihood of replication is increased at the expense of the competing variant. In contrast to the mutation pressures~$\mu$, the effectiveness of the selection coefficient depends on the current prevalence of the selected variant in the population. In particular, the selection pressure in favour of an advantageous variant is completely ineffective as long as no tokens of that variant are present in the population. In other words, the selection coefficient cannot introduce new variants. Also, selection acts strongest when there is most variation, i.e. when both variants are equally represented in the population.
+
+\subsection{Modelling different types of pressures with the Wright-Fisher model}
+
+
+
+<<asymmetricmutation, fig.cap=paste("Probability of a transition occuring with mutation in one direction only, $N=", N, ", \\mu_{01}=", m01, "$.", sep="")>>=
+m01 <- .005
+N <- 50
+plotcompletionprobabilities(binomialsampling.markov.matrix(repl.mut.eq(N=N, m1=m01)), exactduration=TRUE)
+@
+
+<<symmetricmutation, fig.cap=paste("Probability of a transition occuring with symmetric mutation in both directions, $N=", N, ", \\mu_{01}=\\mu_{10}=", m01, "$.", sep="")>>=
+plotcompletionprobabilities(binomialsampling.markov.matrix(repl.mut.eq(N=N, m0=m01, m1=m01)))#, exactduration=TRUE)
+@
+
+
+\subsection{A Markov chain state space for momentum}
+
+On the face of it, the idea of momentum and the assumptions of a Markov model discussed in Section~\ref{sec:markov} seem at odds: the Markov assumption states explicitly that 
+
+While the Markov model itself is oblivious to the structure of its state space, a meaningful state space can be constructed. In order to represent a population of $N$ individuals (or memory size of $N$ tokens), \citeauthor{Reali2009} constructed a space of $N+1$ states. On some level, this state space was unstructured: all states had non-zero (if very small) transition probabilities to each other, forming one fully connected state space. But on top of this homogeneous structure there was semantically meaningful organisation of states: each state corresponded to a certain memory state of an agent, with corresponding transition probabilities into the next states~(see Figure~\ref{fig:markovstatespacesimple}).
+
+In order to augment this model with a momentum bias, we simply have to duplicate the number of states: for every state of the \citeauthor{Reali2009} model which represents a certain prevalence $x$ of variant~$0$, we create two additional states, representing the same value of $x$, but with positive and negative momentum terms~$m$.
+
+A schematic visualisation of the shape of this state space is shown in Figure~\ref{fig:markovstatespacemomentum}.
+
+\begin{figure}
+
+\newcommand{\N}{5}
+\newcommand{\Nm}{4}
+\newcommand{\Nmm}{3}
+
+\begin{subfigure}[b]{\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.7]
+\tikzset{every state/.style={minimum size=1em}}
+\node at (-1,-1) {x =};
+\node[text=white] at (-2,-1) {m = -1}; % for identical graph width with below
+
+\foreach \x in {0,...,\N} {
+  \node at (\x,-1) {$\x$};
+  \node[state] (\x) at (\x,0) {};
+  \path[->] (\x) edge  [loop left] node {} ();
+}
+
+\foreach \x in {0,...,\Nm} {
+  \foreach \y in {\N,...,\number\numexpr\x+1}
+    \pgfmathtruncatemacro{\diff}{100*(\y-\x)/\N}
+    \path[->,draw=white!\diff!black]
+      (\x) edge [bend left] node {} (\y)
+      (\y) edge [bend left] node {} (\x);
+}
+\end{tikzpicture}
+\caption{State space of the~\citet{Reali2009} Markov model with $N=\N$.}\label{fig:markovstatespacesimple}
+\end{subfigure}
+
+\begin{subfigure}[b]{\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.7]
+\tikzset{every state/.style={fill=white,minimum size=1em}}
+
+\node at (-1,-2) {x =};
+\node at (-2,-1) {m = -1};
+\node at (-2,0) {m = 0};
+\node at (-2,1) {m = 1};
+
+% momentum states
+\foreach \x in {0,...,\Nm} {
+  \pgfmathtruncatemacro{\next}{\x + 1}
+  \node[state] (\x-1) at (\x,-1) {};
+  \node[state] (\next+1) at (\next,1) {};
+  \pgfmathtruncatemacro{\diff}{100/\N}
+  \path[<->,draw=white!\diff!black] % immediate reversal
+    (\x-1) edge node {} (\next+1); % [bend left=15] to avoid crossing loops
+}
+
+% paths along momentum states
+\foreach \x in {\Nm,...,1} {
+  \pgfmathtruncatemacro{\prev}{\x-1}
+  \pgfmathtruncatemacro{\next}{\x+1}
+
+%  \path[->] (\x-1) edge node {} (\prev-1)
+%            (\x+1) edge node {} (\next+1);
+
+% along top to right
+%  \ifnum \prev>0, draw from \number\numexpr\prev-1\relax only
+    \foreach \y in {\prev,...,0} {
+      \pgfmathtruncatemacro{\diff}{100*(\x-\y-1)/\N}
+      \path[->,draw=white!\diff!black]
+        (\x-1) edge [bend left] node {} (\y-1);
+    }
+%  \fi
+% along bottom to left
+  \foreach \y in {\N,...,\next} {
+    \pgfmathtruncatemacro{\diff}{100*(\y-\x-1)/\N}
+    \path[->,draw=white!\diff!black]
+      (\x+1) edge [bend left] node {} (\y+1);
+  }
+}
+
+% long distance reversals
+\foreach \x in {0,...,\Nmm} {
+  \pgfmathtruncatemacro{\nnext}{\x + 2}
+  \foreach \y in {\nnext,...,\N} {
+    \pgfmathtruncatemacro{\diff}{100*(\y-\x)/(\N+1)}
+    \path[<->,draw=white!\diff!black] (\x-1) edge node {} (\y+1);
+    % [bend left=15]
+  }
+}
+
+% momentum-free states
+\foreach \x in {0,...,\N} {
+  \node at (\x,-2) {$\x$};
+  \node[state] (\x0) at (\x,0) {};
+}
+
+% straight paths out of and into momentum-free states
+\foreach \x in {0,...,\Nm} {
+  \pgfmathtruncatemacro{\next}{\x+1}
+  % initiate increase (longest jumps first)
+  \foreach \y in {\N,...,\next} {
+    \pgfmathtruncatemacro{\diff}{100*(\y-\x-1)/\N}
+    \path[->,draw=white!\diff!black] (\x0) edge node {} (\y+1);
+  }
+  % initiate decrease
+  \foreach \y in {0,...,\x} {
+    \pgfmathtruncatemacro{\diff}{100*(\x-\y)/\N}
+    \path[->,draw=white!\diff!black] (\next0) edge node {} (\y-1);
+  }
+  % stalling
+  \pgfmathtruncatemacro{\diff}{200/\N}
+  \path[->,draw=white!\diff!black]
+    (\x-1) edge node {} (\x0)
+    (\next+1) edge node {} (\next0);
+}
+% old: curved initation straight to goal
+%\pgfmathtruncatemacro{\diff}{100*(\N-1)/\N}
+%\path[->,draw=white!\diff!black]
+%  (00) edge [bend left=53] node {} (\N+1)
+%  (\N0) edge [bend left=53] node {} (0-1);
+
+
+% completion (drawn in gray right above by default)
+%\path[->]
+%  (0-1) edge node {} (00)
+%  (\N+1) edge node {} (\N0);
+
+% loops
+\path[->,out=205,in=155] \foreach \x in {0,...,\N}
+  {(\x0) edge [loop] node {} ()};
+
+
+\end{tikzpicture}
+
+\caption{State space of the Markov model with $N=\N$ and a momentum bias $b>0$.}\label{fig:markovstatespacemomentum}
+\end{subfigure}
+
+\caption[Schematic visualisation of the Markov model state space]{Schematic visualisation of the Markov model state space. Colouring of the edges indicates relative probability of the transitions, with darker edges representing more likely transitions.} \label{fig:markovstatespace}
+\end{figure}
+
+While the number of states of this momentum model is almost threefold in comparison to the baseline model, the pattern of transitions is actually not much more complex. In particular, the model is not fully connected: every state has exactly $N$ outward transitions, exactly one each to every level of $x=0\ldots N$. 
+The semantics of these three parallel states determines which of them a given previous state will transition into: all transitions from states with a lower $x$ go into the $m=1$ state, transitions from higher values of $x$ go into the $m=-1$ state, and only transitions from identical $x$ values enter the state with~$m=0$.
+
+In order to affect the dynamics of the system, probabilities of transitioning between different levels of $x$ are affected by the value of the momentum term: for the middle row with $m=0$, the probabilities of producing a given~$x$ are equivalent to the \citeauthor{Reali2009} model, which means they correspond to the Wright-Fisher model with mutation only, as in Equation~\ref{eq:mutation}.
+
+For the upper and lower rows in the diagram, corresponding to a positive~(top)
+ or negative~(bottom) momentum term, the momentum affects the probabilities of producing a certain number of $x$~tokens by exerting a selection pressure on the variant that is currently `trending', i.e. whose frequency $x$ has increased at the last timestep. To this end the transition probabilities out of a state with $m=1$ are calculated according to the Wright-Fisher model with mutation and selection as given in Equation~\ref{eq:mutationselection}, with the selection coefficient $s$ in favour of variant $0$ set to a fixed constant. Conversely, the transition probabilities for states with $m=-1$ are controlled by the same equation, only that the same selection coefficient is selecting variant $1$. Note how, as long as the mutation probabilities $\mu_0, \mu_1$ are equal, this system is again \emph{symmetric}. Even though there are clear paths of directed selection~(e.g. along ) these paths are mirrored on the other side.
+
+A concrete example of a Markov chain transition matrix for such a momentum model with $N=5, \alpha=?, b=$ is given in Table~\ref{tbl:momentumtransitionmatrix}.
+
+<<setup, echo=FALSE, results="asis">>=
+source("../knitr-setup.R")
+source("../R/markovchain.R")
+
+momentum.matrix.pos <- function(sourcemomentum, targetmomentum, maxmomentum=1) {
+  Nm <- 1+2*maxmomentum
+  N <- max(nrow(sourcemomentum), nrow(targetmomentum))
+  # column (target) offsets
+#  col <- matrix(rep(1+3*0:(N-1), each=N), nrow=N) + targetmomentum
+#  3*N*col + rep(2+3*0:(N-1), N)+sourcemomentum
+  col <- matrix(rep(maxmomentum+Nm*0:(N-1), each=N), nrow=N) + targetmomentum
+  Nm*N*col + rep(1+maxmomentum+Nm*0:(N-1), N)+sourcemomentum
+}
+
+# 'up/down' momentum, i.e. momentum term always one of -1, 0, 1
+updown.momentum.matrix <- function(N, ..., b=0) {
+  tm <- repl.mut.matrix(N, ...)
+  m <- matrix(0, nrow=3*nrow(tm), ncol=3*nrow(tm))
+
+  targetmomentums <- upper.tri(tm)-lower.tri(tm)
+  # first take over all uninfluenced production probabilities
+  m[momentum.matrix.pos(0, targetmomentums)] <- tm
+
+  # calculate momentum-influenced production probabilities and add them
+  for (n in 1:nrow(tm)) {
+    posmtargets <- momentum.matrix.pos(1, targetmomentums)
+    m[posmtargets] <- binomialsampling.markov.matrix(repl.mut.eq(N, ..., b=b))
+    negmtargets <- momentum.matrix.pos(-1, targetmomentums)
+    m[negmtargets] <- binomialsampling.markov.matrix(repl.mut.eq(N, ..., b=-b))
+  }
+  newchain(m, name=paste("Binary (up/down) momentum with b", b, sep="="), states=as.vector(t(outer(paste("x", 0:N, sep="="), paste("m", c(-1, 0, 1), sep="="), paste))))
+}
+#updown.momentum.matrix(3, b=1)
+
+alpha <- .1
+b <- .3
+
+latextable(updown.momentum.matrix(3, alpha0=alpha, b=b)[], caption=paste("\\label{tbl:momentumtransitionmatrix}Markov chain transition matrix with momentum."))
+@
+
+How do the dynamics of this momentum selection model differ from the original, mutation-only model? A direct comparison of the two models' stationary distributions for various settings of the regularisation parameter~$\alpha$ is shown in Figure~\ref{fig:momentumstationary}.
+
+First of all, we can test whether the model is actually equivalent by setting the momentum bias to $b=0$~(Figure~\ref{fig:momentumstationary1})
+Despite the bias being ineffective in this model, the colour indication of the momentum term is informative: it shows how much of the time the model \\emph{remains} at a given proportion, resulting in a momentum term of $0$ (indicated in white).
+
+<<momentumstationary, fig.cap="Stationary distributions of Markov chains with momentum (various $\\alpha, b$).", fig.subcap=c("Without a momentum bias~($b=0$) the stationary distribution is identical to \\citet{Reali2009}'s \\emph{averaging} learner~(compare Figure~\\ref{fig:averagerstationarydistribution}).", paste("With a momentum bias of $b=", bs[2], "$, the model naturally avoids probability matching as the model preferentially sweeps through this middle region in a directed fashion. The time spent in momentum-free states in the middle reduces. TODO Explain red=$1$, blue$=-1$.", sep=""), paste("With an even higher momentum bias $b=", bs[3], "$, the model spends almost no time in the middle region.", sep=""))>>=
+
+plotmomentumstationary <- function(markovchain, maxmomentum=0, symmetric=TRUE, col=c("blue", "white", "red"), xlab="x", ...) { # TODO space default?
+  if (symmetric) {
+    # symmetric colouring: plot data with left half zeroed first
+    st <- matrix(steadyStates(markovchain), nrow=1+2*maxmomentum)
+    halfway <- ceiling(dim(st)[2]/2)
+    barplot(cbind(matrix(0, nrow=3, ncol=halfway), st[dim(st)[1]:1,(halfway+1):(dim(st)[2])]), col=rev(col), names.arg=0:(dim(st)[2]-1), xlab=xlab, ...)
+    barplot(st[,1:halfway], col=col, add=TRUE)
+  } else { # asymmetric (+-momentum doesn't flip at mid-point)
+    plotstationary(st=matrix(steadyStates(markovchain), nrow=1+2*maxmomentum), col=col, ...)
+#    plotstationary(st=t(colSums(matrix(steadyStates(markovchain), nrow=1+2*maxmomentum))), ...)
+  }
+}
+#par(mfrow=1:2)
+#plotmomentumstationary(updown.momentum.matrix(10, alpha0=1), 1, symmetric=FALSE)
+#plotmomentumstationary(updown.momentum.matrix(10, alpha0=1), 1, symmetric=TRUE)
+
+alphas <- c(0.5, 1, 2)
+N <- 10
+bs <- c(0, 1, 5)
+
+for (b in bs) {
+  tightmargin(mfrow=c(1,3), pty="s")
+  for (alpha in alphas)
+    plotmomentumstationary(updown.momentum.matrix(N, alpha0=alpha, b=b), 1, main=formatalpha(alpha), ylim=c(0, 0.25))
+}
+
+# stationary with b=0 is actually identical to the averaging one
+#for (alpha in c(0.2, 1, 2)) {
+#  plotstationary(bilm.transition.matrix.average(N, alpha))
+#  plotmomentumstationary(updown.momentum.matrix(N, alpha0=alpha), 1)
+#}
+@

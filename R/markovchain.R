@@ -123,7 +123,7 @@ completionstats <- function(transitionmatrix, ...) {
 
 plotcompletionprobabilities <- function(transitionmatrix, ...) {
   ps <- completionprobabilities(transitionmatrix, ...)
-  par(pty="s", mfrow=c(1, 2))
+  tightmargin(pty="s", mfrow=c(1, 2))
   plot(ps, type="l", xaxs="i", yaxs="i", xlab="generation", ylab="probability of first transition completing", main="(i)")
   plot(cumsum(ps), type="l", xaxs="i", yaxs="i", ylim=0:1, xlab="generation", ylab="probability of having exhibited a transition", main="(ii)")
   invisible(ps) # for postprocessing
