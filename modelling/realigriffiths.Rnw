@@ -113,7 +113,7 @@ for (alpha in alphas)
 % With these three different models up our sleeve, we can turn to actual productions.
 
 \subsection{Representing Bayesian Iterated Learning as a Markov chain}\index{Markov chain}
-\label{sec:markov}
+\label{sec:markovmodel}
 
 While the model presented above captures frequency learning by Bayesian inference within one individual, it is interesting to ask how the productions of a sequence of such learners would develop over time when one individual's output serves as the learning input of another. To do this, we can analyse the interactions between repeated learning input and production output as a \emph{Markov chain}, a simple modelling tool for understanding systems which can be in one of a finite number of states that they switch between probabilistically.
 

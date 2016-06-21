@@ -1,10 +1,10 @@
-\section[Comparing accounts with the USM]{Comparing accounts with the Utterance Selection Model of language change}\index{Utterance Selection Model (USM)}
+\section{The Utterance Selection Model of language change}\index{Utterance Selection Model (USM)}
 \label{sec:usm}
 
 %\section{Comparing accounts using the Utterance Selection Model}
 %Introduce USM generally, including EWMA-formulation and general learning/alignment properties
 
-The version of the Utterance Selection Model~(USM) discussed here grew out of \citeauthor{Croft2000}'s more general formulation of language change as evolutionary competition between utterances. While in its original, theoretical formulation in~\citet{Croft2000} it is truely full \emph{utterances} which are undergoing replication, in its mathematical-computational incarnation the USM is best understood as a quantitative model of the competition between different variants of one sociolinguistic variable, as described in Section~\ref{sec:sociolinguisticvariable}.\index{Sociolinguistic variable}
+The version of the Utterance Selection Model~(USM) discussed here grew out of \citeauthor{Croft2000}'s more general formulation of language change as evolutionary competition between utterances. While in its original, theoretical formulation in~\citet{Croft2000} it is truely full \emph{utterances} which are undergoing replication, in its mathematical-computational incarnation the USM is best understood as a quantitative model of the competition between different variants of one sociolinguistic variable, as described in Section~\ref{sec:sociolinguisticvariable}.\index{sociolinguistic variable}
 
 At its core, every agent in the USM is completely characterised by its variable use over variants, specified by the proportions with which each variant is used, all of which together sum to 1. For sake of simplicity we will limit ourselves to the canonical case of two competing variants, where the behaviour of an agent $i$ can be captured by a single variable $0.0 < x_i < 1.0$ representing its usage of a variant, the competing variant taken to be $1-x_i$. These internal proportions drive language users' production of variants by randomly sampling from a binomial (or, in the case of more than two variants, multinomial) distribution.
 
@@ -27,16 +27,39 @@ $$x_i' = \frac{x_i+\lambda((1-H_{ij})n_i+H_{ij}n_j)}{1+\lambda} = \frac{x_i}{1+\
 
 %It should be acknowledged that this general learning rule was chosen due to its mathematical properties, which make it amenable to analysis using tools from statistical physics.
 
-% TODO
+\subsection{Model parameters of the USM}
+
+\subsubsection{Learning rate $\lambda$}
+
+equivalence to EWMA $\alpha$
+
+\subsubsection{Production sample resolution $T$}
+
+\subsubsection{Accommodation/alignment parameter $h$}
+
+accommodation $h$: only used sparely~\citep{Baxter2016,Michaud2017}.
+
+It is only important when there are systematic differences in usage levels within the population, as would be the case when there are clusters or differences in the degree of connectivity in a social network.
+
+Differences could also be due to other inter-individual differences, such as age-stratified populations, or differing replicator selection biases.
+
+
+For all the simulation work in this thesis agents are set to only align with their interlocutor and not to their own productions.
+
+\subsubsection{Bias function $f(.)$}
+
+\subsubsection{Interaction frequencies $G_{ij}$}
+
+\section[Comparing accounts with the USM]{Comparing accounts with the Utterance Selection Model}
 
 Having covered the general mechanism of the USM, we can now investigate the predicted dynamics under the presence (or absence) of different biases.
 
-\subsection{Neutral evolution}\index{Neutral evolution}\label{sec:usmneutral}
+\subsection{Neutral evolution}\index{neutral evolution}\label{sec:usmneutral}
 
 Equivalence to the island model~\citep{Blythe2007divided}
 
 \citep{Blythe2012neutral}
 
-\subsection{Replicator selection}\index{Replicator selection}\label{sec:usmreplicator}
+\subsection{Replicator selection}\index{replicator selection}\label{sec:usmreplicator}
 
-\subsection{Interactor selection}
+\subsection{Interactor selection}\index{interactor selection}

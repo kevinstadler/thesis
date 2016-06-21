@@ -1,4 +1,4 @@
-\section{S-shaped curves in language change}
+\subsection{S-shaped curves in language change}
 \label{sec:scurves}\index{s-shaped curves}
 
 In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
@@ -21,3 +21,8 @@ extracting information from trajectories~\citep{Ghanbarnejad2014}
 growth curve modelling~\citep{Winter2016}
 
 % this acts as a motivation for the next section -> evaluate competing models quantitatively!
+
+people comparing rates between contexts:
+\citet{Kroch1989cr}
+
+\citet{Fruehwald2009}
