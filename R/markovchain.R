@@ -121,10 +121,21 @@ completionstats <- function(transitionmatrix, ...) {
 #completionstats(bilm.transition.matrix.average(20, .05), 100)
 #completionstats(bilm.transition.matrix.average(20, .05), 100, exactduration=TRUE)
 
-plotcompletionprobabilities <- function(transitionmatrix, ...) {
+# numerically compute the probability of a chain succeeding from the given
+# initial state (specified as an index of the transition/state matrix)
+successprobability <- function(transitionmatrix, initstate, precision=.99, stepsize=500) {
+  transitionmatrix %<>% makestickytop %>% makestickybottom %>% newchain
+  population <- rep(0, dim(transitionmatrix))
+  population[initstate] <- 1
+  while (population[1] + population[length(population)] < precision)
+    population <- markov.chain(transitionmatrix, generations=stepsize, initstate=population)[stepsize,]
+  population[dim(transitionmatrix)]
+}
+
+plotcompletionprobabilities <- function(transitionmatrix, ylim=NULL, ...) {
   ps <- completionprobabilities(transitionmatrix, ...)
   tightmargin(pty="s", mfrow=c(1, 2))
-  plot(ps, type="l", xaxs="i", yaxs="i", xlab="generation", ylab="probability of first transition completing", main="(i)")
+  plot(ps, type="l", xaxs="i", yaxs="i", xlab="generation", ylab="probability of first transition completing", main="(i)", ylim=ylim)
   plot(cumsum(ps), type="l", xaxs="i", yaxs="i", ylim=0:1, xlab="generation", ylab="probability of having exhibited a transition", main="(ii)")
   invisible(ps) # for postprocessing
 }
@@ -140,7 +151,7 @@ plotchain <- function(data, xlab="generation", ylab="frequency", graylevels=24, 
 formatalpha <- function(alpha)
   bquote(alpha/2 ~ "=" ~ .(alpha/2))
 
-latextable <- function(m, caption=NULL, ...) {
+latextable <- function(m, caption=NULL, floating.environment="table", ...) {
   rownames(m) <- paste("x", rownames(m), sep="=")
   colnames(m) <- paste("x'", colnames(m), sep="=")
   if (!is.null(caption) & length(caption) == 1) {
@@ -148,5 +159,5 @@ latextable <- function(m, caption=NULL, ...) {
     if (sep != -1)
       caption <- c(caption, substr(caption, 1, sep-1))
   }
-  xtable(m, caption=caption, ..., digits=4)
+  print(xtable(m, caption=caption, ..., digits=4), floating.environment=floating.environment)
 }

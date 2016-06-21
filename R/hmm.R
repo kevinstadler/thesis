@@ -1,8 +1,8 @@
 library(HMM)
 
 # transitionmatrix[] has to be organised row-wise
-newhmm <- function(transitionmatrix, emissionProbs)
-  initHMM(States=states(transitionmatrix), Symbols=1:ncol(emissionProbs), startProbs=c(1, rep(0, dim(transitionmatrix)-1)), transProbs=transitionmatrix[], emissionProbs=emissionProbs)
+newhmm <- function(transitionmatrix, emissionProbs, startProbs=c(1, rep(0, dim(transitionmatrix)-1)))
+  initHMM(States=states(transitionmatrix), Symbols=1:ncol(emissionProbs), startProbs=startProbs, transProbs=transitionmatrix[], emissionProbs=emissionProbs)
 
 chain.mean <- function(markovchain)
   apply(markovchain, 1, function(row) weighted.mean(0:(length(row)-1), row))
@@ -10,7 +10,7 @@ chain.mean <- function(markovchain)
 # draw a b/w heatmap based on a matrix of positive numbers, with higher color resolution closer to 0
 # the first argument is a list with elements 'hmm' and 'observation'
 
-plotposterior <- function(hmmargs, addmean=TRUE, addmostlikely=TRUE, ...) {
+plotposterior <- function(hmmargs, addmean=TRUE, addmostlikely=FALSE, ...) {
   data <- t(do.call(posterior, hmmargs))
   plotchain(data, ...)
   if (addmean)
@@ -19,10 +19,14 @@ plotposterior <- function(hmmargs, addmean=TRUE, addmostlikely=TRUE, ...) {
     points(0:(nrow(data)-1), as.numeric(do.call(viterbi, hmmargs)), pch=".", col="white") # 4 for cross, 20 for small bullet
 }
 
-# all states emit the same symbol, initstate conditioning is done by startProbs
+# all states emit the same symbol - posterior is same as running markov.chain()
 noconditioning <- function(transitionmatrix, duration)
   list(hmm=newhmm(transitionmatrix, matrix(1, nrow=dim(transitionmatrix))), observation=rep(1, 1+duration))
 #plotposterior(noconditioning(bilm.transition.matrix.average(50, .5), 100), addmostlikely=FALSE)
+
+# all actuated trajectories without interruptions
+#actuationconditioning <- function(transitionmatrix, duration)
+#  list(hmm=newhmm(transitionmatrix, cbind(c(1, rep(0, dim(transitionmatrix)-1)), c(0, rep(1, dim(transitionmatrix)-1)))), observation=c(1, rep(2, duration)))
 
 # gotta fiddle a little bit with this one to stop the model from avoiding the
 # final state until the very last generation: every state has a chance of
