@@ -1,4 +1,4 @@
-\section[Momentum with asymmetric generation of variants]{A simple momentum model with asymmetric generation of variants}
+\section{Modelling the interaction of different pressures}
 \label{sec:asymmetricvariation}
 
 %One argument put forward in the previous sections was that, in order to explain asymmetries, it is not necessary to construe the prevalent conventions as having been selected for for that purpose.
@@ -28,17 +28,22 @@ The probability distribution over the likely frequencies $n_{t+1}$ in the next g
 n_{t+1} \sim Bin(N, f(x_t))\;.
 \end{equation}
 
-In the absence of any other pressures, the probability of replicating an instance of a particular variant is simply equivalent to the relative frequency of that variant in the previous generation, i.e.~$f(x_t)=x_t$. The behaviour of this simplest form of the Wright-Fisher model describes the dynamics of completely neutral drift which was not only fundamental in informing the \emph{neutral theory} of genetic evolution~\citep{Kimura1968,Kimura1983}, but still forms an important baseline for evaluating the presence or absence of evolutionary pressures in empirical data sets to this day. % TODO reference?
+In the absence of any other pressures, the probability of replicating an instance of a particular variant is simply equivalent to the relative frequency of that variant in the previous generation, i.e.
+\begin{equation}
+f(x) = x\;.
+\end{equation}
+
+The behaviour of this simplest form of the Wright-Fisher model describes the dynamics of completely neutral drift which was not only fundamental in informing the \emph{neutral theory} of genetic evolution~\citep{Kimura1968,Kimura1983}, but still forms an important baseline for evaluating the presence or absence of evolutionary pressures in empirical data sets to this day. % TODO reference?
 
 Without any mechanisms that influence the selection of existing variants or mutations that would introduce new ones, this is a very simple model of the \emph{diffusion} of traits through replication. Before we turn to more complex versions of the Wright-Fisher model which incorporate the influence of mutation and selection pressures, it is insightful to have a closer look at the similarity between diffusion models from biology and the Utterance Selection Model as described in Section~\ref{sec:usm}.\index{diffusion}
 
-\subsubsection{Relationship to the Utterance Selection Model}
+\subsubsection{Relationship to the Utterance Selection Model~(USM)}
 
-The similarity between Equation~\ref{eq:binomialsampling} and the data production function of the Utterance Selection Model in Equation~\ref{eq:usmsampling} is not just superficial: in its most general formulation the Wright-Fisher model is in fact identical to the trivial case of a single USM agent with a learning rate~$\alpha=1$ and USM sample resolution $T=N$ that is engaged in a production-perception loop.\index{production-perception loop}
+The similarity between Equation~\ref{eq:binomialsampling} and the data production function of the USM in Equation~\ref{eq:usmsampling} is not just superficial: in its most general formulation the Wright-Fisher model is in fact identical to the trivial case of a single USM agent with a learning rate~$\alpha=1$ and USM sample resolution $T=N$ that is engaged in a production-perception loop.\index{production-perception loop}
 
 More fully-fledged versions of the USM with populations of speakers also find parallels in more complex models of biological evolution. \citet{Blythe2007divided} showed how the learning and alignment dynamics of the USM are in fact identical to Wright's \emph{island} model, an extension of the simple Wright-Fisher model above that is used to study the diffusion of variants between subdivided populations with limited migration between them~\citep{Wright1931}.
 
-While diffusion models are interesting in themselves and many results concerning fixation times can be derived from them analytically~\citep[see e.g.][]{Baxter2008,Blythe2012copying}, we shall return to the simpler model of just one population with fixed turnover, which greatly simplifies the analysis of different mutation and selection pressures that we are interested in here.
+While models of pure diffusion in complex population structures are interesting in themselves and many results concerning fixation times and probabilities can be derived from them analytically~\citep[see e.g.][]{Baxter2008,Blythe2012copying}, we shall return to the simpler model of just one population with fixed turnover, which greatly simplifies the analysis of different mutation and selection pressures that we are particularly interested in here.
 
 %While the diffusion model interesting in itself as a baseline or \emph{null model} of change, we are currently more interested in the different ways in which \emph{biases} or \emph{pressures} can act on a population of replicating units.
 
@@ -68,7 +73,7 @@ The Wright-Fisher model with mutation allows for pressures in favour of specific
 %In particular, by setting only one of the rates to 0 one can simulate the accumulation of `noise'
 But it does not support \emph{selection} of variants, as would be needed for a replicator or momentum-based selection bias.
 
-\subsubsection{Wright-Fisher model with mutation and selection}
+\subsubsection{The Wright-Fisher model with mutation and selection}
 
 To allow selection on top of mutation, we have to move on to the Wright-Fisher model with mutation and selection, which takes the form
 
@@ -76,54 +81,111 @@ To allow selection on top of mutation, we have to move on to the Wright-Fisher m
 f(x) = \frac{x\cdot(1+s)\cdot(1-\mu_0) + (1-x)\cdot\mu_1}{x\cdot(1+s) + 1 - x} \;.
 \end{equation}
 
-The parameter $s\ge 0$ in this equation represents a \emph{selection coefficient} which causes the probability of the $n_1$~tokens of variant~$1$ that are present in the population to be preferentially selected, i.e. their likelihood of replication is increased at the expense of the competing variant. In contrast to the mutation pressures~$\mu$, the effectiveness of the selection coefficient depends on the current prevalence of the selected variant in the population. In particular, the selection pressure in favour of an advantageous variant is completely ineffective as long as no tokens of that variant are present in the population. In other words, the selection coefficient cannot introduce new variants. Also, selection acts strongest when there is most variation, i.e.~when both variants are equally represented in the population.
+The parameter $s\ge 0$ in this equation represents a \emph{selection coefficient} which causes the probability of the $n_1$~tokens of variant~$1$ that are present in the population to be preferentially selected, i.e.~their likelihood of replication is increased at the expense of the competing variant. In contrast to the mutation pressures~$\mu$, the effectiveness of the selection coefficient depends on the current prevalence of the selected variant in the population. In particular, the selection pressure in favour of an advantageous variant is completely ineffective as long as no tokens of that variant are present in the population. In other words, the selection coefficient cannot introduce new variants. This can be appreciated best when we consider the force of selection in isolation, by setting the probability of randomly generating new variants $\mu_0=\mu_1=0$. In this case we arrive at the Wright-Fisher model with selection only,
 
-The precise impact of the different parameters will become more evident as we study the dynamics caused by applying the different pressures. To investigate the dynamics of these different types of Wright-Fisher models, we can again turn to the Markov model framework introduced in Section~\ref{sec:markovmodel} as a tool for analysis.
+\begin{equation}\label{eq:selection}
+%f(x) = \frac{x\cdot(1+s)}{x\cdot(1+s) + 1 - x} \;.
+f(x) = \frac{x+s\cdot x}{1+s\cdot x} \;.
+\end{equation}
 
-\subsection[Modelling the interaction of different pressures]{Modelling the interaction of different pressures with the Wright-Fisher model}
+% TODO not just COMPETING pressures but INTERACTING pressures
 
-\subsubsection{Diffusion without innovation or selection}
-
-With pure diffusion, i.e.~in the absence of any innovation of new variants, both categorical states are \emph{absorbing} states: starting off with a population exhibiting variation, continuous replication of a finite population will eventually lead all but one of the variants to die out. The exact probability of either variant diffusing across the entire population depends on the initial condition of the population, as can be seen in Figure~\ref{fig:symmetricmutation1}.
+At this point we can already get a glimpse of how these two different types of pressures differ in their dynamics.
+Figure~\ref{fig:mutationselection} shows the relative impact of mutation and selection under the assumption of an infinitely large population size. The graphs plot the relative change to the frequency~$x$ of one of the variants as a function of its current prevalence in the population. As can be seen from plots~\ref{fig:mutationselection}i+ii, the impact of a mutation pressure is strongest when there are few tokens of the mutated variant in the population. The dynamics of selection look very different: from Figure~\ref{fig:mutationselection}iii we can see that selection acts strongest when there is most variation, i.e.~when both variants are equally represented in the population.
 
 <<setup, echo=FALSE>>=
 source("../knitr-setup.R")
 source("../R/markovchain.R")
-#source("../R/hmm.R")
 @
 
-<<symmetricmutation, fig.cap="Stationary distributions of the Wright-Fisher model under different mutation regimes.", fig.subcap=c("Pure diffusion, i.e.~$\\mu_0=\\mu_1=0$. Both `pure' states are absorbing states, the probability of the population ending up in either absorbing state depends on the initial frequency of the two variants: FIXME", "Symmetric mutation, i.e.~$\\mu_0=\\mu_1>0$. The shape of the stationary distribution depends on the mutation rate and population size $N$.")>>=
-N <- 50
-xs <- c(.1, .2, .5)
+<<mutationselection, fig.scap="Influence of mutation and selection pressures as a function of the current population makeup.", fig.cap=paste("Influence of mutation and selection pressures as a function of the current population makeup. \\emph{(i)}~mutation in one direction only, $\\mu_1=", mus[2], "$. \\emph{(ii)}~mutation in both directions, $\\mu_1=", mus[2], ", \\mu_0=", mus[1], "$. \\emph{(iii)}~selection only, $s=", s, "$.", sep="")>>=
+tightmargin(mfrow=c(1, 3), pty="s", xaxs="i", yaxs="i")
 mus <- c(.005, .01, .1)
+yl <- c(-mus[1], mus[2])
 
-tightmargin(mfrow=c(1, 3), pty="s")
-# TODO 3 different initstates - do manual markov chain?
-for (x in xs)
-  plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N)), main=bquote(x[0] ~ "=" ~ .(x)))
+plot(function(x) (1-x)*mus[2], ylab="relative change in x", ylim=yl)
+abline(h=0, lty=3)
+plot(function(x) x*(1-mus[1]) + (1-x)*mus[2] - x, ylab="relative change in x", ylim=yl)
+abline(h=0, lty=3)
 
-tightmargin(mfrow=c(1, 3), pty="s")
-for (mu in mus)
-  plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N, m0=mu, m1=mu)), main=bquote(mu ~ "=" ~ .(mu)))
+s <- mus[2]
+plot(function(x)x*(1+s)/(x*(1+s)+1-x) - x, ylab="relative change in x", ylim=yl)
+abline(h=0, lty=3)
+# TODO could do corresponding growth curves (from x=epsilon and x=1-epsilon)?
 @
 
-\subsubsection{Symmetric mutation}
+While this simple analysis gives us an idea of when selection and mutation pressures act most strongly, understanding the \emph{interaction} of these different types of pressures in finite populations requires more in-depth study. To aid our analysis we will again turn to the Markov model framework introduced in Section~\ref{sec:markovmodel}.
 
-As mentioned previously the case of symmetric mutation, where the probabilities of spontaneously inventing either of the competing variants are equal~($\mu_0 = \mu_1$), has been shown to be equivalent to \citeauthor{Reali2010}'s Bayesian Iterated Learning chain of \emph{averaging} learners. An in-depth quantitative analysis of the dynamics under such settings was provided in Section~\ref{sec:realigriffiths}. To recapitulate, under moderately low mutation rates the stationary distribution is similar to the one of the pure diffusion model, only that the non-zero probability of randomly producing an unattested variant means that variation is never fully eliminated from the system. High mutation rates on the other hand will lead the populations to mostly consist of an even mix of all variants considered by the model, with the exact cutoff point between the behaviours depending both on the mutation rate~$\mu$ and the population size~$N$ as well as the relationship of the two~(see Section~\ref{sec:realigriffithsequivalence}). A summary of the different regimes of the stationary distribution is shown in Figure~\ref{fig:symmetricmutation2}.
+\subsection{Interacting pressures in the Wright-Fisher model}
+
+%In order to study the effect of the different pressures in finite populations,
+We will start with the simplest possible model of pure \emph{diffusion} in which both mutation and selection pressures are completely absent.
+
+\subsubsection{Diffusion without innovation or selection}\index{diffusion}
+
+With pure diffusion, i.e.~in the absence of any innovation of new variants, both categorical states are \emph{absorbing} states: starting off with a population exhibiting variation, repeated replication of a finite population will eventually lead to all but one of the variants dying out. The exact probability of either variant diffusing across the entire population depends on the initial condition of the population. As can be seen in Figure~\ref{fig:diffusionselection1}, numerical simulation finds that the probability of a variant diffusing is equal to its initial frequency, a finding that is in agreement with analytical results~\citep{TODO}.
+
+<<diffusionselection, fig.cap="Diffusion outcomes for different population sizes $N$ and selection coefficients $s$.", fig.subcap=c("Stationary distribution of diffusion without selection given different initial states~$x_0$.", "Diffusion probabilities for different selection pressures $s$ and population sizes $N$. The baseline diffusion probabilities given purely neutral drift are indicated by the dotted line.")>>=
+N <- 10
+xs <- c(.1, .3, .5)
+
+tightmargin(mfrow=c(1, 3), pty="s")
+for (x in xs) {
+  p <- successprobability(binomialsampling.markov.matrix(repl.mut.eq(N=N)), initstate=1+N*x)
+  plotstationary(st=matrix(c(1-p, rep(0, 2*N), p), nrow=2), main=bquote(x[0] ~ "=" ~ .(x)), ylim=c(0, 0.9))
+}
+
+Ns <- c(20, 40, 80)
+ss <- c(0, 0.05, 0.1)
+
+tightmargin(mfrow=c(3, 3), pty="s")
+for (N in Ns) {
+  for (s in ss) {
+    repl.mut.eq(N=N, b=s) %>%
+    binomialsampling.markov.matrix %>% # initstate in 10% steps
+    plotcompletionprobabilitiesperstart(., freqs=0:20*N/Ns[1], main=paste("N=", N, ", s=", s, sep=""))
+    abline(a=0, b=1/N, lty=3)
+  }
+}
+@
+
+\subsubsection{The dynamics of selection}\index{replicator selection}
+
+In contrast to purely neutral diffusion, the presence of a replicator selection bias for individual variants leads to a systematic increase of the selected variant as soon as it is introduced. How a selection pressure favouring the variant alters the dynamics of diffusion can be seen in Figure~\ref{fig:diffusionselection2}: rather than plotting the stationary distributions, these graphs show the relative probability of the selected for variant diffusing to the entire population as a function of the variant's initial frequency. While higher selection coefficient~$s$ increase the diffusion probability of the variant, the absolute efficacy of the selection bias depends crucially on the size of the population: the smaller the population, the more the dynamics are influenced by random sampling which, in the absence of mutation, increases the chance of driving a variant to extinction, even if it is positively selected for. Particularly for larger population sizes a sufficiently high selection coefficient can almost guarantee the diffusion of the variant, as long as it manages to avoid extinction during the fragile initial low frequency region.
+
+\subsubsection{Symmetric mutation}\index{mutation}
+
+Before considering the case of interacting pressures, we should also investigate the dynamics of mutation or innovation acting by itself. The case of symmetric mutation, where the probabilities of spontaneously inventing either of the competing variants are equal~($\mu_0 = \mu_1$), was shown to be equivalent to Bayesian Iterated Learning chains of \emph{averaging} learners by \citeauthor{Reali2010}. An in-depth quantitative analysis of the dynamics under such settings was provided in Section~\ref{sec:realigriffiths}. To briefly recapitulate, under moderately low mutation rates the stationary distribution is similar to the one of the pure diffusion model, only that the non-zero probability of randomly producing an unattested variant means that variation is never fully eliminated from the system. High mutation rates on the other hand will lead the populations to mostly consist of an even mix of all variants considered by the model, with the exact cutoff point between the behaviours depending both on the mutation rate~$\mu$ and the population size~$N$ as well as the relationship of the two~(see Section~\ref{sec:realigriffithsequivalence}).
+
+A summary of the different regimes of the stationary distribution is shown in Figure~\ref{fig:symmetricmutation}. It should be noted that, assuming the same mutation rate $\mu$, the shape of the stationary distribution depends on the population size~(or, in \citeauthor{Reali2009}'s terms, the size of the sample provided to the learner). Unless a regularisation parameter~$\alpha$ which adjusts the mutation rate based on the sample size~$N$ is used, one and the same mutation/innovation rate can result in stationary distributions that suggest either regularisation or anti-regularisation.
+
+<<symmetricmutation, fig.cap="Stationary distributions of the Wright-Fisher model under different mutation rates~$\\mu_0=\\mu_1>0$ and population sizes~$N$.">>=
+# The shape of the stationary distribution depends on the mutation rate and population size $N$.
+tightmargin(mfrow=c(3, 3), pty="s")
+for (N in Ns) {
+  for (mu in mus)
+    plotstationary(binomialsampling.markov.matrix(repl.mut.eq(N=N, m0=mu, m1=mu)), main=bquote(mu ~ "=" ~ .(mu) ~ ", N =" ~ .(N)), ylim=c(0, 5/N))
+}
+@
 
 \subsubsection{Asymmetric mutation as a model of the accumulation of errors}
 
-As mentioned before, one typically speaks of a \emph{bias} when one variant is treated differently from the other on some level, i.e.~when there is some \emph{asymmetry} between variants. The simplest way to introduce asymmetry into the Wright-Fisher model is by setting the two variants' mutation or innovation probabilities unequal, i.e.~$\mu_0\ne\mu_1$.
+While symmetric mutation probabilities can be conceived of as a bias for regularisation, a more typical case of a \emph{bias} is when one variant is treated differently from the other on some level, i.e.~when there is some \emph{asymmetry} between variants. Apart from the selection bias discussed above, the other way to introduce asymmetry between variants is by setting the two variants' mutation or innovation probabilities unequal, i.e.~$\mu_0\ne\mu_1$.
 
-Such a scenario maps closely onto some of the earliest theories of language change discussed in Chapter~\ref{ch:review}: the assumption that a linguistic variant is accidentally `misproduced' as another some of the time, for example due to coarticulation effects, maps neatly onto a scenario with moderately low mutation rates, where the innovation probability in one direction vastly outweighs the one in the other~(which might in fact be 0). % ~(in the most extreme case by setting one of them to~0)
-In other words, the Wright-Fisher model with mutation lends itself as a model of change through the \emph{gradual accumulation of errors}.\index{accumulation of errors}
+This configuration of the Wright-Fisher model finds a parallel in some of the earliest theories of language change discussed in Chapter~\ref{ch:review}: the assumption that a linguistic variant is accidentally `misproduced' as another some of the time, for example due to coarticulation effects, maps neatly onto a scenario with moderately low mutation rates, where the innovation probability in one direction vastly outweighs the one in the other. %~(which might in fact be 0). % ~(in the most extreme case by setting one of them to~0)
+\index{accumulation of errors} In other words, the Wright-Fisher model with mutation lends itself as a model of change through the \emph{gradual accumulation of errors}\footnote{TODO accumulation more typically considered in gradual/phonetic changes though, so not a 100\% strict parallel after all.}.
 
 TODO Figure~\ref{fig:asymmetricmutation} shows the Markov chain analysis of that there thing: transitions in the direction of the more frequently invented variant look much different from those in the other, and even if a more complex state space (e.g. one with three competing variants and a unidirectional change cycle between them) was construed, changes in one direction actuate instantly and are not s-shaped.
 
-<<asymmetricmutation, fig.cap=paste("Dynamics of the Wright-Fisher model with strong mutation in one direction ($\\mu_1=", mu[2], ", \\mu_0=", mu[1], "$) for three different population sizes~$N=", paste(Ns, collapse=", "), "$.", sep=""), fig.subcap=c("State probability distribution over time.", "Stationary distribution of the population.")>>=
-source("../R/hmm.R")
-Ns <- c(20, 50, 100)
+<<asymmetricmutation, fig.scap="Dynamics of the Wright-Fisher model with strong mutation in one direction", fig.cap=paste("Dynamics of the Wright-Fisher model with strong mutation in one direction ($\\mu_1=", mu[2], ", \\mu_0=", mu[1], "$) for three different population sizes~$N=", paste(Ns, collapse=", "), "$.", sep=""), fig.subcap=c("Stationary distribution for different population sizes given the same asymmetric mutation rates.", "Development of the state probability distribution over time, eventually converging to the stationary distributions above.")>>=
 mu <- c(mus[2]/10, mus[2])
+
+tightmargin(mfrow=c(1, 3), pty="s")
+for (N in Ns)
+  repl.mut.eq(N=N, m0=mu[1], m1=mu[2]) %>%
+  binomialsampling.markov.matrix %>%
+  plotstationary(., ylim=0:1)
+
 ngenerations <- 200
 
 tightmargin(mfrow=c(1, 3), pty="s")
@@ -132,40 +194,61 @@ for (N in Ns)
   binomialsampling.markov.matrix %>%
   markov.chain(., ngenerations) %>%
   plotchain
-
-tightmargin(mfrow=c(1, 3), pty="s")
-for (N in Ns)
-  repl.mut.eq(N=N, m0=mu[1], m1=mu[2]) %>%
-  binomialsampling.markov.matrix %>%
-  plotstationary(., ylim=0:1)
-
 @
 
-<<asymmetricmutationprobabilities, fig.cap=paste("Completion probabilities over time with $\\mu_0=", mu[1], ", \\mu_1=", mu[2], "$ in a population of $N=", N, "$.", sep=""), fig.subcap=c("Probability of transitions from a population of just variant~0 to just variant~1.", "Probability of transitions from a population of just variant~1 to just variant~0.")>>=
-# one direction or the other!
-data <- repl.mut.eq(N=N, m0=mu[1], m1=mu[2]) %>%
-  binomialsampling.markov.matrix %>%
-  plotcompletionprobabilities(., generations=2000)
+%<<asymmetricmutationprobabilities, fig.cap=paste("Completion probabilities over time with $\\mu_0=", mu[1], ", \\mu_1=", mu[2], "$ in a population of $N=", N, "$.", sep=""), fig.subcap=c("Probability of transitions from a population of just variant~0 to just variant~1.", "Probability of transitions from a population of just variant~1 to just variant~0.")>>=
+% one direction or the other!
+%data <- repl.mut.eq(N=N, m0=mu[1], m1=mu[2]) %>%
+%  binomialsampling.markov.matrix %>%
+%  plotcompletionprobabilities(., generations=2000)
 
-repl.mut.eq(N=N, m0=mu[2], m1=mu[1]) %>%
-  binomialsampling.markov.matrix %>%
-  plotcompletionprobabilities(., generations=2000, ylim=c(0, max(data)))
-@
+%repl.mut.eq(N=N, m0=mu[2], m1=mu[1]) %>%
+%  binomialsampling.markov.matrix %>%
+%  plotcompletionprobabilities(., generations=2000, ylim=c(0, max(data)))
 
-\subsubsection{The dynamics of selection}\index{selection,replicator selection}
+\subsubsection{The interaction of mutation and selection}\index{replicator selection}\index{pressures!interaction of}
 
-The presence of a selection bias for individual variants, equivalent to a \emph{replicator selection}, leads to a systematic increase of the selected variant as soon as it is introduced. The selection bias interacts with the mutation probability of the variants, as can be seen in Figure~\ref{fig:selectiontrajectories}.
+Now that we have an idea of when the different types of pressures of mutation and selection affect the evolution of a system most strongly we can go on and ask how the two interact, i.e.~what happens when both pressures are applying simultaneously?
+
+\paragraph{Selection and symmetric mutation}
+
+When the innovation probabilities are equal, we should recover the logistic growth dynamics that we also found for the Utterance Selection Model in Section~\ref{sec:usm}? Reducing the population size should \emph{reduce} the effect of the asymmetric selection bias.
+%~(Figure~\ref{fig:selectiontrajectories2})
+
+\paragraph{Selection \emph{against} a preferentially innovated mutation}
+
+The case of antagonistic mutation and selection pressures has been of particular interest to biologists working with the Wright-Fisher model. Given a certain deleterious mutation which occurs with probability~$\mu_1$, how strong must the selection pressure against this mutation be in order to stop the variant from spreading through the entire population?
+
+The case that is closest to cultural evolution is one where every individual only transmits one trait~(a \emph{haploid} population in biological terms): let $x$ be the proportion of the population possessing the novel, deleterious variant. Under the assumption that the probability $\mu_0$ of backwards-mutation to the original trait is negligible, then at every time step $\mu_1\cdot(1-x)$ of the population will spontaneously create the mutation. At the same time, the selection pressure of strength $s$ will act to select \emph{against} any individuals who already possess the variant. The two pressures balance each other out when the term
+\begin{equation}
+\Delta x = \mu_1\cdot(1-x) - s\cdot x\cdot (1-x)
+\end{equation}
+is equal to $0$, which is the case when
+\begin{equation}
+x = \frac{\mu_1}{s}\;.
+\end{equation} % \citep{Barton2007}
+
+As long as the mutation rate is not greater than the selection coefficient, we achieve \emph{mutation-selection balance}~\citep{Spencer2001}:\index{selection!mutation-selection balance}
+assuming an infinite population size, we should find a proportion of $\frac{\mu_1}{s}$ of individuals having the deleterious variant, which is called the \emph{equilibrium frequency}. In reality we are dealing with finite population sizes though, which increases the impact of neutral drift on the population makeup at the expense of both pressures. But which pressure is affected more? TODO graphs
+
+\paragraph{Selection of a preferentially innovated mutation}
+
+Finally, we can consider the case where asymmetric mutation and selection pressures work in tandem to promote the diffusion of one of the variants.
+
+%\subsubsection{}
+
+%The selection bias interacts with the mutation probability of the variants, as can be seen in Figure~\ref{fig:selectiontrajectories}.
 
 <<selectiontrajectories, fig.cap=paste("State distribution of all trajectories where the diffusion of the preferentially selected incoming variant is not interrupted."), fig.subcap=paste("Population size $N=", Ns, "$.", sep="")>>=
-mu <- mu/10
+source("../R/hmm.R")
 
 s <- 0.1
-duration <- 500
+duration <- 300
 
-Ns <- c(50, 100)
+Ns <- c(20, 40)
 for (N in Ns) {
-  # mutation probabilities 2/1, 1/1, 1/2
   tightmargin(mfrow=c(1, 3), pty="s")
+  # mutation probabilities 2/1, 1/1, 1/2
   repl.mut.eq(N=N, m0=mu[2], m1=mu[1], b=s) %>%
     binomialsampling.markov.matrix %>% makestickytop %>% newchain %>%
     noconditioning(., duration=duration) %>% plotposterior
@@ -178,25 +261,23 @@ for (N in Ns) {
 }
 @
 
-When the innovation probabilities are equal~(Figure~\ref{fig:selectiontrajectories2}), we recover the logistic growth dynamics that we also found for the Utterance Selection Model in Section~\ref{sec:usm}.
-
-While the expected trajectories in these three scenarios might differ, their respective stationary distributions are very similar, as can be seen in Figure~\ref{fig:selectionstationaries}. What this tells us is that, if we assume that there is a constant selection pressure in favour of one of the variants applying, then we should (almost) always only ever find this variant attested in language data that we collect synchronically.
+%While the expected trajectories in these three scenarios might differ, their respective stationary distributions are very similar, as can be seen in Figure~\ref{fig:selectionstationaries}. What this tells us is that, if we assume that there is a constant selection pressure in favour of one of the variants applying, then we should (almost) always only ever find this variant attested in language data that we collect synchronically.
 
 % TODO logistic growth graphs:
 % 1. make sticky top and see what most likely duration of transition is?
 % 2. plot most likely transition that terminates exactly after that number of transitions -> should be logistic (hopefully!??)
 
-<<selectionstationaries, fig.cap=paste("Stationary distribution of the Wright-Fisher model with symmetric mutation and selection, $s=", s, "$ for two different population sizes.", sep="")>>=
-tightmargin(mfrow=c(2, 2), pty="s")
-for (N in Ns) {
-  for (i in c(-0.5, 0.5))
-    repl.mut.eq(N=N, m0=mu[1.5+i], m1=mu[1.5-i], b=s) %>%
-    binomialsampling.markov.matrix %>%
-    plotstationary(., ylim=0:1)
-}
-@
+%<<selectionstationaries, fig.cap=paste("Stationary distribution of the Wright-Fisher model with symmetric mutation and selection, $s=", s, "$ for two different population sizes.", sep="")>>=
+%tightmargin(mfrow=c(2, 2), pty="s")
+%for (N in Ns) {
+%  for (i in c(-0.5, 0.5))
+%    repl.mut.eq(N=N, m0=mu[1.5+i], m1=mu[1.5-i], b=s) %>%
+%    binomialsampling.markov.matrix %>%
+%    plotstationary(., ylim=0:1)
+%}
+%@
 
-Figure~\ref{fig:selectioncompletionprobabilities}
+%Figure~\ref{fig:selectioncompletionprobabilities}
 
 <<selectioncompletionprobabilities, fig.cap="Show asymmetric completion probabilities of changes of the two variants given different initial conditions.">>=
 # TODO plot different selection and mutation pressures and pick mutation level based on that (selection shouldn't be overpowered)
@@ -206,20 +287,25 @@ Figure~\ref{fig:selectioncompletionprobabilities}
 #  plotcompletionprobabilitiesperstart(updown.momentum.matrix(N, m0=mu, m1=mu, b=b), maxmomentum=1, main=paste("b=", b, sep=""))
 @
 
-%\subsection[The bottleneck in Iterated Learning]{Biases of variation and selection and the bottleneck in Iterated Learning}
+\subsection[The bottleneck in Iterated Learning]{The influence of population size and the bottleneck in Iterated Learning}
 
-<<selectioncompletionprobabilities, fig.cap="Relative influence of mutation and selection pressures given different population sizes.">>=
-tightmargin(mfrow=c(1, 3), pty="s")
-plot(0, 0)
+<<mutationselectionpopulationsize, fig.cap="Relative influence of mutation and selection pressures given different population sizes.">>=
+#tightmargin(mfrow=c(1, 3), pty="s")
+#plot(0, 0)
 @
 
-As can be seen in Figure~\ref{fig:TODO}, the \emph{size} of a population plays a crucial rule in how effective different kinds of pressures are. In the same way that completely neutral \emph{diffusion} of a variant is much more likely in smaller populations, the impact of one and the same mutation rate is also much stronger the smaller the population is, whereas the power of selection in such cases declines. This characterisation casts a new light on the workings of the Iterated Learning Model~(ILM) discussed in Section~\ref{sec:ilm}. One of the core ideas of the ILM is that, by imposing a \emph{bottleneck} on the information that is transmitted between generations of learners, biases become exacerbated and express themselves more quickly in the data produced by such Iterated Learning chains.
+%As can be seen in Figure~\ref{fig:mutationselectionpopulationsize},
+As could be seen above, the \emph{size} of a population plays a crucial rule in how effective different kinds of pressures are. In the same way that completely neutral \emph{diffusion} of a variant is much more likely in smaller populations, the impact of one and the same mutation rate is also much stronger the smaller the population is, whereas the power of selection in such cases declines. This characterisation casts a new light on the workings of the Iterated Learning Model~(ILM) that was discussed in Section~\ref{sec:ilm}. One of the core ideas of the ILM is that, by imposing a \emph{bottleneck} on the information that is transmitted between generations of learners, biases become exacerbated and express themselves more quickly in the data produced by such Iterated Learning chains.
 
 The present analysis of the relative force of mutation and selection pressures sheds this conclusion in a new light. The imposition of a bottleneck corresponds to a reduction of the population size. Consequently, the biases that get amplified during Iterated Learning experiments are most likely of the \emph{mutation}, rather than the \emph{selection} type. % They are conventions that are more likely to be invented.
 
 % TODO intermediate summary saying that mutation and selection alone are too strong?
 
-\section{A Markov chain state space for momentum}
+\section{Momentum-based selection in the Wright-Fisher model}
+
+
+
+\subsection{A Markov chain state space for momentum}
 
 %The simple models above recapitulate the criticisms presented in Section~\ref{sec:review}: accumulation of error and selection predict~(deterministic) selection only in one way, with no chance of returning.
 %Interaction between them does what?
@@ -228,9 +314,7 @@ So far, we have used the Wright-Fisher model to explore the quantitative dynamic
 
 While the Markov model itself is oblivious to the structure of its state space, a meaningful state space can be constructed. In order to represent a population of $N$ individuals (or memory size of $N$ tokens), \citeauthor{Reali2009} constructed a space of $N+1$ states. On some level, this state space was unstructured: all states had non-zero (if very small) transition probabilities to each other, forming one fully connected state space. But on top of this homogeneous structure there was semantically meaningful organisation of states: each state corresponded to a certain memory state of an agent, with corresponding transition probabilities into the next states~(see Figure~\ref{fig:markovstatespacesimple}).
 
-In order to augment this model with a momentum bias, we simply have to duplicate the number of states: for every state of the \citeauthor{Reali2009} model which represents a certain prevalence $x$ of variant~$0$, we create two additional states, representing the same value of $x$, but with positive and negative momentum terms~$m$.
-
-A schematic visualisation of the shape of this state space is shown in Figure~\ref{fig:markovstatespacemomentum}.
+In order to augment this model with a momentum bias, we simply have to multiply the number of states: for every state of the \citeauthor{Reali2009} model which represents a certain prevalence $x$ of variant~$0$, we create two additional states, representing the same value of $x$, but with positive and negative momentum terms~$m$.
 
 \begin{figure}
 
@@ -366,18 +450,15 @@ A schematic visualisation of the shape of this state space is shown in Figure~\r
 \caption[Schematic visualisation of the Markov model state space]{Schematic visualisation of the Markov model state space. Colouring of the edges indicates relative probability of the transitions, with darker edges representing more likely transitions.} \label{fig:markovstatespace}
 \end{figure}
 
-While the number of states of this momentum model is almost threefold in comparison to the baseline model, the pattern of transitions is actually not much more complex. In particular, the model is not fully connected: every state has exactly $N$ outward transitions, exactly one each to every level of $x=0\ldots N$. 
-The semantics of these three parallel states determines which of them a given previous state will transition into: all transitions from states with a lower $x$ go into the $m=1$ state, transitions from higher values of $x$ go into the $m=-1$ state, and only transitions from identical $x$ values enter the state with~$m=0$.
+A schematic visualisation of the shape of this state space is shown in Figure~\ref{fig:markovstatespacemomentum}. While the number of states of this momentum model is almost threefold in comparison to the baseline model, the pattern of transitions is actually not much more complex. In particular, the model is not fully connected: every state has exactly $N$ outward transitions, exactly one each to every level of $x=0\ldots N$. 
+The semantics of these three parallel states determines which of them a given previous state will transition into: all transitions from states with a lower to a higher~$x$ go into the $m=1$ state, transitions from higher to lower values of $x$ go into the $m=-1$ state, and only transitions from identical values of~$x$ enter the state with~$m=0$.
 
-In order to affect the dynamics of the system, probabilities of transitioning between different levels of $x$ are affected by the value of the momentum term: for the middle row with $m=0$, the probabilities of producing a given~$x$ are equivalent to the \citeauthor{Reali2009} model, which means they correspond to the Wright-Fisher model with mutation only, as in Equation~\ref{eq:mutation}.
+In order to affect the dynamics of the system, probabilities of transitioning between different levels of~$x$ are affected by the value of the momentum term: for the middle row with $m=0$, the probabilities of producing a given~$x$ are equivalent to the \citeauthor{Reali2009} model, which means they correspond to the Wright-Fisher model with mutation only, as in Equation~\ref{eq:mutation}.
 
 For the upper and lower rows in the diagram, corresponding to a positive~(top)
- or negative~(bottom) momentum term, the momentum affects the probabilities of producing a certain number of $x$~tokens by exerting a selection pressure on the variant that is currently `trending', i.e. whose frequency $x$ has increased at the last timestep. To this end the transition probabilities out of a state with $m=1$ are calculated according to the Wright-Fisher model with mutation and selection as given in Equation~\ref{eq:mutationselection}, with the selection coefficient $s$ in favour of variant $0$ set to a fixed constant. Conversely, the transition probabilities for states with $m=-1$ are controlled by the same equation, only that the same selection coefficient is selecting variant $1$. Note how, as long as the mutation probabilities $\mu_0, \mu_1$ are equal, this system is again \emph{symmetric}. Even though there are clear paths of directed selection~(e.g. along ) these paths are mirrored on the other side.
-
-A concrete example of a Markov chain transition matrix for such a momentum model with $N=5, \alpha=?, b=$ is given in Table~\ref{tbl:momentumtransitionmatrix}.
+ or negative~(bottom) momentum term, the momentum affects the probabilities of producing a certain number of $x$~tokens by exerting a selection pressure on the variant that is currently `trending', i.e.~whose frequency~$x$ has increased at the last timestep. To this end the transition probabilities out of a state with $m=1$ are calculated according to the Wright-Fisher model with mutation and selection as given in Equation~\ref{eq:mutationselection}, with the selection coefficient~$s$ in favour of variant~$0$ set to a fixed constant. Conversely, the transition probabilities for states with~$m=-1$ are controlled by the same equation, only that the same selection coefficient is selecting variant~$1$. Note how, as long as the mutation probabilities~$\mu_0, \mu_1$ are equal, this system is again \emph{symmetric}. Even though there are clear paths of directed selection, e.g.~towards higher values of~$x$ along the top of the state space, these paths are mirrored exactly on the other side.
 
 <<momentum>>=
-
 momentum.matrix.pos <- function(sourcemomentum, targetmomentum, maxmomentum=1) {
   Nm <- 1+2*maxmomentum
   N <- max(nrow(sourcemomentum), nrow(targetmomentum))
@@ -408,8 +489,14 @@ updown.momentum.matrix <- function(N, ..., b=0) {
 
 alpha <- .1
 b <- .3
-latextable(updown.momentum.matrix(3, alpha0=alpha, b=b)[], caption="Markov chain transition matrix with momentum.", label="tbl:momentumtransitionmatrix", floating.environment="sidewaystable")
+
+latextable(updown.momentum.matrix(3, alpha0=alpha, b=b)[], caption=c(paste("Markov chain transition matrix with momentum, $\\alpha=", alpha, ", b=", b, "$. The sign at the end of the name of the state indicates whether the state's momentum is positive~(upward-trending), negative~(downward-trending) or neutral~(stagnant).", sep=""), "Markov chain transition matrix with momentum"), label="tbl:momentumtransitionmatrix", floating.environment="sidewaystable")
 @
+
+A concrete example of a Markov chain transition matrix for such a momentum model with $N=\Sexpr{N}, \alpha=\Sexpr{alpha}, b=\Sexpr{b}$ is given in Table~\ref{tbl:momentumtransitionmatrix}.
+
+\subsection{Interaction of momentum and asymmetric mutation}\index{momentum-based selection}\index{pressures!interaction of|textbf}
+%[Momentum with asymmetric generation of variants]
 
 How do the dynamics of this momentum selection model differ from the original, mutation-only model? A direct comparison of the two models' stationary distributions for various settings of the regularisation parameter~$\alpha$ is shown in Figure~\ref{fig:momentumstationary}.
 
@@ -456,33 +543,6 @@ Assuming a new variant is introduced, what is the likelihood of this actuated tr
 
 <<symmetricmomentumcompletionprobabilities, fig.cap="Probability of an actuated transition completing as a function of the current frequency of the incoming variant, assuming the variant currently has positive~(upwards) momentum. Symmetric mutation probabilities.">>=
 
-# merge the absorbingstates of the transition matrix together into one absorbing state that only transitions to itself
-mergeabsorbingstates <- function(m, absorbingstates) {
-  # take subset of transition matrix, only leave one state for all states
-  ma <- m[-absorbingstates[-1], -absorbingstates[-1]]
-  # merge (sum) the final absorbingrows columns together for every row
-  ma[,absorbingstates[1]] <- rowSums(m[-absorbingstates[-1], absorbingstates])
-  # make new merged absorbing state only transition to itself
-  ma[absorbingstates[1],] <- 0
-  ma[absorbingstates[1], absorbingstates[1]] <- 1
-  return(ma)
-}
-
-plotcompletionprobabilitiesperstart <- function(transitionmatrix, maxmomentum=0, add=FALSE, ...) {
-  momentumstates <- 1 + 2*maxmomentum
-  freqs <- 0:(dim(transitionmatrix)/momentumstates-1)
-  # squash top/bottom states together into two absorbing states
-  m <- mergeabsorbingstates(transitionmatrix[], 1:momentumstates)
-  transitionmatrix <- newchain(mergeabsorbingstates(m, (nrow(m)-momentumstates+1):nrow(m)))
-  # indices of states which have positive momentum
-  startindices <- c(1, 1+freqs[-c(1, length(freqs))]*3, dim(transitionmatrix))
-  ps <- sapply(startindices, function(i) successprobability(transitionmatrix, i))
-  if (add)
-    points(freqs, ps, ...)
-  else
-    plot(freqs, ps, xlab="initial frequency", ylab="probability of diffusion without interruption", ylim=0:1, ...)
-}
-
 alpha <- .01
 mu <- N.alpha.to.u(N, alpha)
 
@@ -493,7 +553,7 @@ for (b in bs)
 
 What about the case of \emph{asymmetric} mutation probabilities in combination with the \emph{symmetric} momentum bias? See Figure~\ref{fig:asymmetricmomentumcompletionprobabilities}.
 
-<<asymmetricmomentumcompletionprobabilities, fig.cap=paste("Dynamics of momentum-based selection with asymmetric mutation probabilities for different strengths of the momentum bias~($b=", paste(bs, collapse=", "), "$, from left to right).", sep=""), fig.subcap=c("Stationary distribution", "Completion probabilities for transitions where the incoming variant is the one that is \\emph{more} likely to be introduced through mutation~(circles) as well as for transitions where the incoming variant is the one that is \\emph{less} likely to be introduced through mutation~(crosses).")>>=
+<<asymmetricmomentumcompletionprobabilities, fig.scap="Dynamics of momentum-based selection with asymmetric mutation", fig.cap=paste("Dynamics of momentum-based selection with asymmetric mutation probabilities for different strengths of the momentum bias~($b=", paste(bs, collapse=", "), "$, from left to right).", sep=""), fig.subcap=c("Stationary distribution", "Completion probabilities for transitions where the incoming variant is the one that is \\emph{more} likely to be introduced through mutation~(circles) as well as for transitions where the incoming variant is the one that is \\emph{less} likely to be introduced through mutation~(crosses).")>>=
 bs <- c(0.5, 1, 2)
 
 m1 <- N.alpha.to.u(N, alpha)
@@ -515,7 +575,7 @@ for (b in bs) {
 
 
 
-<<innovationprobabilities, fig.cap=paste("The role of asymmetric mutation probabilities on the synchronic distribution of variants. Only the probability of innovating variant~1 varies between plots, all other parameters are held constant~($\\mu_0=", m0, ", b=1$).", sep="")>>=
+<<innovationprobabilities, fig.cap=paste("The impact of asymmetric mutation probabilities on the synchronic distribution of variants. Only the probability of innovating variant~1 varies between plots, all other parameters are held constant~($\\mu_0=", m0, ", b=1$).", sep="")>>=
 b <- 1
 m1s <- m0*c(2, 5, 10)
 tightmargin(mfrow=c(1, length(alphas)), pty="s")

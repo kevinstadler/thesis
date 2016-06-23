@@ -5,7 +5,7 @@ One formal model of neutral evolution (i.e. copying of linguistic traits in the 
 
 \subsection{Model description}\index{Bayesian inference}\index{Iterated Learning}
 
-At its core, \citeauthor{Reali2009} present a model of frequency learning by Bayesian inference. In their particular framing, an individual is trying to infer the relative frequencies $\theta_i$ of different variants $1\ldots i$ based on some input data as well as prior beliefs about what the true values of $\theta_i$ are likely to be. These prior beliefs act as \emph{inductive biases} and are captured by the \emph{prior}, represented by a probability distribution $f(\theta_i)$ defined over all possible values of $\theta_i \in [0,1]$.
+At its core, \citeauthor{Reali2009} present a model of frequency learning by Bayesian inference. In their particular framing, an individual is trying to infer the relative frequencies $\theta_i \in [0,1]$ of different variants $i=1\ldots n$ based on some input data as well as prior beliefs about what the true values of $\theta_i$ are likely to be. These prior beliefs act as \emph{inductive biases} and are captured by the \emph{prior}, represented by a probability distribution $f(\vec{\theta})$ defined over all possible values of $\vec{\theta}$.
 
 For the simple case of two competing variants, even though the individual is technically inferring two complementary relative frequencies $\theta_1, \theta_2$, we can limit our analysis to the problem of inferring $\theta_1$, since trivially $\theta_2=1-\theta_1$. The model can easily be extended from the \emph{binomial}~(two-variant) outcome to \emph{multinomial} outcomes, i.e. with three or more competing variants but, without loss of generality, we will limit our demonstration to the case of two competing variants. To simplify notation we will henceforth also write $\theta$ to refer to $\theta_1$.
 
@@ -26,7 +26,7 @@ with just a single parameter, $\alpha$, which controls the degree of \emph{regul
 <<setup, echo=FALSE>>=
 source("../knitr-setup.R")
 @
-<<priors, fig.cap="Examples of Beta distribution priors and posteriors with three different levels of the regularisation parameter~$\\alpha/2$.", fig.subcap=c("Prior distribution", "Posterior distributions after observing $N=10$ data points, $x=5,2,0$.")>>=
+<<priors, fig.cap="Examples of Beta distribution priors and posteriors with three different levels of the regularisation parameter~$\\alpha/2$.", fig.subcap=c("Prior distribution", "Posterior distributions after observing $N=10$ data points with various input distributions ($x=5,2,0$), regularisation parameters as in (a).")>>=
 
 plotbeta <- function(alpha, beta, ylab=expression(f(theta)), ...)
   curve(dbeta(x, alpha, beta), xlab=expression(theta), ylab=ylab, ylim=c(0, 4.5), xaxs="i", yaxs="i", ...)
@@ -45,49 +45,53 @@ xs <- c(5, 2, 0)
 tightmargin(mfcol=c(3, 3), pty="s")
 for (x in xs) {
   for (alpha in alphas)
-    plotbeta(x+alpha/2, N-x+alpha/2, ylab=expression(f(theta~"|"~x~"="~x)))
+    plotbeta(x+alpha/2, N-x+alpha/2, ylab=bquote(f(theta~"|"~x~"="~.(x))))
 }
 @
 
-The particular choice of prior distribution~(Beta or Dirichlet for the multinomial case) has elegant mathematical properties: when a learner receives an input sample of size~$N$, where $0\le x \le N$ of the tokens were instances of the variant whose frequency $\theta$ it is trying to infer, then the posterior is again a Beta distribution, namely
+The particular choice of prior distribution~(Beta or Dirichlet for the multinomial case) has elegant mathematical properties: when a learner receives an input sample of size~$N$, where $0\le x \le N$ of the tokens were instances of the variant whose frequency $\theta$ they are trying to infer, then the posterior is again a Beta distribution, namely
 \begin{equation}
 \label{eq:posterior}
 \Theta|x \sim Beta(x+\frac{\alpha}{2}, N-x+\frac{\alpha}{2})\;. % TODO fix notation
 \end{equation}
 
-Following this inference step, there is still the question of how the posterior distribution is translated into actual production behaviour, from which we can derive testable model predictions. % after all, we need production behaviour to make a full iterated learning model.
-Here, we will consider three different standard ways of deriving a specific value~$\theta$ from the posterior distribution, the first two also treated by \citet{Reali2009}, the third covered by \citet[p.156]{Ferdinand2015}.
+Following this inference step, there is still the question of how the posterior distribution is translated into actual production behaviour, which provides us with testable predictions of the model. % after all, we need production behaviour to make a full iterated learning model.
+Here, we will consider three different ways for an individual to generate their own productions~$x'$ based on the learning sample~$x$ that they themselves received. % deriving a specific value~$\theta$ from the posterior distribution,
+The first two were also treated by \citet{Reali2009}, the third covered by \citet[p.156]{Ferdinand2015}:
 
 \begin{description}
-\item[Sampling from the posterior:] when sampling new productions directly from the posterior, the probability that a learner produces a particular variant $x$~times out of a total of $N$~productions is distributed according to a \emph{Betabinomial distribution} with the same parameters as the posterior distribution in Equation~\ref{eq:posterior}, i.e.
-\begin{equation}
+\item[Sampling from the posterior:] when generating new productions directly from the posterior, the probability that a \emph{sampling learner} produces a particular variant $x'$~times out of a total of $N$~productions is distributed according to a \emph{Betabinomial distribution} with the same parameters as the posterior distribution in Equation~\ref{eq:posterior}, i.e.
+\begin{equation}\label{eq:usmsampling}
 X'|x \sim BB(x+\frac{\alpha}{2}, N-x+\frac{\alpha}{2}, N) \;.
 \end{equation}
 
 \item[Adopting the \emph{average} of the posterior:] instead of sampling from the posterior for every production, an individual could deterministically select the mean of the posterior distribution, which is
-\begin{equation}
+\begin{equation}\label{eq:usmaveraging}
 \hat{\theta}=\frac{x+\frac{\alpha}{2}}{N+\alpha}\;.%  close to the observed relative frequency $\frac{x_1}{N}$.
 \end{equation}
-The production of a Bayesian learner who deterministally chooses the parameter $\hat{\theta}$ (in their paper incorrectly referred to as a `MAP' learner) are then distributed according to a Binomial %(or, in the case of multinomial outcomes, Multinomial)
+The productions of a Bayesian learner who deterministally chooses the parameter $\hat{\theta}$ are then distributed according to a Binomial %(or, in the case of multinomial outcomes, Multinomial)
 distribution,
-\begin{equation}
+\begin{equation}\label{eq:usmmap}
 X'|x \sim Bin(N, \hat{\theta}) \;.
 \end{equation}
+While \citet{Reali2009} call this a `MAP' learner, we will refer to this mechanism of selecting a hypothesis as the \emph{averager} strategy.
 
 \item[Adopting the \emph{mode} of the posterior (\emph{maximum a posteriori}):] The posterior distribution's mode, where the probability density function is highest, can be found at
 \begin{equation}
 \theta_{MAP} = \arg\max_{\theta} f(\theta|x) = \frac{x+\frac{\alpha}{2}-1}{N+\alpha-2}\;,
 \end{equation}
-except when~$x=0$ or~$x=N$, in which case the resulting posterior Beta distribution is \emph{j-shaped}, with the mode falling on~$0$ or~$1$, respectively. Again, the next individual's productions are distributed according to a Binomial distribution with $p=\theta_{MAP}$, i.e.
+except when~$x=0$ or~$x=N$, in which case the resulting posterior Beta distribution is \emph{j-shaped}, with the mode falling on~$0$ or~$1$, respectively. When such a \emph{MAP learner} has adopted the mode as their production probability then their own productions are distributed according to a Binomial distribution with $p=\theta_{MAP}$, i.e.
 \begin{equation}
 X'|x \sim Bin(N, \theta_{MAP}) \;.
 \end{equation}
 \end{description}
 
-One way in which the impact of these different ways of sampling data (either directly from the posterior or by deterministically selecting a $\theta$) can be exemplified is by visualising the \emph{average production} of a learner who is inferring the underlying distribution based on the input sample they just observed. This data is shown in Figure~\ref{fig:meanmapping}, which maps the different possible input distributions~(along the x-axis) to the average output productions~$\pm$~their standard deviation. The identity function $x=y$, which equivalent to pure probability matching, is shown for reference. In this graphical representation, a mapping function that leads to increased \emph{regularisation} should map input proportions between $0$~and~$50\%$ to even \emph{lower} output proportions, while input proportions~$>50\%$ should yield output proportions even closer to~$100\%$. What is evident from Figure~\ref{fig:meanmapping} is that the only method which, \emph{on average}, leads to regularisation is the \emph{maximum a posteriori} method with $\alpha\le 1$. None of the other selection functions are consistently regularising. Rather, as was pointed out by~\citet[p.?]{Ferdinand2015} both data production methods discussed by \citeauthor{Reali2009} rely on mechanisms that merely increase the sample variability \emph{in either direction}, until the system arrives in a pure state where only very little variability is added. We will return to a critique of the model in the next section. % \citep{Spike??}
+One way in which the impact of these different ways of sampling data (either directly from the posterior or by first deterministically selecting a $\theta$) can be exemplified is by visualising the \emph{average production} of a learner who is inferring the underlying distribution based on the input sample they just observed. This data is shown in Figure~\ref{fig:meanmapping}, which maps the different possible input distributions~(along the x-axis) to the average output productions~$\pm$~their standard deviation. The identity function $x=y$, equivalent to pure probability matching, is shown for reference. In this graphical representation, a mapping function that leads to increased \emph{regularisation} should map input proportions between $0$~and~$50\%$ to even \emph{lower} output proportions, while input proportions~$>50\%$ should yield output proportions even closer to~$100\%$.
+
+What is evident from Figure~\ref{fig:meanmapping} is that the only method which, \emph{on average}, leads to regularisation is the \emph{maximum a posteriori} method with $\alpha\le 1$. None of the other selection functions are consistently regularising. Rather, as was pointed out by~\citet[p.?]{Ferdinand2015} both data production methods discussed by \citeauthor{Reali2009} rely on mechanisms that merely increase the sample variability \emph{in either direction}, until the system arrives in a state of (near-)categorical presence of one variant only. This contrasts with the regularising mapping functions of the Utterance Selection Model shown in Section~\ref{sec:usmregularisation}, which systematically increase the proportion of whichever variant is currently more prevalent. We will return to a critique of the present regularisation model in the next section. % \citep{Spike??}
 % TODO point out the 1/10 -> 2/10 transition probability
 
-<<meanmapping, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
+<<meanmapping, fig.scap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter.", fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
 source("../R/markovchain.R")
 
 plotmeanmapping <- function(markovchain, main=NULL, ...) {
@@ -95,7 +99,7 @@ plotmeanmapping <- function(markovchain, main=NULL, ...) {
   means <- rowSums(markovchain[] * rep(0:N, each=dim(markovchain)))
   # variance like https://en.wikipedia.org/wiki/Poisson_binomial_distribution
   v <- (1-means/N)*means
-  Hmisc::errbar(0:N, means, means+v, means-v, pch=4, xlim=c(0, N), ylim=c(0, N), xlab="input x", ylab=expression("mean output x' (%+-%" ~ sigma ~ ")"), ...)
+  Hmisc::errbar(0:N, means, means+v, means-v, pch=4, xlim=c(0, N), ylim=c(0, N), xlab="input x", ylab=expression("mean output x' (\u00B1" ~ sigma ~ ")"), ...)
   title(main=main)
 #  points(0:(dim(markovchain)-1), 0:(dim(markovchain)-1), pch=4)
   lines(c(0, N), c(0, N), lty=2)
@@ -220,7 +224,7 @@ plotchains(generate.transitioning.chains(bilm.transition.matrix.sample(N, 2*alph
 plotchains(generate.transitioning.chains(bilm.transition.matrix.average(N, 2*alphahalved), ngenerations, nchains), main="(ii)")
 @
 
-What is also evident is that not all of the `transitions' are actually of the length that we specified: many chains either remain at the initial state for some time, or otherwise converge on categorical usage of the other variant early and remain there until the remaining generations have passed. This points to a more general problem, namely that the specific number of generations~(\Sexpr{ngenerations}) is not actually well-motivated. %Even a single-generation jump from from 0/50 to 50/50 has a non-zero~(if extremely small) probability and would arguably not be s-shaped.
+What is also evident is that not all of the `transitions' are actually of the length that we specified: many chains either remain at the initial state for some time, or otherwise converge on categorical usage of the other variant early and remain there until the remaining generations have passed. This points to another more general problem, namely that termination after exactly \Sexpr{ngenerations}~generations is not actually well-motivated. %Even a single-generation jump from from 0/50 to 50/50 has a non-zero~(if extremely small) probability and would arguably not be s-shaped.
 To understand the dynamics of this model even better we should therefore take a closer look at the expected duration of transitions.
 
 \subsubsection{Expected number of generations for a transition to complete}
@@ -307,7 +311,7 @@ plotchains(generate.transitioning.chains.exact(averager, averagerstats[2], nchai
 @
 To summarise, neither the dynamics of individual transitions, nor a closer investigation of the \emph{average} trajectories under different conditioning assumptions suggests that this model of neutral evolution based on regularising Bayesian learners exhibits particularly s-shaped curves.
 
-\subsection{Effect of sample size parameter~$N$ on average duration of transitions}
+\subsection{Effect of sample size on the duration of transitions}
 
 No matter what the shape of the average trajectory might be, for the sake of cross-validating the general results of the neutral evolution models as implemented here as well as by the Utterance Selection Model, we can compare the two models' predictions regarding how the expected duration of transitions develops as a function of the `population size'.
 
@@ -318,7 +322,7 @@ Taking the equivalence of these two models literally would mean that the paramet
 
 Another way to construe the meaning of parameter~$N$ corresponds to how it is mapped onto an Iterated Learning experiment on humans in~\citet{Reali2009}. Here, the model is fit to a chain of single individuals, each of which first receives and then produces a sample of $N$~tokens. While not exactly specifying a feature of the individual, the function that $N$ fulfills in this context is to control the resolution at which the data is presented to and produced by individual participants in the chain. In this sense, the parameter fulfills a function very similar to the $T$ parameter of the Utterance Selection Model described above.
 
-On the other hand, the fact that the model does not allow for continuous updating of the internal representations once they are acquired, but is instead based on a one-time learning event of sample size~$N$, means that the set of possible posterior distributions~$p(\theta|x)$ (as well as the resolution of possible values of $\theta$ for strategies that adopt one value deterministically) is completely constrained by~$N$. % The size of learning outcomes is finite / But, due to the one-off nature of learning in an Iterated Learning model
+On the other hand, the fact that the model does not allow for continuous updating of the internal representations once they are acquired, but is instead based on a one-time learning event of sample size~$N$, means that the set of possible posterior distributions~$p(\theta|x)$, as well as the resolution of possible values of $\theta$ for strategies that adopt one value deterministically, is completely constrained by~$N$. % The size of learning outcomes is finite / But, due to the one-off nature of learning in an Iterated Learning model
 As a consequence, the parameter inadvertently acts as something like a \emph{memory capacity} of the individual that, unlike the sample resolution~$T$, also limits the individual agents' representational resolution of the frequency distribution they are trying to acquire. % a strange convolution of variable frequency, memory capacity
 
 <<populationsize, fig.width=smallwidth, fig.cap=paste("Mean and mode of the duration of transitions as a function of the parameter~$N$, with $\\alpha=", 2*alphahalved, "$.", sep="")>>=

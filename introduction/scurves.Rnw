@@ -1,7 +1,9 @@
-\subsection{S-shaped curves in language change}
+\subsubsection{S-shaped curves in language change}
 \label{sec:scurves}\index{s-shaped curves}
 
-In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
+%In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
+When it comes to the question of how language changes unfold quantitatively, it is a near-universally accepted truth of the field that the incoming variant gradually replaces the outgoing one(s) along an \emph{s-shaped} trajectory. It should be noted at this point that the notion of s-shaped curves derives from the study of changes in \emph{categorical} variants, where the s-shape describes the development of the \emph{frequency} of the incoming variants. This should not be confused with the study of how \emph{continuous} language changes, i.e.~gradual changes to \emph{phonetic} realisations, unfold. \index{phonetic change}\index{sound change}
+Simply as a matter of technical feasibility, quantitative investigations of continuous changes are necessarily much more recent than that of categorical variables which are largely measurable without technological aids. As a consequence, the work in this thesis will be limited to studying changes in categorical variables. For a study of the complex dynamics that 
 
 
 this sentiment is repeated in \citet[pp.181+186]{Lindgren1953} as well as later in~\citet{Greenberg1954,Weinreich1968,Bailey1973}.

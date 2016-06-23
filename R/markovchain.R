@@ -121,6 +121,14 @@ completionstats <- function(transitionmatrix, ...) {
 #completionstats(bilm.transition.matrix.average(20, .05), 100)
 #completionstats(bilm.transition.matrix.average(20, .05), 100, exactduration=TRUE)
 
+plotcompletionprobabilities <- function(transitionmatrix, ylim=NULL, ...) {
+  ps <- completionprobabilities(transitionmatrix, ...)
+  tightmargin(pty="s", mfrow=c(1, 2))
+  plot(ps, type="l", xaxs="i", yaxs="i", xlab="generation", ylab="probability of first transition completing", main="(i)", ylim=ylim)
+  plot(cumsum(ps), type="l", xaxs="i", yaxs="i", ylim=0:1, xlab="generation", ylab="probability of having exhibited a transition", main="(ii)")
+  invisible(ps) # for postprocessing
+}
+
 # numerically compute the probability of a chain succeeding from the given
 # initial state (specified as an index of the transition/state matrix)
 successprobability <- function(transitionmatrix, initstate, precision=.99, stepsize=500) {
@@ -132,14 +140,36 @@ successprobability <- function(transitionmatrix, initstate, precision=.99, steps
   population[dim(transitionmatrix)]
 }
 
-plotcompletionprobabilities <- function(transitionmatrix, ylim=NULL, ...) {
-  ps <- completionprobabilities(transitionmatrix, ...)
-  tightmargin(pty="s", mfrow=c(1, 2))
-  plot(ps, type="l", xaxs="i", yaxs="i", xlab="generation", ylab="probability of first transition completing", main="(i)", ylim=ylim)
-  plot(cumsum(ps), type="l", xaxs="i", yaxs="i", ylim=0:1, xlab="generation", ylab="probability of having exhibited a transition", main="(ii)")
-  invisible(ps) # for postprocessing
+# merge the absorbingstates of the transition matrix together into one absorbing state that only transitions to itself
+mergeabsorbingstates <- function(m, absorbingstates) {
+  if (length(absorbingstates) == 1)
+    return(m)
+  # take subset of transition matrix, only leave one state for all states
+  ma <- m[-absorbingstates[-1], -absorbingstates[-1]]
+  # merge (sum) the final absorbingrows columns together for every row
+  ma[,absorbingstates[1]] <- rowSums(m[-absorbingstates[-1], absorbingstates])
+  # make new merged absorbing state only transition to itself
+  ma[absorbingstates[1],] <- 0
+  ma[absorbingstates[1], absorbingstates[1]] <- 1
+  return(ma)
 }
 
+plotcompletionprobabilitiesperstart <- function(transitionmatrix, maxmomentum=0, nstatestomerge=1 + 2*maxmomentum, freqs=0:(dim(transitionmatrix)/nstatestomerge-1), add=FALSE, ...) {
+  # squash top/bottom states together into two absorbing states
+  m <- mergeabsorbingstates(transitionmatrix[], 1:nstatestomerge)
+  transitionmatrix <- newchain(mergeabsorbingstates(m, (nrow(m)-nstatestomerge+1):nrow(m)))
+  if (maxmomentum == 0)
+    startindices <- 1+freqs
+  else
+    # indices of states which have positive momentum
+    startindices <- c(1, 1+freqs[-c(1, length(freqs))]*3, dim(transitionmatrix))
+  ps <- sapply(startindices, function(i) successprobability(transitionmatrix, i))
+  if (add)
+    points(freqs, ps, ...)
+  else
+    plot(freqs, ps, xlab="initial frequency", ylab="probability of diffusion", ylim=0:1, ...)
+    # abline(a=?, b=0, lty=3)
+}
 
 #graylevels=round(0.75*length(hmmargs$hmm$States)) / round(0.75*ncol(data))
 plotchain <- function(data, xlab="generation", ylab="frequency", graylevels=24, ...)
