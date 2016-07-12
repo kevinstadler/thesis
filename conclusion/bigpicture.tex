@@ -1,26 +1,50 @@
-In its opening chapters, this thesis started off with a very general overview of the myriad `pressures' and `biases' that have been proposed to influence language change. Chapter~\ref{ch:momentummodel} proposed a new pressure to be added to the pool of established ones, with Chapter~\ref{ch:questionnaire} adding to the existing empirical evidence that a momentum-based approach is indeed a viable candidate like other previously proposed pressures.
+
+In its opening chapters, this thesis provided a very general overview of the myriad `pressures' and `biases' that have been proposed to influence language change. Chapter~\ref{ch:momentummodel} proposed a new pressure to be added to the pool of established ones, with Chapter~\ref{ch:questionnaire} adding to the existing empirical evidence that a momentum-based approach is indeed a viable candidate like other previously proposed pressures.
 
 Having honed in on one particular pressure, this final chapter is intended to `zoom out' again to help situate the idea of momentum-based selection relative to other mechanisms that are involved in language change, as well as connect it to previous thinking in the literature. % situate it in its historical context
-The goal is to draw the many pressures that were touched upon back together in a systematic way, to form a more wholesome, if more complex, picture of language change. As this is a complex issue, I will approach it from four different sides: Section~\ref{sec:competingmotivations} discusses the idea of \emph{competing pressures} and how it has been treated in the literature, as well as provide theoretical motivations for why momentum could (and should) be relevant for language change research. % TODO also Bickel stuff?
+The goal is to draw the many pressures that were touched upon back together in a systematic way, to form a more wholesome, if more complex, picture of language change. %As this is a complex issue, I will approach it from four different sides:
 
-In order to get a more systematic grip on the `pressures' alluded to throughout this thesis, Section~\ref{sec:wrightfisher} will introduce the \emph{Wright-Fisher model} of biological evolution and investigate it using the Markov model toolkit that was already used in Section~\ref{markovmodel}. The main purpose of this is to allow us to study a toy model of the dynamics and interaction of two basic pressures that can be incorporated into it, namely \emph{mutation} and \emph{selection}. Having covered the basics of the Wright-Fisher model, Section~\ref{sec:asymmetricmutation} will provide an extension that implements a momentum-based selection bias.
+%Section~\ref{sec:history} situates the pressure in relation to other mechanisms that are involved in language change. I will highlight the roots of the idea of momentum-based selection in the historical literature, as well as provide theoretical motivations for why momentum could (and should) be relevant for language change research.
 
-Finally, Section~\ref{sec:conclusion} will provide an overall summary and conclusion of the thesis, as well as a look forward on future work.
+In order to get a more systematic grip on the `pressures' alluded to throughout this thesis, Section~\ref{sec:asymmetricvariation} will introduce the \emph{Wright-Fisher model} of biological evolution and investigate it using the Markov model toolkit that was already used in Section~\ref{sec:markovmodel}. The main purpose of this is to allow us to study a toy model of the dynamics and interaction of two basic pressures that can be incorporated into it, namely the \emph{innovation} of variants and their \emph{selection}. Having covered the basics of the Wright-Fisher model, Section~\ref{sec:asymmetricmomentum} will provide an extension that implements a momentum-based selection bias, and show how the interaction of asymmetric innovation and a neutral selection bias like momentum provides a good explanation not just of the dynamics of language change, but also of the synchronic distribution of linguistic variants that we observe cross-linguistically.
 
-% to situate the pressure in relation to other mechanisms that are involved in language change,
+Finally, Section~\ref{sec:conclusion} offers an overall summary and conclusion of the thesis, as well as a look forward on future work.
 
-\section{Competing motivations in linguistic change}\index{competing motivations}
-\label{sec:competingmotivations}
-So far, the pressures were presented as directly set up against each other. But, partly in order to cope with the problem of \emph{actuation}, \index{actuation problem} scholars have already considered the interaction between them.
+\section{A history \& motivation of momentum}
+\label{sec:history}
 
-\citet[p.498]{Labov2001} states that his comprehensive studies of sound changes
-\begin{quotation}
-made it clear that linguistic change in progress is heavily constrained by the physical environment in which it takes place, and by structural factors that limit the course of change. At the same time, it is argued that the forces that move and motivate change, and are responsible for incrementation and transmission across generations, are largely social in nature.
-\end{quotation}
+If there's already so much work on different pressures, why should we need momentum-based selection? Apart from the empirical reasons (which still need plenty of filling in), there are also theoretical reasons why we should \emph{a priori} prefer a mechanism like momentum-based selection over functional ones.
 
-\subsection{Relating the pressures}
+\subsection{Language change, arbitrariness, replicator-neutrality}\index{arbitrariness}
 
-Referring back to the two \emph{rates of change} discussed in Section~\ref{sec:discussion}, it becomes obvious that two different subfields have studied the same phenomenon on two very different levels:\index{rates of change} work in diachronic typology~\citep[such as][]{Bickel2015} is interested in the actuation probabilities on a macro-level, whereas traditional historical linguistic work hones in on particular changes.
+When going back to the roots of (most) modern-day linguistics, we can uncover a strong \emph{a priori} reason for why we should want language changes to be replicator-neutral. One of the central tenets from Ferdinand de Saussure's \emph{Course in general linguistics}~(\citeyear{Saussure1959}) is the principle of the \emph{arbitrariness of the sign}. The principle states that linguistic signs, i.e. the association of a specific referend~(typically a sequence of speech sounds) to a specific referent~(an object or concept referred to by using the referend) is not motivated by any (physical) semblance between the two. The linguistic sign is \emph{arbitrary} in the sense that the motivation for the association between form and meaning is a \emph{social} one.
+According to this definition linguistics is chiefly the study of \emph{conventional} as opposed to `natural' associations and, while Saussure was explicitly referring to lexical conventions, modern approaches to grammar which challenge the categorical distinction between lexicon and morphosyntax~(e.g.~Construction Grammar~\citealt{Goldberg1995}) suggest that his principle can be extrapolated to morphosyntactic constructions as well.
+
+Either way, even though the principle of arbitrariness has been challenged on many grounds, in particular by work on sound-symbolism~\citep[e.g.][]{Nygaard2009}, it is still assumed to be a cornerstone of linguistic research today~(although see \citealt{Joseph2000} for a contrary opinion).
+
+
+But how is the principle of arbitrariness relevant to language change? While Saussure's distinction of the `synchronic' versus the `diachronic' study of language was also the origin of the schism between research on the two topics that characterised much of 20th century linguistics, the arbitrariness of the sign also speaks to diachronic processes:
+
+all linguistic conventions are historical products, 
+
+% directed variation + directional selection
+
+\citep[ch.7-12]{Labov2010} on forks in the road etc.
+
+``As for the immediate triggers of sound change in a particular language at a particular time, I will have little to say about them except to suggest that these things are bound to happen and that it is not so interesting to try to identify them.''~\citep[p.174]{Ohala1989} % more cool stuff on nomological explanations not existing anywhere and everything being probabilistic on p.175
+
+challenging the notion that ``a reliance on chance deprives an account of any real explanatory value'' \citep[p.44]{Joseph2013}.
+
+% \citep{Weinreich1968}
+
+On the contrary: what do you want from a `theory of language change'? It shouldn't be able to accurately predict which changes are gonna happen where, but neither should it be completely not predicting anything. What it should be able to predict is \emph{the degree of its own unpredictability}, i.e. its own limitations. It should at the same time predict the distribution or likelihood of different types of changes overall (`actuation probabilities' if you so wish)\index{actuation!actuation probability} while \emph{explicitly underspecifying} its own predictions about whether a specific change is about to happen in a language or not.
+a model that predicts \emph{spontaneous actuations} (`noise-activated transitions' in the terms of \citealt{Mitchener2016})
+
+\subsection{The interaction of innovation \& selection}
+
+Against this historical backdrop, we can return to the evolutionary framework presented in Section~\ref{sec:evolutionaryapproach}
+
+Referring back to the two \emph{rates of change} discussed in Section~\ref{sec:tworates}, it becomes obvious that two different subfields have studied the same phenomenon on two very different levels:\index{rates of change} work in diachronic typology~\citep[such as][]{Bickel2015} is interested in the actuation probabilities on a macro-level, whereas traditional historical linguistic work hones in on particular changes.
 
 % does this mean that language always has a reason to move in many different directions? why is it ever standing still then?
 
@@ -30,35 +54,38 @@ Referring back to the two \emph{rates of change} discussed in Section~\ref{sec:d
 
 historical contingency~\citep[p.503]{Labov2001} % Gould?
 
-Ok so if there's already so much work on different pressures, why should we need momentum-based selection? Apart from the empirical reasons (which still need plenty of filling in), there are also theoretical reasons why we should \emph{a priori} prefer a mechanism like momentum-based selection over functional ones.
+\emph{neutral selection of non-random variation}
 
-\subsection{Language change, arbitrariness, replicator-neutrality}
-
-% arbitrariness
-% directed variation + directional selection
-\citet{Sapir1921}'s `drift': languages do not just diverge when there is social pressure to discriminate, but also have an internal `drive' to change (in place) by themselves (p.160).
-
-\citep[ch.7-12]{Labov2010} on forks in the road etc.
-
-challenging the notion that ``a reliance on chance deprives an account of any real explanatory value" \citep[p.44]{Joseph2013}.
-
-\subsection{Neutral selection of non-random variation}
-
+\citep[p.627]{Chater2010evolution}
 Evolang: not \emph{easier to learn} but \emph{more likely to be invented}
+rarer NOT harder to learn
+rarer less likely to be innovated
 
-% cf. "the prevalence of a particular species in a habitat does not necessarily imply that is it any better adapted to that habitat than its competitors"~\citep[p.2]{Blythe2012copying}
+communicative pressures top learning pressures?
 
 % biology: \citep{Gerlee2015}
 
-\subsection{Requirements of a theory of language change}
 
-% \citep{Weinreich1968}
-
-What do you want from a `theory of language change'? It shouldn't be able to accurately predict which changes are gonna happen where, but neither should it be completely not predicting anything. What it should be able to predict is \emph{the degree of its own unpredictability}, i.e. its own limitations. It should at the same time predict the distribution or likelihood of different types of changes overall (`actuation probabilities' if you so wish)\index{actuation!actuation probability} while \emph{explicitly underspecifying} its own predictions about whether a specific change is about to happen in a language or not.
-% a model that predicts \emph{spontaneous actuations} (`noise-activated transitions' in the terms of \citealt{Mitchener2016})\index{actuation}
-
+% sections 2+3
 \input{conclusion/asymmetricvariation}
 
-\section{Summary, conclusion \& outlook}
+\section{Summary, conclusion \& outlook}\label{sec:conclusion}
+
+Returning to the evolutionary approach to language change adopted in this thesis and its importance in explaining the nature of language change are summarised neatly by \citet{Labov2001} when he states that his comprehensive studies of sound changes
+\begin{quote}
+``made it clear that linguistic change in progress is heavily constrained by the physical environment in which it takes place, and by structural factors that limit the course of change. At the same time, it is argued that the forces that move and motivate change, and are responsible for incrementation and transmission across generations, are largely social in nature.''~(p.498)
+\end{quote}
+
+While the same theoretical position has been adopted by other researchers on language change~\citep[particularly][]{Croft2000}, I hope to have demonstrated practically how the separation of concerns between the different pressures of \emph{innovation} and \emph{selection} alluded to by Labov offers an explanatione of both the \emph{(near-)universal} as well as the \emph{particular} nature of language changes.
+
+The momentum-based trend-amplification mechanism that formed the core of this thesis allows for the neutral but \emph{directed} selection of asymmetric variation, but it has not explicitly been presented as \emph{social} in any way, instead framing it as a largely \emph{mechanistic} pressure.
+While this might seem to rule it out as one of the `largely social' candidate mechanisms for selection mentioned by Labov, the current apparent disconnect between the two should not be regarded as unbridgable, but rather as potential for research into whether the social and mechanistic might not in fact coincide.
+
+In-depth knowledge about the how language changes roll out through communities is currently largely limited to data from Western societies, and even within this limited scope there are no uncontestable patterns, or at least they cannot be explained unambiguously/straightforwardly. females leading?
+
+
+ whether much arbitrary-seeming social variation could in fact be reduced to a more mechanistic mechanism such as momentum. For example, claims that the more `mobile' middle classes are leading change, possibly because they are more sensitive to changes. Could this be explained because of their position in the network which allows them a better overview of the state (as well as current `trends') in their community?
+
+While I have brought forward theoretical arguments for why a replicator-neutral selection mechanism such as momentum-based selection can go a long way in explaining both universal patterns of language changes as well as constant diversification of languages, there is still much need for empirical evidence for such a process.
 
 Evolutionary approach and explicit treatment of the generation of variants and their selection as seperate processes could inform the systematic cross-linguistic study of language changes such as \citet{Bickel2015}.% "very specific effects can be studied *without* having to rule out all the intervening effects that you find in such an exceedingly complex phenomenon such as language"

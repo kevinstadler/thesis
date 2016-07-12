@@ -62,7 +62,18 @@ repl.mut.matrix <- function (...)
   binomialsampling.markov.matrix(repl.mut.eq(...))
 
 plotstationary <- function(markovchain, st=steadyStates(markovchain), absorbingstates=ifelse(missing(markovchain), 1, dim(st)[1]), xlab="x", names.arg=0:(dim(st)[2]-1), ...)
-  barplot(st/absorbingstates, xlab=xlab, names.arg=names.arg, ...)
+  barplot(st/absorbingstates, xlab=xlab, names.arg=names.arg, space=0, ...)
+
+averagefrequency <- function(markovchain, st=steadyStates(markovchain)[1,], N=length(st)-1)
+  sum(0:N/N * st)
+
+# advantage of variant 1 over 0, as derived from the stationary distribution
+advantage <- function(m, nstates=1, maxmomentum=1, nmomentumstates=nstates*(1+2*maxmomentum), stationary=steadyStates(m)) {
+  v1freq <- averagefrequency(st=colSums(matrix(stationary, nrow=nmomentumstates)))
+  v1freq / (1 - v1freq)
+}
+#  sum(stationary[1,(ncol(stationary)-nmomentumstates):ncol(stationary)]) - sum(stationary[1,1:nmomentumstates])
+
 
 # transition matrix fiddling
 makestickytop <- function(m, N=dim(m)[1]-1)
@@ -154,8 +165,9 @@ mergeabsorbingstates <- function(m, absorbingstates) {
   return(ma)
 }
 
-plotcompletionprobabilitiesperstart <- function(transitionmatrix, maxmomentum=0, nstatestomerge=1 + 2*maxmomentum, freqs=0:(dim(transitionmatrix)/nstatestomerge-1), add=FALSE, ...) {
+plotcompletionprobabilitiesperstart <- function(transitionmatrix, maxmomentum=0, nstatestomerge=1 + 2*maxmomentum, N=dim(transitionmatrix)/nstatestomerge-1, freqs=0:N, add=FALSE, pch=ifelse(add, 4, 3), ...) { # 4 x, 3 +, 1 o
   # squash top/bottom states together into two absorbing states
+  print(N)
   m <- mergeabsorbingstates(transitionmatrix[], 1:nstatestomerge)
   transitionmatrix <- newchain(mergeabsorbingstates(m, (nrow(m)-nstatestomerge+1):nrow(m)))
   if (maxmomentum == 0)
@@ -165,10 +177,11 @@ plotcompletionprobabilitiesperstart <- function(transitionmatrix, maxmomentum=0,
     startindices <- c(1, 1+freqs[-c(1, length(freqs))]*3, dim(transitionmatrix))
   ps <- sapply(startindices, function(i) successprobability(transitionmatrix, i))
   if (add)
-    points(freqs, ps, ...)
-  else
-    plot(freqs, ps, xlab="initial frequency", ylab="probability of diffusion", ylim=0:1, ...)
-    # abline(a=?, b=0, lty=3)
+    points(freqs, ps, pch=pch, ...)
+  else {
+    plot(freqs, ps, pch=pch, xlab="initial frequency", ylab="probability of diffusion", ylim=0:1, ...)
+    abline(a=0, b=1/N, lty=3)
+  }
 }
 
 #graylevels=round(0.75*length(hmmargs$hmm$States)) / round(0.75*ncol(data))

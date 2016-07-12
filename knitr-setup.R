@@ -16,10 +16,10 @@ library(lattice)
 trellis.par.set(fontsize=list(text=10))
 #trellis.par.get("fontsize")
 
-opts_knit$set(eval.after=c("fig.cap", "fig.subcap"))
+opts_knit$set(eval.after=c("fig.cap", "fig.subcap", "fig.scap"))
 
 tightmargin <- function(...)
-  defaultpar(mar=c(3, 3.3, 2, 0.8), ...) # b l t r
+  defaultpar(mar=c(3.1, 3.3, 2, 0.8), ...) # b l t r
 
 library(xtable)
 
