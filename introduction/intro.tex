@@ -1,35 +1,71 @@
 % https://explorationsofstyle.com/2013/02/20/structuring-a-thesis-introduction/
 
-% provide a quick trip through the whole  project in the first few paragraphs, before beginning to contextualize in earnest
+% provide a quick trip through the whole project in the first few paragraphs, before beginning to contextualize in earnest
 
 % The first step will be a short version of the three moves, often in as little as three paragraphs, ending with some sort of transition to the next section where the full context will be provided.
 
-\section{Language change}
+The fact that human languages appear to have an inherent propensity to undergo change is well-known to lay-persons and linguists alike.
+But while much quantative data on the unfolding and spread of individual changes has been collected over the past century, the underlying mechanisms by which new conventions arise and spread within individual speech communities, as well as how the micro-level dynamics give rise to recurring macro-level patterns across languages, are still not understood.
+Even though changes of a similar kind do appear to re-occur across both related and unrelated languages and language families and general tendencies in how languages are organised can be found all across the globe, the sporadic and haphazard occurrence of changes tends to lead to their diversification rather than convergence.
+
+This thesis takes an explicit evolutionary approach to language change as the replication of concrete linguistic conventions. Based on this view I argue that the separate consideration of mechanisms responsible for the innovation and introduction of new variants, as opposed to their subsequent selection and spread within a community, can help account for both the common patterns as well as the idiosyncratic nature of language changes.
+
+The main proposal of this thesis is that the detection and amplification of \emph{trends} in language use by individuals constitutes a concrete mechanism which can account for the occasional and seemingly arbitrary selection of new linguistic conventions.
+The thesis will make use of different tools, in particular computational modelling and sociolinguistic fieldwork on the perception of language changes in the individual, to argue that trend amplification is not only a viable candidate in explaining many aspects of language change, but that it complements nicely functional and communicative pressures which are known to influence language change.
+% small/big picture?
 
 %https://explorationsofstyle.com/2013/01/22/introductions/
 % familiar stuff: conventions change
 
-\section{Problem}
+%\section{Language change}
+\section{Explaining language change}
+
+On one hand, language changes go down the same paths over and over again.
+
+On the other hand, language changes are not predictable in any strong sense:
 
 % what isn't yet well understood
-% language change is pointless
+
+I will give a summary of the many different accounts of and approaches to language change that have been proposed in the literature. In doing so I will attempt to provide a coherent picture of seemingly different approaches by framing it in a common terminology:
+
+- asymmetry
+- universal particular
 
 % this statement will echo what was said in the opening, but will have much more resonance for the reader who now has a deeper understanding of the research context
 
+Typically rely on an \emph{asymmetry} between the variants in competition.
+
+Many `factors', `pressures' and `biases' have been proposed to be influencing language change, causing the incoming variants to be selected over the other.
+
+
+Alongside adaptationist thinkers, others have argued that language change is inherently a pointless.
+
+The relative influence of different pressures and the inconsistencies with which different pressures apply or don't apply at specific points in time has not been clarified.
+
+For decades, linguists have been struggling to bridge this disconnect between the idiosyncracies of individual language changes that results in the vast linguistic variation we see in the world today, with the fact that language changes tend to follow similar trajectories.
+While it is possible to identify a pool of possible changes that a language is likely to undergo, languages appear to have some arbitrary choices over which of those path to go down, and at what point.
+
+Causal explanations of particular changes lack generalisability to other instances of language change, while accounts based on strong general pressures fail to account for the idiosyncracy of languages.
+
 % ESTABLISH SIGNIFICANCE
 
-\section{Response}
+If it is not possible to predict specific changes, a good theory of language change should at least be able to account for and explain the precise mechanism which aspects of it are impossible (or difficult) to predict, and why.
 
+\section{Evolutionary approaches and momentum-based selection}
 % what I'm actually gonna do
 
-\section{Roadmap}
+In line with previous proposals in the literature I will argue that the micro- and macro-level dynamics of language change can be explained by separating out pressures that are responsible for the innovation of new linguistic variants, which are in some part universal, from the pressures that drive the selection of specific variants at certain points in time.
+While there is ample empirical evidence for the functional pressures behind the innovation of new variants, the exact nature of the mechanism underlying the selection of variants out of the pool of innovations remains debated.
+
+\section{Outline of the thesis}
 
 The remainder of this thesis is structured as follows: Chapter~\ref{ch:review} provides an overview of the vast literature on language change. It covers both the nature of language change as well as the history of how language change has been studied up until the present day. % particularly quantitative framework and s-shaped curves.
 
 Chapter~\ref{ch:modelling} is dedicated to mathematical and computational models of language change. It offers a critical perspective on the subject of modelling, before presenting two in-depth replications of existing models of language change: the Utterance Selection Model on one hand, and a Markov chain model of Bayesian Iterated Learning on the other.
 
-Chapter~\ref{ch:momentummodel} presents a novel model of an as yet understudied pressure: \emph{momentum-based selection}
+Chapter~\ref{ch:momentummodel} presents a novel model of trend amplification as an as of yet understudied pressure in language change. Here I augment the Utterance Selection Model with a mechanism for \emph{momentum-based selection}, a model of trend detection and amplification in the individual that was originally proposed to account for cycles in cultural change more generally. Based on multi-agent modelling I will argue that a mechanism like momentum-based selection can account for the spontaneous and sporadic nature of the actuation of language change.
 
-Having explored the theoretical dynamics of momentum-based selection, Chapter~\ref{ch:questionnaire} sets out to test the assumptions of the model empirically. % Complementary evidence.
+Having explored the theoretical dynamics of momentum-based selection, Chapter~\ref{ch:questionnaire} sets out to contribute to ongoing quantitative research on individuals' awareness of ongoing changes in their community. Beyond anecdotal data, evidence to this end is currently limited to a few experimental studies on the use of implicit knowledge of sound changes during speech perception. This chapter provides evidence by testing individuals' explicit knowledge about the direction and progress of three related changes to low frequency syntactic variables in the Shetland dialect of Scots.
+%assumptions of the model empirically. % Complementary evidence.
 
-Chapter~\ref{ch:bigpicture} takes a step back to look at the bigger picture of the many pressures and biases that have been attested (or at least posited) to influence language change.
+Chapter~\ref{ch:bigpicture} takes a step back to look at the bigger picture of the many pressures and biases that have been attested (or at least posited) to influence language change. Using a basic mathematical model from population genetics and augmenting it with a simple trend-amplification mechanism, I will show how the interaction between asymmetric, functionally-driven innovation pressures and a symmetric selection bias like momentum-based selection can account for both the micro- and macro-level dynamics of language change that we observe empirically.

@@ -6,12 +6,15 @@ defaultpar <- function(...)
 knit_hooks$set(plotsetup = function(before=TRUE, options, envir) if (before) defaultpar())
 knit_hooks$set(crop = hook_pdfcrop)
 
+# delay switch to scientific format number printing - default is 10^4, increase
+options(scipen=2) # digits=
+
 # fullpage's 453pt = 6.29in
 # normal textwidth 390pt = 5.4in
 fullwidth <- 5.4
 smallwidth <- 3.5
 
-opts_chunk$set(echo=FALSE, message=FALSE, results="asis", fig.align="center", fig.pos="htbp", fig.width=fullwidth, fig.height=fullwidth, cache=TRUE, crop=TRUE, plotsetup=TRUE, dev.args=list(pointsize=10, family="serif")) # colormodel="cmyk"
+opts_chunk$set(echo=FALSE, message=FALSE, results="asis", fig.align="center", fig.pos="htbp", fig.width=fullwidth, fig.height=fullwidth, cache=TRUE, crop=TRUE, plotsetup=TRUE, dev.args=list(pointsize=10, family="serif", colormodel="cmyk"))
 library(lattice)
 trellis.par.set(fontsize=list(text=10))
 #trellis.par.get("fontsize")

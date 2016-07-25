@@ -1,30 +1,53 @@
-\subsubsection{S-shaped curves in language change}
+\subsection{S-shaped curves in language change}
 \label{sec:scurves}\index{s-shaped curves}
 
 %In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
 When it comes to the question of how language changes unfold quantitatively, it is a near-universally accepted truth of the field that the incoming variant gradually replaces the outgoing one(s) along an \emph{s-shaped} trajectory. It should be noted at this point that the notion of s-shaped curves derives from the study of changes in \emph{categorical} variants, where the s-shape describes the development of the \emph{frequency} of the incoming variants. This should not be confused with the study of how \emph{continuous} language changes, i.e.~gradual changes to \emph{phonetic} realisations, unfold. \index{phonetic change}\index{sound change}
-Simply as a matter of technical feasibility, quantitative investigations of continuous changes are necessarily much more recent than that of categorical variables which are largely measurable without technological aids. As a consequence, the work in this thesis will be limited to studying changes in categorical variables. For a study of the complex dynamics that 
+Simply as a matter of technical feasibility, quantitative investigations of continuous changes are necessarily much more recent than that of categorical variables which are largely measurable without technological aids. As a consequence, the work in this thesis will be limited to studying changes in categorical variables. (For a study of the complex dynamics that can be exhibited by gradual changes, see e.g.~\citealt{Fruehwald2013}.)
+
+
+\citet[p.155]{Greenberg1954}
+\begin{quote}
+``The process of change in the community would most probably be represented by an S-curve. The rate of change would probably be slow at first, appearing in the speech of innovators, or more likely young children; become relatively rapid as these young people become the agents of differential reinforcement; and taper off as fewer and fewer older and more marginal individuals remain to continue the old forms. On an empirical level, it should be possible to make a comparative study of forms used as a function of age and other sociological variables.''
+\end{quote}
 
 
 this sentiment is repeated in \citet[pp.181+186]{Lindgren1953} as well as later in~\citet{Greenberg1954,Weinreich1968,Bailey1973}.
 
-The origin of the \emph{logistic curve} as the idealised can be traced back to~\citet{Altmann1983}, from where it was perpetuated by Andy Kroch~(\citeyear{Kroch1982,Kroch1989a,Kroch1989b}).
+The origin of the \emph{logistic curve} as the idealised can be traced back to~\citet{Altmann1983}, from where it was perpetuated by \citet{Kroch1982,Kroch1989do,Kroch1989cr}.
 
 It should be noted that the amount of empirical data that motivated \citeauthor{Altmann1983}'s use of the logistic function \citep[taken from][]{Graudina1964}, would probably not stand the test of the quantitative standards expected of empirical research in the present day.
 
-<<graudina>>=
-source("../knitr-setup.R")
+Nevertheless, it has been accepted as a de-facto criterion for quantitative models of language change~\citep{Kirby1999,Yang2002,Blythe2012}.
 
+Historical linguistics research is, at least on a \emph{quantitative} level, largely not cumulative~\citep{Nevalainen2014,Nevalainen2016}.
+
+<<graudina, fig.width=smallwidth, echo=FALSE>>=
+source("../knitr-setup.R")
+# TODO look for nevalainen_raumolin-brunberg_2003_thy.csv
 plot(scurves::dataset("Grau64"))
+@
+
+people comparing rates between contexts:
+\citet{Kroch1989cr}
+\citet{Fruehwald2009}
+
+<<constantrate, fig.width=smallwidth, fig.scap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do'.", fig.cap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do' which formed the basis of the \\emph{Constant Rate Hypothesis}~\\citep{Kroch1989cr}.">>=
+plot(scurves::dataset("Ell53"))
 @
 
 extracting information from trajectories~\citep{Ghanbarnejad2014}
 
-growth curve modelling~\citep{Winter2016}
+%\subsubsection{Actuation}
+
+%Another concept that is often used in the context of s-shaped curves is `actuation'
+
+\subsubsection{Open questions}
+
+Critiques: \citep[ch.14]{Labov2001}\citep{Denison2003}%\citep{Tagliamonte2009}
+
+Better way to fit data: growth curve modelling~\citep{Winter2016}
+
+there has, on the whole, not been a lot of interest in cross-linguistic comparison between individual trajectories of changes. Cross-linguistic comparisons are limited to measuring \emph{what types of changes} occur, but they do not consider the micro-level of how those particular changes unfold over time. I will return to this issue in Section~\ref{sec:tworates} to argue that investigating the unfolding of similar changes in different languages can provide useful insights into the different accounts of change that were discussed.
 
 % this acts as a motivation for the next section -> evaluate competing models quantitatively!
-
-people comparing rates between contexts:
-\citet{Kroch1989cr}
-
-\citet{Fruehwald2009}

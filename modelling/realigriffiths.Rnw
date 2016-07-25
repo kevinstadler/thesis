@@ -23,7 +23,7 @@ with just a single parameter, $\alpha$, which controls the degree of \emph{regul
 
 % In the case of $K\ge3$ competing variants the Beta distribution prior with shape parameters $\frac{\alpha}{2}$ is simply replaced by a Dirichlet prior with parameters $\frac{\alpha}{K}$.
 
-<<setup, echo=FALSE>>=
+<<setup, echo=FALSE, warn=FALSE>>=
 source("../knitr-setup.R")
 @
 <<priors, fig.cap="Examples of Beta distribution priors and posteriors with three different levels of the regularisation parameter~$\\alpha/2$.", fig.subcap=c("Prior distribution", "Posterior distributions after observing $N=10$ data points with various input distributions ($x=5,2,0$), regularisation parameters as in (a).")>>=
@@ -42,7 +42,7 @@ for (alpha in alphas)
 N <- 10
 xs <- c(5, 2, 0)
 
-tightmargin(mfcol=c(3, 3), pty="s")
+tightmargin(mfrow=c(3, 3), pty="s")
 for (x in xs) {
   for (alpha in alphas)
     plotbeta(x+alpha/2, N-x+alpha/2, ylab=bquote(f(theta~"|"~x~"="~.(x))))
@@ -91,8 +91,10 @@ One way in which the impact of these different ways of sampling data (either dir
 What is evident from Figure~\ref{fig:meanmapping} is that the only method which, \emph{on average}, leads to regularisation is the \emph{maximum a posteriori} method with $\alpha\le 1$. None of the other selection functions are consistently regularising. Rather, as was pointed out by~\citet[p.?]{Ferdinand2015} both data production methods discussed by \citeauthor{Reali2009} rely on mechanisms that merely increase the sample variability \emph{in either direction}, until the system arrives in a state of (near-)categorical presence of one variant only. This contrasts with the regularising mapping functions of the Utterance Selection Model shown in Section~\ref{sec:usmregularisation}, which systematically increase the proportion of whichever variant is currently more prevalent. We will return to a critique of the present regularisation model in the next section. % \citep{Spike??}
 % TODO point out the 1/10 -> 2/10 transition probability
 
-<<meanmapping, fig.scap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter.", fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
+<<meanmapping, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
 source("../R/markovchain.R")
+
+# TODO should maybe do q-matrices instead, or at least make standard deviations non-symmetric?
 
 plotmeanmapping <- function(markovchain, main=NULL, ...) {
   N <- dim(markovchain) - 1
@@ -116,7 +118,7 @@ for (alpha in alphas)
 
 % With these three different models up our sleeve, we can turn to actual productions.
 
-\subsection{Representing Bayesian Iterated Learning as a Markov chain}\index{Markov chain}
+\subsection{Representing Bayesian Iterated Learning as a Markov chain}\index{Markov model}
 \label{sec:markovmodel}
 
 While the model presented above captures frequency learning by Bayesian inference within one individual, it is interesting to ask how the productions of a sequence of such learners would develop over time when one individual's output serves as the learning input of another. To do this, we can analyse the interactions between repeated learning input and production output as a \emph{Markov chain}, a simple modelling tool for understanding systems which can be in one of a finite number of states that they switch between probabilistically.
@@ -153,7 +155,18 @@ latextable(bilm.transition.matrix.map(matrixN, 2*alphahalved)[], caption=c(paste
 
 The system that we describe by specifying the transition probabilities between individual states is a random process called a \emph{Markov chain}. Stochastic systems of this kind are said to obey the \emph{Markov property}, which means that the probability of entering a particular state only depends on the system's \emph{current} state, but not on any other prior states or state sequences that preceded the current one. This image of a \emph{chain} maps neatly onto the Iterated Learning model, where every new learner receives input from their parent generation who they then replace.
 
-Importantly for us, the characterisation of a stochastic system as a Markov chain allows for very straightforward analyses of different kinds. For example, assuming that our system would run indefinitely, we can calculate the probability of the system to be in a particular state at any given point in time. The so-called \emph{stationary distribution} of the different systems whose input/mean-output mapping we visualised previously in Figure~\ref{fig:meanmapping} are shown in Figure~\ref{fig:stationarydistribution}.\index{stationary distribution}
+Importantly for us, the characterisation of a stochastic system as a Markov chain allows for straightforward analyses of different kinds. For example, assuming that our system would run indefinitely, we can calculate the probability of this infinite chain of states to occupy a particular state \emph{in the limit}. The so-called \emph{stationary distribution}~$\pi$ of a Markov chain transition matrix~$T$ is a probability distribution over its states~$S$, i.e.~it must satisfy
+\begin{equation}
+\pi\ge0,\; \sum_{s\in S} \pi_s = 1\;.
+\end{equation}
+
+In mathematical terms, the stationary distribution has the property that performing another iteration of the chain must map the distribution onto itself, i.e.\index{stationary distribution}
+
+\begin{equation}\label{eq:stationarydistribution}
+\pi = \pi\cdot T\;.
+\end{equation}
+
+Based on these definitions, it is possible for a given Markov chain to have more than one stationary distribution. This is generally only the case when the state space consists of subpartitions that cannot be reached from each other, as is the case when there is more than one absorbing state. The stationary distributions of the different systems whose input/mean-output mapping we visualised previously in Figure~\ref{fig:meanmapping} are shown in Figure~\ref{fig:stationarydistribution}.
 
 <<stationarydistribution, fig.cap="Stationary distributions of the Markov chain transition matrices.", fig.subcap=c("Stationary distribution for chains of learners who are sampling from the posterior.", "average\\label{fig:averagerstationarydistribution}", "Stationary distribution for \\emph{maximum a posteriori}~(MAP) learners. The different colours indicate that for $\\alpha/2\\le 1$ the Markov chain has two absorbing states, corresponding to categorical usage of either of the variants.")>>=
 tightmargin(mfcol=c(1, length(alphas)), pty="s")
@@ -187,7 +200,7 @@ In order to get a better understanding of the underlying dynamics of our Markov 
 
 In what follows, I used R's \texttt{HMM} package~\citep{HMM1.0} to both replicate and extend the results reported in~\citet{Reali2010}. Firstly, Figure~\ref{fig:naiveconditioning} shows a replication of the original analysis from their paper. All four subplots show the state probability distribution for Markov chains of length $\Sexpr{ngenerations}$ where the input data presented to the first generation consisted of $\Sexpr{N}$ instances of only one variant. The probability distribution is represented as a heat map where, for any specific generation, darker colors indicate a higher probability of being in a state at that time. The probabilities of all states per generation sum to 1. The particular probability distributions shown here were calculated for chains of learners which use the inferred mean $\hat{\theta}$ of the posterior distribution to sample data for the following generation, but results for learners sampling directly from the posterior are qualitatively similar.
 
-<<naiveconditioning, fig.cap=paste("State probability distribution for all Markov chains of length $", ngenerations, "$ where the input to the first generation consists of tokens of only one variant. The dashed white line indicates the trajectory through the `average' states that the chain is in at any given point in time. \\emph{(i)}~conditioning on the first generation's input only \\emph{(ii)}~conditioning on both the first and final generations' data.", sep=""), fig.subcap=paste("Results with ", twotypes[2], " with $\\alpha=", alphas[-2], "$.", sep="")>>=
+<<naiveconditioning, fig.cap=paste("State probability distribution for all Markov chains of length ", ngenerations, " where the input to the first generation consists of tokens of only one variant. The dashed white line indicates the trajectory through the `average' states that the chain is in at any given point in time. \\emph{(i)}~conditioning on the first generation's input only \\emph{(ii)}~conditioning on both the first and final generations' data.", sep=""), fig.subcap=paste("Results with ", twotypes[2], " with $\\alpha=", alphas[-2], "$.", sep="")>>=
 twotypes <- c("learners sampling from the posterior distribution~$p(\\theta|x)$", "learners accepting the \\emph{mean} of the posterior as their hypothesis for~$\\theta$")
 twotypesdot <- paste("Results with ", twotypes, ".", sep="")
 twotypesstring <- paste("\\emph{(i)}~", twotypes[1], ". \\emph{(ii)}~", twotypes[2], ".", sep="")
@@ -231,8 +244,7 @@ To understand the dynamics of this model even better we should therefore take a 
 
 In order to get a more accurate picture of the typical trajectory exhibited by regularising Iterated Leaners, we first need to know the likelihood of a transition completing in a given number of generations. Figures~\ref{fig:naiveconditioningprobabilities} shows both the per-iteration probability as well as the cumulative probability of a chain of Iterated Learners reaching categorical usage of the initially non-existent, incoming variant over time.
 
-% fig.scap="Probability of transitions from categorical usage of one to categorical usage of the other variant"
-<<naiveconditioningprobabilities, fig.cap=paste("Probability of transitions from categorical usage of one to categorical usage of the other variant, for ", twotypes[2], ". \\emph{(i)}~probability of completing first transition after the given number of generations \\emph{(ii)}~cumulative probability of having completed at least one transition.", sep="")>>=
+<<naiveconditioningprobabilities, fig.scap="Probability of transitions from categorical usage of one to categorical usage of the other variant.", fig.cap=paste("Probability of transitions from categorical usage of one to categorical usage of the other variant, for ", twotypes[2], ". \\emph{(i)}~probability of completing first transition after the given number of generations \\emph{(ii)}~cumulative probability of having completed at least one transition.", sep="")>>=
 
 # get stuck once it reaches 50/50
 #plotcompletionprobabilities(bilm.transition.matrix.sample(N, 2*alphahalved))
@@ -282,6 +294,7 @@ Results are shown for both \emph{sampling}~(Figure~\ref{fig:doubleconditioned1})
 
 The Figure shows that the average of all transitions, again indicated by the dashed white line, is actually more like an~$S$ bent in the `wrong' direction. In other words, unlike what we find in empirical data on language changes, some of the slowest rates of growth occur at the mid-point of the change, similar to the average transition of chains of \emph{de-regularising} learners shown in Figure~\ref{fig:naiveconditioning2}.
 
+% fig.scap="State probability distribution for all Markov chains exhibiting a transition with the exact same duration."
 <<doubleconditioned, fig.cap=paste("State probability distribution for all Markov chains exhibiting a transition with the exact same duration. The dashed white line shows the \\emph{average} trajectory, while the white dots indicate one of the \\emph{most likely} transition paths. The duration is set to be equal to \\textit{(i)}~the most likely duration of a transition and \\textit{(ii)}~the average duration of all completed transitions respectively, as computed for parameters $N=", N, ", \\alpha=", 2*alphahalved, "$.", sep=""), fig.subcap=paste("Results with ", twotypes, ", most likely duration and average duration of a transition are ", c(paste(samplerstats, collapse=" and "), paste(averagerstats, collapse=" and ")), " generations, respectively.", sep="")>>=
 
 tightmargin(mfrow=c(1, 2), pty="s")
@@ -323,9 +336,9 @@ Taking the equivalence of these two models literally would mean that the paramet
 Another way to construe the meaning of parameter~$N$ corresponds to how it is mapped onto an Iterated Learning experiment on humans in~\citet{Reali2009}. Here, the model is fit to a chain of single individuals, each of which first receives and then produces a sample of $N$~tokens. While not exactly specifying a feature of the individual, the function that $N$ fulfills in this context is to control the resolution at which the data is presented to and produced by individual participants in the chain. In this sense, the parameter fulfills a function very similar to the $T$ parameter of the Utterance Selection Model described above.
 
 On the other hand, the fact that the model does not allow for continuous updating of the internal representations once they are acquired, but is instead based on a one-time learning event of sample size~$N$, means that the set of possible posterior distributions~$p(\theta|x)$, as well as the resolution of possible values of $\theta$ for strategies that adopt one value deterministically, is completely constrained by~$N$. % The size of learning outcomes is finite / But, due to the one-off nature of learning in an Iterated Learning model
-As a consequence, the parameter inadvertently acts as something like a \emph{memory capacity} of the individual that, unlike the sample resolution~$T$, also limits the individual agents' representational resolution of the frequency distribution they are trying to acquire. % a strange convolution of variable frequency, memory capacity
+As a consequence, the parameter inadvertently acts as something like a \emph{memory capacity} of the individual which, unlike the USM's sample resolution~$T$, also limits the individual agents' representational resolution of the frequency distribution they are trying to acquire. % a strange convolution of variable frequency, memory capacity
 
-<<populationsize, fig.width=smallwidth, fig.cap=paste("Mean and mode of the duration of transitions as a function of the parameter~$N$, with $\\alpha=", 2*alphahalved, "$.", sep="")>>=
+<<realipopulationsize, fig.width=smallwidth, fig.cap=paste("Mean and mode of the duration of transitions as a function of the parameter~$N$, with $\\alpha=", 2*alphahalved, "$.", sep="")>>=
 #Ns <- 10*1:30
 Ns <- 10*1:10
 
@@ -345,7 +358,8 @@ points(Ns, sampler["mode",], pch=5)
 legend("topleft", pch=2:5, legend=c("mean (average of the posterior)", "mode (average of the posterior)", "mean (sampling from posterior)", "mode (sampling from posterior)"))
 @
 
-Whichever way the parameter is to be construed, its effect on both the average as well as most likely duration of a directed transition can be seen in Figure~\ref{fig:populationsize}. TODO compare with USM neutral evolution result both in+not in divided subpopulations? \citep{Blythe2007divided} Is this meaningful when the USM does typically not incorporate mutation?
+Whichever way the parameter is to be construed, its setting does affect not just the likelihood of transitions occurring, but also the transitions' duration and shape. The parameter's effect on the average as well as most likely duration of directed transitions in chains of learners is shown in Figure~\ref{fig:realipopulationsize}, showing linear trends for all measures. TODO
+%TODO compare with USM neutral evolution result both in+not in divided subpopulations? \citep{Blythe2007divided} Is this meaningful when the USM does typically not incorporate mutation?
 
 %Even under this very different type of model we can reproduce the results from the neutral evolution regime of the Utterance Selection Model as discussed in Section~\ref{sec:usmneutral}: the duration of transitions from (near)-categorical usage of one variant to another under neutral evolution, where neither variant has any selection bias acting in their favour, increases linearly with the size of the population.
 

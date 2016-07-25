@@ -1,7 +1,17 @@
 \usepackage[utf8]{inputenc}
 
-\usepackage{graphicx}
+%http://www.ed.ac.uk/files/atoms/files/thesisbinding.pdf
+\usepackage[a4paper,left=4cm,right=2.5cm,bottom=4cm]{geometry} % top=2cm
+% The main text should be in not less than 1.5 spacing (or 18 points leading).
+\usepackage{setspace}
+\onehalfspacing %\linespread{1.3}
+% Quotations and notes should be in single spacing.
+\renewenvironment{quote}
+               {\singlespacing\list{}{\rightmargin\leftmargin}%
+                \item\relax}
+               {\endlist}
 
+\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{automata,calc}%,arrows,positioning}
 \usepackage{xifthen}

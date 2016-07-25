@@ -1,4 +1,4 @@
-\section{The Utterance Selection Model of language change}\index{Utterance Selection Model}
+\section{The Utterance Selection Model}\index{utterance selection model}
 \label{sec:usm}
 
 %\section{Comparing accounts using the Utterance Selection Model}
@@ -6,7 +6,7 @@
 
 The version of the Utterance Selection Model~(USM) discussed here grew out of \citeauthor{Croft2000}'s more general formulation of language change as evolutionary competition between utterances. While in its original, theoretical formulation in~\citet{Croft2000} it is truely full \emph{utterances} which are undergoing replication, in its mathematical-computational incarnation the USM is best understood as a quantitative model of the competition between different variants of one sociolinguistic variable, as described in Section~\ref{sec:sociolinguisticvariable}.\index{sociolinguistic variable}
 
-At its core, every agent in the USM is completely characterised by its variable use over variants, specified by the proportions with which each variant is used, all of which together sum to 1. For sake of simplicity we will limit ourselves to the canonical case of two competing variants, where the behaviour of an agent $i$ can be captured by a single variable $0.0 < x_i < 1.0$ representing its usage of a variant, the competing variant taken to be $1-x_i$. These internal proportions drive language users' production of variants by randomly sampling from a binomial (or, in the case of more than two variants, multinomial) distribution.
+At its core, every agent in the USM is completely characterised by its variable use over variants, specified by the proportions with which each variant is used, all of which together sum to 1. For sake of simplicity we will limit ourselves to the canonical case of two competing variants, where the behaviour of an agent $i$ can be captured by a single variable~$0 < x_i < 1$ representing its relative usage level of a variant, with that of the competing variant taken to be $1-x_i$. These internal proportions drive language users' production of variants by randomly sampling from a binomial (or, in the case of more than two variants, multinomial) distribution.
 
 The core element of the USM is how these internal variables are influenced by observing realisations of the same linguistic variable by interactions with other speakers in the environment. Whenever an agent $i$ with an internal frequency of use $x_i$ engages in an interaction with another speaker $x_j$, they each produce and exchange $T$ tokens of the variable under investigation by sampling from a binomial distribution $B(T,x_i)$ and $B(T,x_j)$ respectively. Based on these two samples $n_i$ and $n_j$, the agents combine the relative frequencies $\frac{n_i}{T}$ and $\frac{n_j}{T}$ into a \emph{perceived frequency} $y_i$ according to the following formula:
 
@@ -56,7 +56,8 @@ This function can be used to implement a mechanism of \emph{regularisation}, dis
 
 Having covered the general mechanism of the USM, we can now investigate the predicted dynamics under the presence (or absence) of different biases.
 
-\subsection{Neutral evolution}\index{neutral evolution}\label{sec:usmneutral}
+\subsection{Neutral evolution}\index{neutral evolution}
+\label{sec:usmneutral}
 
 Equivalence to the island model~\citep{Blythe2007divided}
 
@@ -64,6 +65,7 @@ Equivalence to the island model~\citep{Blythe2007divided}
 
 \subsection{Neutral evolution with regularisation}\index{regularisation}\label{sec:usmregularisation}
 
-\subsection{Replicator selection}\index{selection!replicator selection}\label{sec:usmreplicator}
+\subsection{Replicator selection}\index{replicator selection}\label{sec:usmreplicator}
 
-\subsection{Interactor selection}\index{selection!interactor selection}
+\subsection{Interactor selection}\index{interactor selection}
+\label{sec:usminteractor}
