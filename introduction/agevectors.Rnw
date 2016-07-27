@@ -1,0 +1,81 @@
+
+Most traditional accounts of language change are based on the assumption that linguistic divergence occurs during language acquisition, mostly based on language-internal factors that make learners `mislearn' or `reanalyse' their linguistic input, which causes them end up with a different target language than that spoken by their caretakers~\citep[see e.g.][]{Salmons2013}. But quantitative research on infant and adolescent speech has painted a much more refined picture of the \emph{target} of child language acquisition~\citep{Labov2012}. Of particular relevance is the question of how individuals acquire sociolinguistic variation, and how this acquisition develops over time. Quantitative studies of the linguistic patterns of different pre-adolescent age cohorts has shown that, while children's usage patterns might mirror the language use of their caretakers up until about age three or four, learners then exhibit a pronounced ``outward-orientation'': shedding most of the influence of their caretaker speech, learners instead turn not just towards their peers, but towards the usage patterns in the wider speech community as a whole~\citep{Labov2014}. % also Labov2001, ch.13
+
+An exemplary case of this behaviour is the data collected from children in the new town of Milton Keynes, England, which provided a natural testbed for the study of the acquisition of a local dialect against the backdrop of massive individual variation: the settlement expanded massively in the 1970s and 1980s, with most residents moving in from other dialect regions~\citep{Kerswill1994,Williams1999}.
+Figure~\ref{fig:miltonkeynes} shows the distribution of variable realisations of the \textsc{GOAT} lexical set~\citep[the vowel in English `goat', `boat', `fold' etc., see][]{Wells1982} by children of different ages growing up in Milton Keynes, as well as the usage rates of their caretakers. What is striking about this data is not just the fact that children appear to switch from imitating their caretakers to imitating the wider community usage at some point after age~4, but also the accuracy with which children manage to replicate the usage distributions of the relevant target group.
+
+This same pattern of acquisition is found in a slightly refined fashion \citet{Sankoff1973}'s study of the acquisition of the future tense marker~`bai' in Tok Pisin, which underwent a change from being stressed to unstressed as it was grammaticalised during the development of the creole. Figure~\ref{fig:tokpisin} shows rates of secondary stress on `bai' by children, alongside the stress rates exhibited by their respective caretaker(s), connected by lines. What is evident is not just that children are producing fewer stressed tokens, but that their stress rates are lowered at similar rates \emph{relative to the stress rates of their caretakers}. This has led researchers to propose that adolescent learners do not just acquire the variable elements of language use according to social and stylistic constraints to a high degree of precision, but that they also advance changes in variable usage along their respective ``vector of change'':
+
+\begin{quote}
+``In the incrementation of change, children learn to talk differently from their parents and in the same direction in each successive generation. This can happen only if children align the variants heard in the community with the vector of age: that is, they grasp the relationship: the younger the speaker, the more advanced the change.'' \citep[p.344]{Labov2001}
+\end{quote}
+
+<<setup, echo=FALSE, results="hide">>=
+source("../knitr-setup.R")
+@
+
+<<miltonkeynes, fig.cap="Phonetic targets of the \\texttt{GOAT} vowel for Milton Keynes children by age exhibits increasing alignment to community (rather than caretaker) speech~(data from~\\citealt{Kerswill1994}).", fig.scap="Milton Keynes children exhibit increasing alignment to community (rather than caretaker) speech.", fig.height=smallwidth, fig.pos="t">>=
+# square circle + x 
+pchs <- c(4, 3, 1, 0)
+
+mk <- read.csv("miltonkeynes.csv")
+mk$group <- factor(mk$group, levels=c("caretakers", "4 year olds", "8 year olds", "12 year olds"))
+lattice::xyplot(percent ~ target, data=mk, groups=mk$group, type=c("p","l"), par.settings = list(superpose.symbol=list(col="black", pch=pchs), superpose.line=list(col="black", lty=4:1)),
+# key=list(space="right", points=list(pch=pchs), lines=list(lty=4:1), text=list(unique(as.character(mk$group)))))
+    auto.key=list(space="right", lines=TRUE),
+scales=list(x=list(labels=c("æi", "æy", "au"))))
+#labels=enc2utf8(as.character(levels(mk$target))))
+@
+
+<<tokpisin, fig.cap="Rate of secondary stress on the `bai' future tense marker in Tok Pisin. The relative difference between the rates of children~(circles) and their respective caretakers~(triangles) exhibit a regular pattern~(data from~\\citet{Labov2001}, p.425).", fig.width=smallwidth, fig.pos="t">>=
+pchs <- 3:4
+
+tp <- read.csv("tokpisin.csv", stringsAsFactors=FALSE)
+tp$family <- as.factor(tp$family)
+tp$parent <- substr(tp$id,1,1) == "M"
+vectors <- merge(subset(tp, parent), subset(tp, !parent), by="family")
+
+# R reported to be .61 in graph, we find .67 here
+#cor.test(vectors$stress.x, vectors$stress.y)
+
+par(pty="s")
+plot(tp$age, tp$stress, pch=1+tp$parent, xlab="age", ylab="percent stress", ylim=c(0, 100), yaxs="i")
+foo <- mapply(function(x2, y2, x1, y1) lines(c(x1, x2), c(y1, y2)), vectors$age.y, vectors$stress.y, vectors$age.x, vectors$stress.x)
+
+#lattice::xyplot(stress ~ age, data=tp, groups=tp$parent, ylim=c(0, 80))
+#lattice::lsegments(vectors$age.y, vectors$stress.y, vectors$age.x, vectors$stress.x)
+#lattice::llines(x=10, y=10)
+@
+
+%Recently, speakers' perception of changes has even been proposed as a solution to the problem of \emph{incrementation}
+
+% TODO mention here that this is basically the `apparent time' construct that sociolinguists use
+
+While this quote does not speak to the initial triggering or actuation of a change, it does suggest that being able to detect the direction~(and~rate) of a change could be fundamental to a mechanism which allows speakers to \emph{advance} language changes systematically across generations.
+Even though the concept of age vectors has been taken up as an explanatory device to analyse and account for trends in macro-level data~\citep{Labov2012,Sankoff2013,Stanford2014,Driscoll2014}, direct testing of the underlying assumption,%about individual behaviour
+i.e.~that ``youth who are engaged in the incrementation of a sound change have some perception of the age vector''~\citep[p.369]{Labov2010}, has been more limited. The most compelling evidence comes from experimental studies of listener adaptation based on sociophonetic knowledge about ongoing changes: \citet{Drager2005} and \citet{Hay2006} showed experimentally that listeners use their implicit knowledge about age-specific speech patterns to adjust phoneme boundaries when classifying vowels depending on the purported age of the speaker, which was manipulated experimentally. % Drager2005 is perceived age of the voice, Hay2006 tests the hypothesis explicitly by presenting identical voices with different age+social class guises % TODO Drager2011? % TODO during an ongoing change
+
+Even though the concept of age vectors was originally conceived of as applying to both continuous and categorical changes~\citep[p.346]{Labov2001}, in contemporary research it is now mainly applied to (continuous) phonetic changes. Here, the `age vector' can quite literally be taken to be a vector in phonetic space. This interpretation can be intuitively derived from traditional representations of phonetic changes in progress, where arrows are drawn in acoustic~(particular vowel) space to indicate the difference in pronounciations between older and younger speakers of a community~\citep[see e.g.][p.?]{Labov2001}.
+
+% such as the one shown in Figure~\ref{fig:agevectors}.
+
+%\begin{figure}
+%\includegraphics[width=]{}
+%\caption{TODO: some Labov chain shift graph}
+%\label{fig:agevectors}
+%\end{figure}
+
+This specialisation of the notion of age vectors is merely a consequence of the fact that most sociolinguistic research is based on \emph{sound changes}, particularly ones of a gradual (rather~than categorical) nature, such as the canonical example of vowel shifts. While there is consequently also a rich research tradition on individuals' sociophonetic knowledge~\citep{Foulkes2006}, work on sociolinguistic awareness (or indeed sociolinguistic indexicality) in the domain of necessarily categorical \emph{syntactic} change is generally underrepresented, a fact that I will address in Chapter~\ref{ch:questionnaire}. %with relatively less work on purely morphosyntactic variables.
+
+%~\citep{Labov1994} (this fact is best exemplified by the fact that the 3 volumes of \emph{Principles of Linguistic Change} only contain X cases of non-phon(etic|ological) changes, so that a title like \emph{Principles of Sound Change} might actually have been more appropriate.} %\citep{Labov2016underreview}
+
+
+% TODO explain how age vectors should be conceived of in frequency (distribution) rather than phonetic space
+
+While a more detailed analysis of this very idea of the \emph{amplification of linguistic trends} forms the central part of this thesis, the overview of competing `explanations' of change presented thus far has painted a rather incoherent and divergent picture of research on language change.
+Although the diversity of approaches and results makes it difficult to provide anything like a coherent or comprehensive overview of current opinions, I have already suggested the existence of something like a fault line dividing the field, characterised by two opposing views of language change based on distinct research methodologies.
+While mechanistic and adaptively-minded accounts draw evidence both from macro-level typological and individual-level experimental data, sociolinguistic work based on social population-level phenomena stress the arbitrary, haphazard selection and diffusion of changes.
+
+Rather than simply pick one side and more or less implicitly disregard the other, this thesis is in pursuit of another higher-level goal, namely to unify these seemingly contradictory approaches and show that they are in fact compatible.
+%A constructively-minded linguist might have read through the historical development of the different accounts and approaches, fond of the methodological pluralism.
+Before pointing to the evolutionary framework in which the apparent clashes can be reconciled, I will make a final effort to convince even the staunchest optimist that there truly is a schism in the field that warrants talk about the need of unification and reconciliation, by discussing a recurring issue on the question of language change where the differences are as stark as nowhere else: the adaptive nature (or not) of language change.

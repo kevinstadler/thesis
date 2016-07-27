@@ -1,50 +1,14 @@
 %What drives linguistic changes?
 \section{Introduction}
 
-The degree to which the historical development of languages is inferred and used by language learners has long been of interest to sociolinguists~\citep{Labov1989}. Most traditional accounts of language change are based on the assumption that linguistic divergence occurs during language acquisition, mostly based on language-internal factors that make learners `mislearn' or `reanalyse' their linguistic input, causing them end up with a different target language than that spoken by their caretakers~\citep[see e.g.][]{Salmons2013}. But quantitative research on infants and adolescents has painted a much more refined picture of the \emph{target} of child language acquisition~\citep{Labov2012}. Of particular relevance is the question of how individuals acquire sociolinguistic variation, and how this acquisition develops over time. Quantitative studies of the linguistic patterns of different pre-adolescent age cohorts has shown that, while children's usage patterns might mirror the idiosyncratic language use of their caretakers up until about age three or four, learners then exhibit a pronounced ``outward-orientation'': shedding most of the influence of their caretaker speech, learners instead turn not just towards their peers, but towards the usage patterns in the wider speech community as a whole~\citep{Labov2014}. % also Labov2001, ch.13
+The degree to which the historical development of languages is inferred and used by language learners has long been of interest to sociolinguists~\citep{Labov1989}.
+%Most traditional accounts of language change are based on the assumption that linguistic divergence occurs during language acquisition, mostly based on language-internal factors that make learners `mislearn' or `reanalyse' their linguistic input, causing them end up with a different target language than that spoken by their caretakers~\citep[see e.g.][]{Salmons2013}. But quantitative research on infants and adolescents has painted a much more refined picture of the \emph{target} of child language acquisition~\citep{Labov2012}. Of particular relevance is the question of how individuals acquire sociolinguistic variation, and how this acquisition develops over time. Quantitative studies of the linguistic patterns of different pre-adolescent age cohorts has shown that, while children's usage patterns might mirror the idiosyncratic language use of their caretakers up until about age three or four, learners then exhibit a pronounced ``outward-orientation'': shedding most of the influence of their caretaker speech, learners instead turn not just towards their peers, but towards the usage patterns in the wider speech community as a whole~\citep{Labov2014}. % also Labov2001, ch.13
 
-An exemplary case of this behaviour is the data collected from children in the `new town' of Milton Keynes, England, which provided a natural testbed for the study of the acquisition of a local dialect against the backdrop of massive individual variation: the settlement expanded massively in the 70s and 80s, with most residents moving in from other dialect regions~\citep{Kerswill1994,Williams1999}.
-Figure~\ref{fig:languageacquisition}a, which shows the distribution of variable realisations of the \textsc{GOAT} lexical set (the vowel in English `goat', `boat', `fold' etc.) by children of different ages growing up in Milton Keynes, as well as the usage rates of their caretakers. What is striking about this data is not just the fact that children appear to switch from imitating their caretakers to imitating the wider community usage at some point after age~4, but also the accuracy with which children manage to replicate the usage distributions of the relevant target group.
-
-This same pattern of acquisition is found in a slightly refined fashion \citet{Sankoff1973}'s study of the acquisition of the future tense marker \emph{bai} in Tok Pisin, which underwent a change from being stressed to unstressed as it was grammaticalised during the creation of the creole. Figure~\ref{fig:languageacquisition}b shows rates of secondary stress on \emph{bai} by children, alongside the stress rates exhibited by their respective caretaker(s), connected by lines. What is evident is not just that children are producing fewer stressed tokens, but that their stress rates are lowered at similar rates \emph{relative to the stress rates of their caretakers}. This has led researchers to propose that adolescent learners do not just acquire the variable elements of language use according to social and stylistic constraints to a high degree of precision, but that they also advance changes in variable usage along their respective ``vector of change'':\index{age vector}
-
-\begin{quote}
-In the incrementation of change, children learn to talk differently from their parents and in the same direction in each successive generation. This can happen only if children align the variants heard in the community with the vector of age: that is, they grasp the relationship: the younger the speaker, the more advanced the change. \citep[p.344]{Labov2001}
-\end{quote}
-
-\begin{figure}[ht]
-\centering
-\subcaptionbox{Phonetic targets of the GOAT vowel~\citep{Wells1982} for Milton Keynes children by age~(data from~\citet{Kerswill1994}, figure from \citet[p.269]{Labov2012})}{\includegraphics[height=0.3\textwidth]{figure/languageacquisitiongoat}}\quad
-\subcaptionbox{Rate of secondary stress on the `bai' future tense marker in Tok Pisin, including the relationship between the rates of children and their respective caretakers (from~\citet{Labov2001}, p.425)}{\includegraphics[height=0.3\textwidth]{figure/languageacquisitionbai}}
-\caption{Examples of children's alignment to community (rather than caretaker) speech}
-\label{fig:languageacquisition}
-\end{figure}
-
-%Recently, speakers' perception of changes has even been proposed as a solution to the problem of \emph{incrementation}: being able to detect the direction (and rate) of a change would be fundamental to a mechanism which allows speakers to \emph{advance} language changes systematically across generations: \citet[ch.14]{Labov2001} introduced the notion of \emph{age vectors} as a mechanism for advancing (continuous) phonetic changes. % not true
-
-% TODO mention here that this is basically the `apparent time' construct that sociolinguists use
-
-Even though the concept of age vectors has been taken up as an explanatory device to analyse and account for trends in macro-level data~\citep{Labov2012,Sankoff2013,Stanford2014,Driscoll2014}, direct testing of the underlying assumption%about individual behaviour
-, i.e. that ``youth who are engaged in the incrementation of a sound change have some perception of the age vector''~\citep[p.369]{Labov2010}, has been more limited. The most compelling evidence comes from experimental studies of listener adaptation based on sociophonetic knowledge about ongoing changes: \citet{Drager2005} and \citet{Hay2006} showed experimentally that listeners use their implicit knowledge about age-specific speech patterns to adjust phoneme boundaries when classifying vowels, depending on the purported age of the speaker. % Drager2005 is perceived age of the voice, Hay2006 tests the hypothesis explicitly by presenting identical voices with different age+social class guises % TODO Drager2011? % TODO during an ongoing change
-
-While the concept of age vectors was originally conceived of as applying to both continuous and categorical changes~\citep[p.346]{Labov2001}, in contemporary research it is now mainly applied to (continuous) phonetic changes. Here, the `age vector' can quite literally be taken to be a vector in phonetic space which captures the difference between the articulation targets of younger and older speakers. This interpretation can in fact be intuitively derived from traditional representations of phonetic changes in progress, such as the one shown in Figure~\ref{fig:agevectors}.
-
-\begin{figure}
-%\includegraphics[width=]{}
-\caption{TODO: some Labov chain shift graph}
-\label{fig:agevectors}
-\end{figure}
-
-This specialisation of the notion of age vectors is merely a consequence of the fact that most sociolinguistic research is based on \emph{sound changes}, particularly ones of a gradual (rather than categorical) nature, such as the canonical example of vowel shifts. While there is consequently also a rich research tradition on individuals' sociophonetic knowledge~\citep{Foulkes2006}, work on sociolinguistic awareness (or indeed sociolinguistic indexicality) in the domain of necessarily categorical \emph{syntactic} change is generally underrepresented. %with relatively less work on purely morphosyntactic variables.
-
-%~\citep{Labov1994} (this fact is best exemplified by the fact that the 3 volumes of \emph{Principles of Linguistic Change} only contain X cases of non-phon(etic|ological) changes, so that a title like \emph{Principles of Sound Change} might actually have been more appropriate.} %\citep{Labov2016underreview}
 
 %Beyond the domain of continuous phonetic change,
 In one of the rare studies investigating age effects for categorical (rather than continuous phonetic) traits, \citet{Walker2011} showed the influence of congruence between `word age' and `voice age' in facilitating lexical access: listeners of all ages exhibited a speed-up in processing words produced by a voice indicative of an age group, exactly when the word was more likely to be used by speakers of that age group. Although this experiment speaks to the influence of perceived age directly, it does not involve a sociolinguistic variable, since the different stimuli belong to different semantic domains, rather than being different ways of `saying the same thing'.
 
 The goal of the present work is to extend the body of research on `age vectors', as they are perceived and used by the individual, to the domain of syntactic change. Since this an understudied area of research, we will also present a novel questionnaire methodology designed to help quantify people's explicit knowledge about ongoing language changes, in particular their impressions about the changes' \emph{directionality}.
-
-% TODO explain how age vectors should be conceived of in frequency (distribution) rather than phonetic space
 
 \section{Quantifying the awareness of syntactic changes}
 
@@ -141,16 +105,15 @@ Another interesting question regarding between-speaker differences pertains to h
 
 \section{Results}
 
-<<setup, echo=FALSE>>=
-source("../knitr-setup.R")
-
-source("shetland-data.R")
-source("~/notes/orm.R")
-@
-
 Pooling together the data from the paper-based and online questionnaires, the total number of responses was~$N=77$ for the imperative~(\texttt{imp}) and negation~(\texttt{neg}) variables, and~$N=69$ for the yes/no question~(\texttt{ynq}) as well as wh question~(\texttt{whq}) syntax. Both the locally collected and online samples had a similar age distribution, with participants ranging from \Sexpr{min(participants$age)} to \Sexpr{max(participants$age)} years, with a median age of \Sexpr{median(participants$age)}.
 
 %\Sexpr{round(mean(subset(participants, condition=="online")$age))}/\Sexpr{round(mean(subset(participants, condition=="paper")$age))}, median age \Sexpr{median(subset(participants, condition=="online")$age)}/\Sexpr{r median(subset(participants, condition=="paper")$age)}
+
+<<setup, echo=FALSE>>=
+source("../knitr-setup.R")
+source("shetland-data.R")
+source("~/notes/orm.R")
+@
 
 <<questionnairelocation, fig.width=smallwidth, fig.height=smallwidth, fig.cap="Geographical distribution of questionnaire participants in Shetland, by condition (online convenience sample vs. paper-based controlled sample)">>=
 counts <- table(participants$loc, participants$condition)[length(levels(participants$loc)):1,]
@@ -550,7 +513,8 @@ suppressWarnings(changingvarmdl <- clme(oldervar ~ age*stable + var, random=id))
 # varmdl and stablegendermdl after stablemdl
 # gendermdl and agemdl both crap
 
-ormtables(ovnullmdl, gendermdl, agemdl, ovstablemdl, varmdl, stableplusagemdl, stableagemdl, changingvarmdl, of="of responses to the question ``Which of the two variants do you think is \\emph{older}?''.", label="table:variantagemodel")
+# TODO stableplusagemdl missing
+ormtables(ovnullmdl, gendermdl, agemdl, ovstablemdl, varmdl, stableagemdl, changingvarmdl, of="of responses to the question ``Which of the two variants do you think is \\emph{older}?''.", label="table:variantagemodel")
 
 # There is a significant difference in response distributions between the three changing variables and the stable negation variable (model 1), but none between the changing variables themselves (model 2).
 
@@ -743,7 +707,7 @@ nullmdl <- clm2(apparentdiff ~ 1, data=na.omit(d))
 #addterm(nullmdl, apparentdiff ~ firstvar + firstolder + old + age + var + oldervar + self + other, test='Chisq', sorted=TRUE)
 @
 
-\subsection{Variant age and perceived apparent time differences: evidence from the control variable}
+\subsection[Variant age and perceived apparent time differences]{Variant age and perceived apparent time differences: evidence from the control variable}
 
 Some more evidence regarding the prime source of inividuals' knowledge can be glanced from the responses to our control variable. As the distribution of negation variants on Shetland is stable, patterned by geography rather than by time, we would not expect any information on the history of the two variants to be available to our speakers. (TODO Elyse is this true? You probably know more about Scots negation variants generally by noo...)
 
