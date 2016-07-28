@@ -14,7 +14,7 @@ This same pattern of acquisition is found in a slightly refined fashion \citet{S
 source("../knitr-setup.R")
 @
 
-<<miltonkeynes, fig.cap="Phonetic targets of the \\texttt{GOAT} vowel for Milton Keynes children by age exhibits increasing alignment to community (rather than caretaker) speech~(data from~\\citealt{Kerswill1994}).", fig.scap="Milton Keynes children exhibit increasing alignment to community (rather than caretaker) speech.", fig.height=smallwidth, fig.pos="t">>=
+<<miltonkeynes, fig.cap="Phonetic targets of the \\texttt{GOAT} vowel for Milton Keynes children by age exhibit increasing alignment to community rather than caretaker speech~(data from~\\citealt{Kerswill1994}).", fig.scap="With age, Milton Keynes children exhibit increasing alignment to community rather than caretaker speech.", fig.height=smallwidth, fig.pos="t">>=
 # square circle + x 
 pchs <- c(4, 3, 1, 0)
 
@@ -27,7 +27,7 @@ scales=list(x=list(labels=c("æi", "æy", "au"))))
 #labels=enc2utf8(as.character(levels(mk$target))))
 @
 
-<<tokpisin, fig.cap="Rate of secondary stress on the `bai' future tense marker in Tok Pisin. The relative difference between the rates of children~(circles) and their respective caretakers~(triangles) exhibit a regular pattern~(data from~\\citet{Labov2001}, p.425).", fig.width=smallwidth, fig.pos="t">>=
+<<tokpisin, fig.cap="Rate of secondary stress on the `bai' future tense marker in Tok Pisin. The relative difference between the rates of children~(circles) and their respective caretakers~(triangles) exhibit a similar pattern of increase across pairs~(data from~\\citealt[p.425]{Labov2001}).", fig.width=smallwidth, fig.pos="t">>=
 pchs <- 3:4
 
 tp <- read.csv("tokpisin.csv", stringsAsFactors=FALSE)

@@ -2,52 +2,63 @@
 \label{sec:scurves}\index{s-shaped curves}
 
 %In our quantitative framework, how can the \emph{dynamics} language changes be described quantitatively?
-When it comes to the question of how language changes unfold quantitatively, it is a near-universally accepted truth of the field that the incoming variant gradually replaces the outgoing one(s) along an \emph{s-shaped} trajectory. It should be noted at this point that the notion of s-shaped curves derives from the study of changes in \emph{categorical} variants, where the s-shape describes the development of the \emph{frequency} of the incoming variants. This should not be confused with the study of how \emph{continuous} language changes, i.e.~gradual changes to \emph{phonetic} realisations, unfold. \index{phonetic change}\index{sound change}
+When it comes to the question of how language changes unfold quantitatively, it is common wisdom in the field of historical linguistics~(and beyond) that the incoming variant gradually replaces the outgoing one(s) along an \emph{s-shaped} trajectory. It should be noted at this point that the notion of s-shaped curves derives from the study of changes in \emph{categorical} variants, where the s-shape describes the development of the \emph{frequency} of the incoming variants. This should not be confused with the study of how \emph{continuous} language changes, i.e.~gradual changes to \emph{phonetic} realisations, unfold. \index{phonetic change}\index{sound change}
 Simply as a matter of technical feasibility, quantitative investigations of continuous changes are necessarily much more recent than that of categorical variables which are largely measurable without technological aids. As a consequence, the work in this thesis will be limited to studying changes in categorical variables. (For a study of the complex dynamics that can be exhibited by gradual changes, see e.g.~\citealt{Fruehwald2013}.)
 
+Even for categorical variants, however, capturing the time course of a change is no simple matter, since any claim about precise dynamics is inherently limited by the number of time points throughout the change for which distinct samples can be taken, as well as the respective size of those samples. The earliest qualitative descriptions of language changes, which were limited to describing a relatively idealised, non-variable state or grammar of a language before and after the change, left open how exactly a community switched from unanimous adoption of one grammar or construction to another.
+As quantitative studies with an increasing resolution of the time course became more common, the idea of the adoption of changes along a relatively directed `s-shaped curve' became firmly established in the field:
 
-\citet[p.155]{Greenberg1954}
 \begin{quote}
-``The process of change in the community would most probably be represented by an S-curve. The rate of change would probably be slow at first, appearing in the speech of innovators, or more likely young children; become relatively rapid as these young people become the agents of differential reinforcement; and taper off as fewer and fewer older and more marginal individuals remain to continue the old forms. On an empirical level, it should be possible to make a comparative study of forms used as a function of age and other sociological variables.''
+``The process of change in the community would most probably be represented by an S-curve. The rate of change would probably be slow at first, appearing in the speech of innovators, or more likely young children; become relatively rapid as these young people become the agents of differential reinforcement; and taper off as fewer and fewer older and more marginal individuals remain to continue the old forms. On an empirical level, it should be possible to make a comparative study of forms used as a function of age and other sociological variables.''~\citep[p.155]{Greenberg1954}
 \end{quote}
 
+Similar sentiments, again mostly backed up by verbal rather than precise quantitative arguments, are repeated in \citet[pp.181+186]{Lindgren1953} as well as later in~\citet{Weinreich1968} and~\citet{Bailey1973}.
+Today, it is often assumed that the increased usage levels of incoming variants from non-existence to complete adoption follow the trajectory of the s-shaped \emph{logistic} growth curve~\citep{Denison2003}. The origin of the logistic curve as the idealised, underlying can be traced back to~\citet{Altmann1983}, from where it was perpetuated primarily by Anthony~\citet{Kroch1982,Kroch1989do,Kroch1989cr}.
+It should be noted that the amount of empirical data that motivated \citeauthor{Altmann1983}'s use of the logistic function would probably not stand the test of the quantitative standards expected of empirical research in the present day. The authors' main evidence is a data set capturing the decrease in usage of Russian genitive markers on unit of measurement terms between 1881 and 1910. Taking the 28~data points measuring the relative rates of dropping the genitive marker from~\citet{Piotrovskaya1974}, who themselves proposed to capture the shape of the curve by use of some trigonometric functions, \citeauthor{Altmann1983} show good fit of the trajectory by the logistic function which they argue is also more justified, being an explicit model of growth known from other domains, particularly ecology~\citep{Kingsland1982}, and not just an arbitrarily chosen function that happens to fit the empirical data~\citep[p.106]{Altmann1983}.
 
-this sentiment is repeated in \citet[pp.181+186]{Lindgren1953} as well as later in~\citet{Greenberg1954,Weinreich1968,Bailey1973}.
+While their particular proposition achieved their goal of setting the quantitative study of language change on more firm theoretical, mathematical basis, the empirical side of their argument remains relatively understudied to this day. Figure~\ref{fig:graudina} shows the two data sets from the paper which motivated the use of the logistic function. Firstly it should be noted that no absolute token counts are provided for either trajectory, not even in the first publication of the Russian genitive data in~\citet{Graudina1964}. This means that is unclear whether some of the strong downward outliers along the trajectory are merely due to sampling effects or whether they require additional explanation. The second data set capturing the proportion of Arabic loanwords in Persian~(data whose origin is unknown and uncredited) which, if anything, only encompasses the very early stages of `incipient' growth, is presumably not expected to ever reach `completion', in the sense of Persian vocabulary being 100\% replaced by Arabic terms. Nevertheless, both data sets receive a superposed fit of a logistic growth curve that is set to saturate at complete diffusion, i.e.~ultimate convergence to a proportion of 1.0 of the incoming variant, by~\citet[p.110,113]{Altmann1983}.
 
-The origin of the \emph{logistic curve} as the idealised can be traced back to~\citet{Altmann1983}, from where it was perpetuated by \citet{Kroch1982,Kroch1989do,Kroch1989cr}.
-
-It should be noted that the amount of empirical data that motivated \citeauthor{Altmann1983}'s use of the logistic function \citep[taken from][]{Graudina1964}, would probably not stand the test of the quantitative standards expected of empirical research in the present day.
-
-Nevertheless, it has been accepted as a de-facto criterion for quantitative models of language change~\citep{Kirby1999,Yang2002,Blythe2012}.
-
-Historical linguistics research is, at least on a \emph{quantitative} level, largely not cumulative~\citep{Nevalainen2014,Nevalainen2016}.
-
-<<graudina, fig.width=smallwidth, echo=FALSE>>=
+<<setup, echo=FALSE>>=
 source("../knitr-setup.R")
+@
+
+<<graudina, fig.scap="The two data sets from \\citet{Altmann1983} which provided the empirical basis for interpreting the s-shaped curves found in language change as logistic growth.", fig.cap="The two data sets from \\citet{Altmann1983} which provided the empirical basis for interpreting the s-shaped curves found in language change as logistic growth. \\emph{(i)}~increased dropping of genitive markers from Russian measurement units, data priginally due to~\\citet{Graudina1964} \\emph{(ii)}~proportion of Arabic loanwords in Persian, unknown source.">>=
 # TODO look for nevalainen_raumolin-brunberg_2003_thy.csv
-plot(scurves::dataset("Grau64"))
+
+plotdata <- function(file, ...) {
+  s <- read.table(file, header=TRUE, sep="\t", colClasses=c(start="Date", end="Date"))
+  plot(s$start+(s$end-s$start)/2, s$incoming/s$total, xlim=c(min(s$start), max(s$end)), ylim=0:1, yaxs="i", xlab="date", ylab="proportion of incoming variant", ...)
+}
+
+tightmargin(mfrow=c(1, 2), pty="s")
+plotdata("/home/kevin/s-shaped-curves/inst/extdata/Gra64.csv", main="(i)")
+plotdata("/home/kevin/s-shaped-curves/inst/extdata/Alt83.csv", main="(ii)")
 @
 
-people comparing rates between contexts:
-\citet{Kroch1989cr}
-\citet{Fruehwald2009}
+The quantitative study and comparison of growth \emph{rates} of linguistic changes can be traced back to~\citet{Kroch1989cr} who set out to investigate whether the rise of a novel linguistic variant, in particular the rise of periphrastic `do' in Early Modern English~\citep{Kroch1989do}, differed across related but different grammatical contexts.\index{rates of change}
+%Again ignoring the question of the reliability of different data points in time based on their sample size,
+Kroch determined the relative rate of diffusion of the novel variant for different subsets of the data by performing a logistic regression which provides an estimate of the \emph{slope} of the growth curve as a function of time~\citep[p.215]{Kroch1989cr}.
+Comparing the slopes obtained for different grammatical contexts documented in~\citet{Ellegard1953}'s extensive data set on the prevalence of `do', he found no statistical difference between the growth rates of the novel variant for the different contexts. The contexts did however differ in their relative timing of actuation, which he took to imply that contextual effects on changes, including external, stylistic ones, should be constant across time and not interact with the time course of the change, which is primarily dictated by language-internal dynamics~\citep[p.206]{Kroch1989cr}\footnote{It should be noted that this conclusion relies on the fact that context effects are measured by the coefficients of a logistic regression which capture a \emph{relative} rather than absolute influence on the usage rates, an assumption that is to my knowledge not motivated beyond the fact that it can easily be captured by logistic regression.}.
 
-<<constantrate, fig.width=smallwidth, fig.scap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do'.", fig.cap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do' which formed the basis of the \\emph{Constant Rate Hypothesis}~\\citep{Kroch1989cr}.">>=
-plot(scurves::dataset("Ell53"))
+<<constantrate, fig.width=smallwidth, fig.scap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do'.", fig.cap="\\citet{Ellegard1953}'s data set on the rise of periphrastic `do' which formed the basis of the \\emph{Constant Rate Hypothesis}~\\citep{Kroch1989cr}. Data is shown for contexts in which `do' eventually became mandatory, in particular affirmative questions whether transitive~(\\texttt{AffQTr}) or intransitive~(\\texttt{AffQIn}) as well as negative questions~(\\texttt{NegQ}) and negative declarative sentences~(\\texttt{NegD}).">>=
+defaultpar(pty="s")
+plot(scurves::dataset("Ell53"), contexts=c("AffQTr", "NegQ", "AffQIn", "NegD"))
 @
 
-extracting information from trajectories~\citep{Ghanbarnejad2014}
+This original formulation and testing of the `constant rate hypothesis' is still the primary effort at comparing different rates of changes quantitatively, and the idea that the rollout of categorical changes across different linguistic contexts follows a consistent rule-like pattern has also found tentative confirmation in the study of phonological change~\citep{Fruehwald2009}.
 
-%\subsubsection{Actuation}
+But the fact that historical linguistics research is, at least on a \emph{quantitative} level, largely not cumulative~\citep{Nevalainen2014,Nevalainen2016} means that the empirical basis of the logistic growth assumption has rarely been challenged.
+The lack of systematic and detailed study of its quantitative basis means that there are many very basic open questions regarding the nature and origin of s-shaped transitions, for example whether the particular shape of changes in usage levels can also be found on the level of the individual, or whether they are actually only an artefact of linguistic analyses which are typically based on pooled population-level data~\citep{Denison2003}.
+Equally, thinking about ways to determine growth rates that are adequate to the data, e.g.~by accounting for the fact that data points sampled from an underlying quantity that is undergoing incremental growth are not in fact independent as is assumed by logistic regression, is relatively underdeveloped, and awareness of the need to go beyond the traditional statistical methods of the field is only just beginning to develop~\citep{Winter2016}.
 
-%Another concept that is often used in the context of s-shaped curves is `actuation'
+The fundamental bottleneck in the study of the micro-level diffusion of historical changes, however, appears to be the difficulty of collecting adequate amounts of longitudinal data, with \citet{Blythe2012} identifying only 18~data sets of language changes that covered complete s-shaped curves in a large literature survey.
+Consequently there has, on the whole, not been a lot of interest in (or rather potential for) the cross-linguistic comparison between individual trajectories of unrelated changes, a notable exception being \citet{Ghanbarnejad2014}'s study of some macro-level features of adoption curves for different orthographic conventions.
+Cross-linguistic generalisations, whose results were covered extensively above, are typically limited to determining \emph{what types of changes} occur, but they do not consider the micro-level of how those particular changes unfold over time.
+I will return to this issue in Section~\ref{sec:tworates} to argue that investigating the unfolding of similar changes in different languages can provide useful insights into the different accounts of change that were discussed.
 
-\subsubsection{Open questions}
+%Critiques: \citep[ch.14]{Labov2001}
 
-Critiques: \citep[ch.14]{Labov2001}\citep{Denison2003}%\citep{Tagliamonte2009}
-
-Better way to fit data: growth curve modelling~\citep{Winter2016}
-
-there has, on the whole, not been a lot of interest in cross-linguistic comparison between individual trajectories of changes. Cross-linguistic comparisons are limited to measuring \emph{what types of changes} occur, but they do not consider the micro-level of how those particular changes unfold over time. I will return to this issue in Section~\ref{sec:tworates} to argue that investigating the unfolding of similar changes in different languages can provide useful insights into the different accounts of change that were discussed.
+To summarise, despite the fact that the theoretical motivation for the s-shaped pattern of language changes and the underlying assumption of logistic growth in particular stand on shaky foundations on closer inspection, both have firmly established themselves as cornerstones of research on language change on the micro-level. By providing a generally accepted, quantitative `gold standard' which different accounts of language change can in principle be tested against, the s-shaped curve has also become
+a de-facto criterion to argue for the adequacy of models of language change on a quantitative level~\citep{Kirby1999,Yang2002,Blythe2012}. Given that historical language changes are one off events which do not allow for repetition in controlled laboratory conditions, computational modelling has emerged as a tool to make explicit the quantitative predictions made by different accounts. Since this thesis will also make extensive use of two modelling frameworks, it is worthwhile not just to introduce the two frameworks, but also discuss the role and relevance of mathematical and computational modelling for thinking about language change more generally.
 
 % this acts as a motivation for the next section -> evaluate competing models quantitatively!
