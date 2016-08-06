@@ -1,4 +1,4 @@
-\section[An alternative model of neutral evolution]{An alternative model of neutral evolution: replication of \citet{Reali2010}}
+\section{A Markov chain model of neutral evolution}
 \label{sec:realigriffiths}
 
 One formal model of neutral evolution (i.e. copying of linguistic traits in the absence of any replicator or interactor selection) that makes particular reference to the temporal dynamics of changes is Reali \& Griffiths model of regularisation by Bayesian learners~(\citeyear{Reali2009,Reali2010}).
@@ -26,7 +26,8 @@ with just a single parameter, $\alpha$, which controls the degree of \emph{regul
 <<setup, echo=FALSE, warn=FALSE>>=
 source("../knitr-setup.R")
 @
-<<priors, fig.cap="Examples of Beta distribution priors and posteriors with three different levels of the regularisation parameter~$\\alpha/2$.", fig.subcap=c("Prior distribution", "Posterior distributions after observing $N=10$ data points with various input distributions ($x=5,2,0$), regularisation parameters as in (a).")>>=
+<<priors, fig.cap="Examples of Beta distribution priors and posteriors with three different levels of the regularisation parameter~$\\alpha/2$.", fig.subcap=c("Prior distributions for three different levels of~$\\alpha$.", "Posterior distributions after observing $N=10$ data points with various input distributions ($x=5,2,0$), regularisation parameters as in (a).")>>=
+source("../R/markovchain.R")
 
 plotbeta <- function(alpha, beta, ylab=expression(f(theta)), ...)
   curve(dbeta(x, alpha, beta), xlab=expression(theta), ylab=ylab, ylim=c(0, 4.5), xaxs="i", yaxs="i", ...)
@@ -91,9 +92,7 @@ One way in which the impact of these different ways of sampling data (either dir
 What is evident from Figure~\ref{fig:meanmapping} is that the only method which, \emph{on average}, leads to regularisation is the \emph{maximum a posteriori} method with $\alpha\le 1$. None of the other selection functions are consistently regularising. Rather, as was pointed out by~\citet[p.?]{Ferdinand2015} both data production methods discussed by \citeauthor{Reali2009} rely on mechanisms that merely increase the sample variability \emph{in either direction}, until the system arrives in a state of (near-)categorical presence of one variant only. This contrasts with the regularising mapping functions of the Utterance Selection Model shown in Section~\ref{sec:usmregularisation}, which systematically increase the proportion of whichever variant is currently more prevalent. We will return to a critique of the present regularisation model in the next section. % \citep{Spike??}
 % TODO point out the 1/10 -> 2/10 transition probability
 
-<<meanmapping, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
-source("../R/markovchain.R")
-
+<<meanmapping, warning=FALSE, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
 # TODO should maybe do q-matrices instead, or at least make standard deviations non-symmetric?
 
 plotmeanmapping <- function(markovchain, main=NULL, ...) {
