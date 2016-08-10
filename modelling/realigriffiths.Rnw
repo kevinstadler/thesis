@@ -1,10 +1,10 @@
 \section{A Markov chain model of neutral evolution}
+\index{Bayesian inference}\index{Iterated Learning}
 \label{sec:realigriffiths}
 
-One formal model of neutral evolution (i.e. copying of linguistic traits in the absence of any replicator or interactor selection) that makes particular reference to the temporal dynamics of changes is Reali \& Griffiths model of regularisation by Bayesian learners~(\citeyear{Reali2009,Reali2010}).
+One formal model of neutral evolution (i.e.~copying of linguistic traits in the absence of any replicator or interactor selection) that makes particular reference to the temporal dynamics of changes is Reali \& Griffiths model of regularisation by Bayesian learners~(\citeyear{Reali2009,Reali2010}).
 
-\subsection{Model description}\index{Bayesian inference}\index{Iterated Learning}
-
+%\subsection{Model description}
 At its core, \citeauthor{Reali2009} present a model of frequency learning by Bayesian inference. In their particular framing, an individual is trying to infer the relative frequencies $\theta_i \in [0,1]$ of different variants $i=1\ldots n$ based on some input data as well as prior beliefs about what the true values of $\theta_i$ are likely to be. These prior beliefs act as \emph{inductive biases} and are captured by the \emph{prior}, represented by a probability distribution $f(\vec{\theta})$ defined over all possible values of $\vec{\theta}$.
 
 For the simple case of two competing variants, even though the individual is technically inferring two complementary relative frequencies $\theta_1, \theta_2$, we can limit our analysis to the problem of inferring $\theta_1$, since trivially $\theta_2=1-\theta_1$. The model can easily be extended from the \emph{binomial}~(two-variant) outcome to \emph{multinomial} outcomes, i.e. with three or more competing variants but, without loss of generality, we will limit our demonstration to the case of two competing variants. To simplify notation we will henceforth also write $\theta$ to refer to $\theta_1$.
@@ -92,23 +92,31 @@ One way in which the impact of these different ways of sampling data (either dir
 What is evident from Figure~\ref{fig:meanmapping} is that the only method which, \emph{on average}, leads to regularisation is the \emph{maximum a posteriori} method with $\alpha\le 1$. None of the other selection functions are consistently regularising. Rather, as was pointed out by~\citet[p.?]{Ferdinand2015} both data production methods discussed by \citeauthor{Reali2009} rely on mechanisms that merely increase the sample variability \emph{in either direction}, until the system arrives in a state of (near-)categorical presence of one variant only. This contrasts with the regularising mapping functions of the Utterance Selection Model shown in Section~\ref{sec:usmregularisation}, which systematically increase the proportion of whichever variant is currently more prevalent. We will return to a critique of the present regularisation model in the next section. % \citep{Spike??}
 % TODO point out the 1/10 -> 2/10 transition probability
 
-<<meanmapping, warning=FALSE, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.1$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation."))>>=
+<<meanmapping, warning=FALSE, fig.cap="Input to mean-output mapping for the three ways of producing data from the posterior and three levels of the regularisation parameter. The three settings of $\\alpha$ capture inductive biases ranging from regularisation~($\\frac{\\alpha}{2}=.25$, left column) to de-regularisation ($\\frac{\\alpha}{2}=5$, right column).", fig.subcap=paste("Input/mean output mapping when", c("sampling from the posterior.", "selecting the \\emph{average} of the posterior as the hypothesis. As pointed out by \\citet{Ferdinand2015}, the \\emph{mean} output of this model is identical to that of the sampler shown above, only that the averager exhibits different amounts of sampling error about this mean, depending on the input frequency.", "selecting the \\emph{maximum} of the posterior as the hypothesis~(MAP). With~$\\frac{\\alpha}{2}=1$~(middle panel) this strategy is identical to pure frequency matching, while MAP with $\\frac{\\alpha}{2}<1$~(left panel) is the only strategy that, \\emph{on average}, leads to regularisation in one iteration."))>>=
 # TODO should maybe do q-matrices instead, or at least make standard deviations non-symmetric?
 
-plotmeanmapping <- function(markovchain, main=NULL, ...) {
+plotmeanmapping <- function(markovchain, main=NULL, sigmas=NULL, ...) {
   N <- dim(markovchain) - 1
   means <- rowSums(markovchain[] * rep(0:N, each=dim(markovchain)))
-  # variance like https://en.wikipedia.org/wiki/Poisson_binomial_distribution
-  v <- (1-means/N)*means
-  Hmisc::errbar(0:N, means, means+v, means-v, pch=4, xlim=c(0, N), ylim=c(0, N), xlab="input x", ylab=expression("mean output x' (\u00B1" ~ sigma ~ ")"), ...)
+  if (is.null(sigmas))
+    # variance like https://en.wikipedia.org/wiki/Poisson_binomial_distribution
+    sigmas <- (1-means/N)*means
+  Hmisc::errbar(0:N, means, means+sigmas, means-sigmas, pch=4, xlim=c(0, N), ylim=c(0, N), xlab="input x", ylab=expression("mean output x' \u00B1" ~ sigma), ...)
   title(main=main)
 #  points(0:(dim(markovchain)-1), 0:(dim(markovchain)-1), pch=4)
   lines(c(0, N), c(0, N), lty=2)
 }
 
 tightmargin(mfcol=c(1, 3), pty="s")
-for (alpha in alphas)
-  plotmeanmapping(bilm.transition.matrix.sample(N, alpha), main=formatalpha(alpha))
+for (alpha in alphas) {
+  # beta-binomial posterior: a=x+alpha/2, b=N-x+alpha/2 (and N=N obvsly.)
+  # mean=n*a/(a+b)=n*(x+alpha/2)/(n+alpha)=...
+  # variance=n*a*b*(a+b+n)/((a+b)^2*(a+b+1))
+  a <- 0:N + alpha/2
+  b <- N:0 + alpha/2
+  vs <- N*a*b*(a+b+N) / ((a+b)^2 * (a+b+1))
+  plotmeanmapping(bilm.transition.matrix.sample(N, alpha), main=formatalpha(alpha), sigmas=sqrt(vs))
+}
 for (alpha in alphas)
   plotmeanmapping(bilm.transition.matrix.average(N, alpha), main=formatalpha(alpha))
 for (alpha in alphas)
@@ -184,7 +192,7 @@ N <- 50
 ngenerations <- 50
 @
 
-The stationary distributions confirm that the parameter~$\alpha$ indeed works as intended: when $\alpha/2<1$, the chains spend most of their time in the extreme states corresponding to (near-)categorical usage of either of the two competing variants. %As the sample size $N$ increases 
+The stationary distributions confirm that the parameter~$\alpha$ indeed works as intended: when $\alpha/2<1$, the chains spend most of their time in the extreme states corresponding to categorical usage of either of the two competing variants. %As the sample size $N$ increases 
 When $\alpha/2>1$, on the other hand, the chains mostly consist of learners who mix the variants evenly. The behaviour with intermediate values $\alpha/2\approx1$ falls in between, with the exact distribution also depending on the type of learners.
 
 The MAP learner, not considered in the original \citeauthor{Reali2009} papers, deserves special attention: as already hinted at above, only this learning strategy looks like a proper \emph{regulariser} in the sense that an input proportion will, \emph{on average}, result in an output proportion that is in fact more regular than the input. It is also the only learning strategy which, for any $\alpha/2\le1$, does not introduce variation when there isn't any in the input, i.e.~learners who receive homogeneous input will never spontaneously introduce variation into their output. Figure~\ref{fig:stationarydistribution3} shows that, as a consequence, chains of such learners will end up in either of two \emph{absorbing states} corresponding to categorical usage of a variant, and remain there indefinitely.
@@ -192,7 +200,6 @@ The MAP learner, not considered in the original \citeauthor{Reali2009} papers, d
 \subsection{Neutral evolution and s-shaped curves}
 
 So far our analysis of the stationary distribution limits us to describing the expected state of a model, but abstracted away from time.
-
 One particular claim of \citet{Reali2010} concerning temporal dynamics is that even the neutral evolution model described by Bayesian regularisers will produce s-shaped curves. While we would not expect completely symmetric replication such as produced by neutral evolution to produce particularly directed transitions, they argue that this depends on which data is considered. In particular, since historical linguists only (or at least primarily) describe changes which have gone to completion, our assessment of whether a model produces s-shaped curves should equally be limited to data of this kind. They consequently go on to analyse only those chains that start off in a state where the first generation uses one of the competing variants categorically, while the last ends up in the opposite state where its productions contain only the other variant.
 
 In order to get a better understanding of the underlying dynamics of our Markov model, we will therefore need to switch to an analysis that allows us to condition the Markov chains to be in specific states at specific points in time. One tool to do exactly this are \emph{Hidden Markov Models}~(HMMs). As the name suggests, HMMs are closely related to the Markov models described above. While in `normal' Markov chains the state sequence is directly visible to the observer, Hidden Markov Models allow us to specify a certain level of uncertainty over the model's state at any given point in time. Of particular importance to is that, instead of just randomly generating state sequences, HMMs allow us to make probabilistic inferences about the most likely states or state sequences that our model is likely to be in.
@@ -289,8 +296,7 @@ In terms of the distribution of durations of those transitions which \emph{are} 
 For the \emph{sampler} the values are even lower~(mode \Sexpr{samplerstats[["mode"]]}, mean~\Sexpr{round(samplerstats[["mean"]])}).
 
 Figure~\ref{fig:doubleconditioned} shows the state probability distribution as well as average trajectory of the Markov chains which are conditioned on introducing the initially unattested variant in the very first generation, as well as on only tokens of that variant at the maximum number of generations (and no earlier), without ever returning to the initial state.
-Results are shown for both \emph{sampling}~(Figure~\ref{fig:doubleconditioned1}) as well as \emph{averaging}~(Figure~\ref{fig:doubleconditioned2}) learners as well as for two different representative durations, the most likely duration of a transition~(the mode of the distributions in Figure~\ref{fig:complexconditioningprobabilities}) as well as the~(higher) \emph{mean} duration. %for a transition using the given parameters)
-
+Results are shown for both \emph{sampling}~(Figure~\ref{fig:doubleconditioned1}) as well as \emph{averaging}~(Figure~\ref{fig:doubleconditioned2}) learners for two different representative durations, the most likely duration of a transition~(the mode of the distributions in Figure~\ref{fig:complexconditioningprobabilities}) and the~(higher) \emph{mean} duration. %for a transition using the given parameters)
 The Figure shows that the average of all transitions, again indicated by the dashed white line, is actually more like an~$S$ bent in the `wrong' direction. In other words, unlike what we find in empirical data on language changes, some of the slowest rates of growth occur at the mid-point of the change, similar to the average transition of chains of \emph{de-regularising} learners shown in Figure~\ref{fig:naiveconditioning2}.
 
 % fig.scap="State probability distribution for all Markov chains exhibiting a transition with the exact same duration."
@@ -305,8 +311,8 @@ plotposterior(exactconditioning(averager, averagerstats[1]), addmostlikely=TRUE,
 plotposterior(exactconditioning(averager, averagerstats[2]), addmostlikely=TRUE, main="(ii)")
 @
 
-What Figure~\ref{fig:doubleconditioned} also shows up, however, is that even using this arguably more accurate conditioning on exact start and end points of the transitions as well as on a more realistic time scale, the average trajectory is still not an accurate representation of a typical trajectory. Marked by the white dots is one of the \emph{most likely} individual trajectories that the Markov chain passes through on its way from the initial to the final state, as determined using the Viterbi algorithm for Hidden Markov Models~\citep{Jurafsky2008}.
-This sequence of state transitions which has the highest overall likelihood of all possible paths is one that rapidly crosses the mixed-usage area in 10-15~generations, and remains hovering at near-categorical usage of either variant for the rest of the time. (It should be noted that the exact position of this fast transition along the time axis is irrelevant, in fact all transitions \emph{parallel} to the one indicated by the dots, i.e.~ones with the same shape but actuating at earlier or later generations, have the exact same probability of occurring.)
+What Figure~\ref{fig:doubleconditioned} also shows up, however, is that even using this arguably more accurate conditioning on exact start and end points of the transitions as well as on a more realistic time scale, the average trajectory is still not an accurate representation of a typical trajectory. Marked by the white dots is one of the \emph{most likely} individual trajectories that the Markov chain passes through on its way from the initial to the final state. This trajectory is determined using the \emph{Viterbi algorithm}~\citep{Jurafsky2008}, a dynamic programming algorithm for Hidden Markov Models that allows one to infer the most likely sequence of states given a sequence of observations which are only somewhat informative about the underlying states. The algorithm can be used for our purposes by providing it with a sequence of observations that indicate categorical usage of one variant at the start and categorical usage of the other at the end of the sequence, with a fixed number of observations representing an unspecified degree of mixed usage in between~(the source code as well as a more detailed description of the approach can be found in Appendix~\ref{app:markovmodel}).
+The sequence of underlying state transitions which has the highest overall likelihood of all possible paths given these observations is one that rapidly crosses the mixed-usage area in 10-15~generations, and remains hovering at near-categorical usage of either variant for the rest of the time. (It should be noted that the exact position of this fast transition along the time axis is irrelevant, in fact all transitions \emph{parallel} to the one indicated by the dots, i.e.~ones with the same shape but actuating at earlier or later generations, have the exact same probability of occurring.)
 
 %Even the average of these more strictly conditioned trajectories doesn't look particularly s-shaped anymore. Moreover, while shorter transitions (like ones of the length of the mode, left figure) still have the fastest rate of change at the mid-point, \emph{longer} 
 
@@ -321,7 +327,6 @@ tightmargin(mfrow=c(1, 2), pty="s")
 plotchains(generate.transitioning.chains.exact(averager, averagerstats[1], nchains), main="(i)")
 plotchains(generate.transitioning.chains.exact(averager, averagerstats[2], nchains), main="(ii)")
 @
-To summarise, neither the dynamics of individual transitions, nor a closer investigation of the \emph{average} trajectories under different conditioning assumptions suggests that this model of neutral evolution based on regularising Bayesian learners exhibits particularly s-shaped curves.
 
 \subsection{Effect of sample size on the duration of transitions}
 
@@ -350,22 +355,20 @@ averager <- sapply(Ns, function(N) completionstats(bilm.transition.matrix.averag
 # map <- sapply(Ns, function(N) completionstats(bilm.transition.matrix.map(N, alphas[1]), 3*N))
 
 tightmargin(pty="s")
-plot(Ns, averager["mean",], xlab="N", ylab="average/most likely duration until first transition completes", pch=2, ylim=c(0, max(averager["mean",])))
+plot(Ns, averager["mean",], xlab="N", ylab="average/most likely duration until first transition completes", pch=2, ylim=c(0, 1.15*max(averager["mean",])))
 points(Ns, averager["mode",], pch=3)
 points(Ns, sampler["mean",], pch=4)
 points(Ns, sampler["mode",], pch=5)
-legend("topleft", pch=2:5, legend=c("mean (average of the posterior)", "mode (average of the posterior)", "mean (sampling from posterior)", "mode (sampling from posterior)"))
+legend("topleft", pch=2:5, legend=c("mean (average of the posterior)", "mode (average of the posterior)", "mean (sampling)", "mode (sampling)")) #  from posterior
 @
 
-Whichever way the parameter is to be construed, its setting does affect not just the likelihood of transitions occurring, but also the transitions' duration and shape. The parameter's effect on the average as well as most likely duration of directed transitions in chains of learners is shown in Figure~\ref{fig:realipopulationsize}, showing linear trends for all measures. TODO
-%TODO compare with USM neutral evolution result both in+not in divided subpopulations? \citep{Blythe2007divided} Is this meaningful when the USM does typically not incorporate mutation?
+Whichever way the parameter is to be construed, its setting does not just affect the likelihood of transitions occurring, but also the transitions' duration and shape. The parameter's effect on the average as well as most likely \emph{duration} of completed transitions in chains of learners is shown in Figure~\ref{fig:realipopulationsize}. In all cases, $N$~shows a linear relationship with the time until fixation for all measures with varying slopes, a result that is in line with findings for expected diffusion times obtained from other general models of neutral evolution~\citep{Kimura1969}. %Blythe2007divided
 
 %Even under this very different type of model we can reproduce the results from the neutral evolution regime of the Utterance Selection Model as discussed in Section~\ref{sec:usmneutral}: the duration of transitions from (near)-categorical usage of one variant to another under neutral evolution, where neither variant has any selection bias acting in their favour, increases linearly with the size of the population.
 
-\subsection{Conclusion}
+\subsection{Summary}
 
-Neutral evolution, whether with or without regularisation, doesn't make for particularly beautiful or directed s-shaped curves.
-
-Crucially, for the sake of analysis, when one is interested in the \emph{temporal dynamics} of a system it is indispensable to look not only at the end states or average dynamics as a shortcut, but to instead do a more exhaustive analysis of the actual dynamics and \emph{typical} transitions.
-
-%Also, in agreement with the neutral evolution condition as implemented in the Utterance Selection Model, the expected duration of a transition from categorical use of one variant to categorical use of another increases linearly with population/memory size.
+To complement the study of various different replication regimes implement in the USM framework earlier, I presented a replication of \citeauthor{Reali2009}'s Markov model of neutral evolution with symmetric innovation, a model that has been used to make concrete claims about the possibility of s-shaped transitions in the absence of asymmetry between variants~\citep{Reali2010}.
+However, neither the dynamics of individual transitions, nor a closer investigation of the \emph{average} trajectories under different conditioning assumptions suggests that this model of neutral evolution based on regularising Bayesian learners exhibits curves that are particularly directed, instead producing noisy transitions with frequent reversals and restarts.
+Also, in agreement with other models of neutral evolution, the expected duration of a transition from categorical use of one variant to categorical use of another increases linearly with the population/memory size parameter.
+Another important conclusion regarding modelling more generally is that, when one is interested in the \emph{temporal dynamics} of a system it is indispensable to look not only at the end states or average dynamics as a shortcut, but that a more exhaustive analysis of the actual dynamics and \emph{typical} transitions is required.

@@ -1,0 +1,92 @@
+These intermediate plots~(call them~$g_T(u)$) are crucial in understanding the analytical solutions that can be derived for the trajectories for different $f(u)$. The mathematical appendix to~\citet{Blythe2012} lays out how we can derive these solutions: given a function of the general form $f(u)=u+\lambda g(u)$ the main change of speaker frequency in one interaction (given the homogeneity principle) is:
+
+$$\langle(x_i'-x_i)\rangle=\lambda^2 \langle g(\frac{n_i}{T})\rangle + O(\lambda^3)$$
+
+The deterministic mean-field equation is thus
+
+$$\frac{d}{dt}x(t)=2\langle g(\frac{n}{T})\rangle$$
+
+i.e. the average trajectory is simply dependent on the average of the function $g(u)$ over the distribution of token productions for a given current population mean $x$. Assuming that tokens are produced independently, this is a binomial distribution with $n=T$ and $p=x$. Filling in the two different replicator biases~(original multiplicative and additive) and solving the differential equations for them we can thus deduce the average trajectories of the biases for different~$T$.
+
+\subsubsection{Multiplicative replicator selection}
+
+Assuming that $b_m$ is sufficiently small so that $g(\frac{n}{T})=\frac{b_m}{\lambda}\frac{n_i}{T}$ for all $n_i<T$~(i.e. that the biased value $(1+b_m)\frac{T-1}{T}$ never exceeds the maximum of $1$ which is true as long as $b\le\frac{1}{T-1}$), we can write the average of $g(u)$ as:
+
+$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=0}^{T-1} P_b(n)\frac{n}{T}=\frac{b}{\lambda}[\langle\frac{n_i}{T}\rangle - P_b(T)]$$
+
+The term $P_b(T)$ subtracted is exactly that 'capping' term that substracts diminishing returns of biases as there is less and less 'space' for it to apply given almost-categorical use.
+
+$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}x(1-x^{T-1})$$
+
+and thus
+
+$$\frac{d}{dt}x(t)=\frac{2b}{\lambda}x(1-x^{T-1})$$
+
+solving the differential equation
+
+$$\frac{1}{x(1-x^{T-1})}dx(t)=\frac{2b}{\lambda}dt$$
+
+To be able to integrate the left fraction we have to separate the two elements in the denominator via:
+
+$$\frac{1}{x(1-x^{T-1})}=\frac{A}{x}+\frac{Bx^{T-2}}{1-x^{T-1}}$$
+
+i.e. we are looking for values $A, B$ which satisfy $A(1-x^{T-1})+Bx^{T-2}x=A-Ax^{T-1}+Bx^{T-1}=1$. For the two $x^{T-1}$ terms to cancel each other out we need $A=B$, and moreover $A=1$ for the equation to be true. This gives us:
+
+$$\int(\frac{1}{x} + \frac{x^{T-2}}{1-x^{T-1}})=\frac{2bt}{\lambda}$$
+
+the right fraction has to be integrated using the chain substitution rule, where we take $y=1-x^{T-1}$ and consequently $\frac{dy}{dx}=-(T-1)x^{T-2}$ and $dy=-(T-1)x^{T-2}dx$
+
+$$\int\frac{x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{-(T-1)x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{1}{y}dy=\frac{1}{-(T-1)}\ln|y|=\frac{\ln|1-x^{T-1}|}{-(T-1)}$$
+
+So we have
+
+$$\ln|x|-\frac{\ln|1-x^{T-1}|}{T-1}=\frac{2bt}{\lambda}+c$$
+
+for $t=0$ we find:
+
+$$c=\ln|x_0|-\frac{\ln|1-x_0^{T-1}|}{T-1}$$
+$$C=\frac{x_0}{(1-x_0^{T-1})^\frac{1}{T-1}}$$
+%$$C=\log\frac{x}{(1-x^{T-1})^\frac{1}{T}}=\log|x|-\log|(1-x^{T-1})^{1/T}|=\log|x|-\frac{1}{T}\log|(1-x^{T-1})|$$
+
+$$\frac{|x|}{|1-x^{T-1}|^\frac{1}{T-1}}=C\exp^{2bt/\lambda}$$
+
+$$x=C\exp^{2bt/\lambda}|1-x^{T-1}|^\frac{1}{T-1}$$
+
+$$x^{T-1}=C^{T-1}\exp^{(2bt/\lambda)(T-1)}(1-x^{T-1})$$
+
+$$x^{T-1}(1+C^{T-1}\exp^{(2bt/\lambda)(T-1)})=C^{T-1}\exp^{(2bt/\lambda)(T-1)}$$
+
+$$x^{T-1}=\frac{C^{T-1}\exp^{(2bt/\lambda)(T-1)}}{1+C^{T-1}\exp^{(2bt/\lambda)(T-1)}}=\frac{C^{T-1}}{1-\exp^{-(2bt/\lambda)(T-1)}}$$
+
+Substitute $C^{T-1}=\frac{x_0^{T-1}}{1-x_0^{T-1}}$ from above and we arrive at
+
+$$x^{T-1}=\frac{\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{(2bt/\lambda)(T-1)}}{1+\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{(2bt/\lambda)(T-1)}}$$
+
+$$x^{T-1}=\frac{x_0^{T-1}}{(1-x_0^{T-1})\exp^{(-2bt/\lambda)(T-1)}+x_0^{T-1}}$$
+
+%$$x^{T-1}=\frac{1}{1-\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{-(2bt/\lambda)(T-1)}}=\frac{1}{1-\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{-(2bt/\lambda)(T-1)}}$$
+
+%$$x=C\exp^{-(2bt/\lambda)}$$ % (1+C^{T-1}\exp^{(2bt/\lambda)(T-1)})^{\frac{1}{T-1}}
+
+%$$x=\frac{C^{T-1}\exp^{(2bt/\lambda)}}{(1+C^{T-1}\exp^{(2bt/\lambda)(T-1)})^\frac{1}{T-1}}$$
+
+$$x(t)=\frac{x_0}{(x_0^{T-1}+(1-x_0)^{T-1}\exp^{-2(T-1)bt/\lambda})^\frac{1}{T-1}}$$
+
+\subsubsection{Additive replicator selection}
+$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=0}^{T-1} P_b(n)=\frac{b}{\lambda}[1-P_b(T)-P_b(0)]=\frac{b}{\lambda}[1-x^T-(1-x)^T]$$
+
+$$\frac{d}{dt}x(t)=\frac{2b}{\lambda}(1-x^T-(1-x)^T)$$
+$$\frac{1}{1-x^T-(1-x)^T}dx=\frac{2b}{\lambda}dt$$
+
+at least for the cases $T=2,3$ Wolfram Alpha tells me that the integral of this is
+$$\frac{1}{T}(\log(x)-\log(1-x))=\frac{2bt}{\lambda}+c$$
+
+$$\frac{x}{1-x}=\exp^{cT}\exp^{2btT/\lambda}$$
+
+$$C=\exp^{cT}=\frac{x_0}{1-x_0}$$
+
+$$x=\frac{C\exp^{2btT/\lambda}}{C\exp^{2btT/\lambda}+1}$$
+
+$$x(t)=\frac{x_0}{x_0+(1-x_0)\exp^{-2btT/\lambda}}$$
+
+which is in fact identical to logistic growth with growth rate~$r=-\frac{2bT}{\lambda}$
