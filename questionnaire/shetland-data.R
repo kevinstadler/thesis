@@ -1,9 +1,9 @@
 vars <- c("imp", "ynq", "whq", "neg")
-varcolors <- c("darkgrey", "orange", "blue", "green")
+varcolors <- c("orange", "blue", "green", "darkgrey")
 names(varcolors) <- vars
-changingcolors <- varcolors[2:4]
+changingcolors <- varcolors[1:3]
 longvars <- c(imp="imperatives", ynq="yes/no questions", whq="wh questions", neg="negation")
-vardesc <- c(imp="Imperatives", ynq="yes/no questions", whq="Wh questions", neg="Negation (stable control)")
+vardesc <- c(imp="imperatives", ynq="yes/no questions", whq="wh questions", neg="negation (stable control)")
 
 lvls <- c("onlyout", "moreout", "both", "morein", "onlyin")
 collapsedlvls <- c("fewin", "morein", "onlyin")

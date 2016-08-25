@@ -8,7 +8,7 @@ The version of the Utterance Selection Model~(USM) discussed here grew out of \c
 
 At its core, every agent in the USM is completely characterised by its variable use over variants, specified by the proportions with which each variant is used, all of which together sum to~1. For sake of simplicity we will limit ourselves to the canonical case of two competing variants, where the behaviour of an agent~$i$ can be captured by a single variable~$0<x_i<1$ representing its relative usage level of the incoming variant, with that of the competing variant taken to be~$1-x_i$.
 
-The primary contribution of the computational USM is that it provides a well-defined and rich framework to study the dynamics of these internal usage levels as they are influenced by observing realisations of the same linguistic variable in interactions with other speakers in the environment. The USM 
+The primary contribution of the computational USM is that it provides a well-defined and rich framework to study the dynamics of these internal usage levels as they are influenced by observing realisations of the same linguistic variable in interactions with other speakers in a population. % TODO The USM 
 
 \subsection{Model parameters of the USM}
 
@@ -16,44 +16,44 @@ The primary contribution of the computational USM is that it provides a well-def
 
 Following an interaction, the agents update their internal frequency according to the following USM update rule, which is again applied for both agents~\citep[p.4]{Baxter2006}:
 %\cite[p.4]{Baxter2006}:
-\begin{equation}\label{eq:usm}
-x_i' = \frac{x_i+\lambda y_i}{1+\lambda}
+\begin{equation}\label{eq:usm1}
+x_i' = \frac{x_i+\lambda\cdot y_i}{1+\lambda}\;,
 \end{equation}
+where $y_i$ is the subjective \emph{perceived frequency} of the variable usage rate, whose computation will be discussed below.
 
 %$$x_i' = \frac{x_i+\lambda((1-H_{ij})n_i+H_{ij}n_j)}{1+\lambda} = \frac{x_i}{1+\lambda} + \frac{\lambda(\dots)}{1+\lambda}$$% H_{ij} \in [0,1]$$
-
 %$$H_{ij} = \lambda h$$
 
-Perhaps the most important model parameter is the agents' learning rate~$\lambda$, which is by default assumed to be the same for all agents. What the USM's update rule in Equation~\ref{eq:usm} does is change an agent's internal frequency~$x_i$ by shifting it a small step towards the relative perceived frequency that it observed in its most recent interaction.
+Perhaps the most important model parameter is the agents' learning rate~$\lambda$, which is by default assumed to be the same for all agents. What the USM's update rule in Equation~\ref{eq:usm1} does is change an agent's internal frequency~$x_i$ by shifting it a small step towards the relative perceived frequency that it observed in its most recent interaction.
 The higher the learning rate, the larger the step towards this target frequency: at~$\lambda=0$ there is no learning and the agent remains at their initial frequency forever, as~$\lambda\rightarrow\infty$, the agent approaches a regime in which they instantly adopt exactly those usage frequencies observed in their last interaction.
 While there are instantiations of the USM in which the learning rate for individual agents is not constant but \emph{decreases} over time to imitate the effect of increasing rigidity of language use with age~\citep{Baxter2016}, this thesis will be concerned with the simpler case of a constant learning rate that is identical for all agents in the population.
-Since we are mostly interested in reliable model behaviour that exhibits gradual assimilation rather than abrupt and erratic behaviour, like most investigations of the USM we will limit ourselves to low values in the range of~$\lambda\le0.01$).
+Since we are mostly interested in reliable model behaviour that exhibits gradual assimilation rather than abrupt and erratic changes in individual usage levels, like most investigations of the USM we will limit ourselves to low values in the range of~$\lambda\le0.01$).
 
-It should be acknowledged that the particular form of the learning rule was partly chosen due to its mathematical properties, which make it amenable to analysis using tools from statistical physics~\citep[see in particular][]{Baxter2006}. To get a more intuitive understanding of what the update rule does in terms of agents' learning dynamics, it is worth noting that it is equivalent to defining an agent's usage levels as an exponentially weighted moving average~(EWMA) over its learning input data series of perceived frequencies~$y_t$.
-EWMAs themselves are a generalisation of Bush-Mosteller learning~\citep{Bush1955} for non-discrete input datapoints which, rather than employing a fixed time window to average over, always gives relatively more weight to the most recent data points, with the absolute contributions of individual learning samples decaying over time.
-Upon receiving a new data point~(indicating a certain usage level observed in an interaction)~$y_t$, the agent updates their own usage level~$x$ according to
+It should be acknowledged that the particular form of the learning rule was partly chosen due to its mathematical properties, which make it amenable to analysis using tools from statistical physics~\citep[see in particular][]{Baxter2006}. To get a more intuitive understanding of what the update rule does in terms of agents' learning dynamics, it is worth noting that it is equivalent to defining an agent's usage levels as an exponentially weighted moving average~(EWMA) over its learning input data series of perceived frequencies~$\vec{y}$.
+EWMAs themselves are a generalisation of Bush-Mosteller learning~\citep{Bush1955} for non-discrete input data points which, rather than employing a fixed time window to average over, always gives relatively more weight to the most recent data points, with the absolute contributions of individual learning samples decaying over time.
+Upon receiving a new data point~$y$ indicating a certain usage level observed in an interaction, the agent updates their own usage level~$x$ according to
 
 \begin{equation}
-x_t = (1-\alpha)\cdot x_{t-1} + \alpha\cdot y_t\;.
+x' = (1-\alpha)\cdot x + \alpha\cdot y\;.
 \end{equation}
 
+This representation of the learning rule makes it clear that the agent's own usage level is simply a moving overage over the perceived frequencies it observes in interactions, where $\alpha$ controls the relative weight of the newest data point toward that moving average.
 %At time $t$ datum $y_{t-i}$ has weight $\alpha(1-\alpha)^{i-1}$,
-This formulation is equivalent to the USM formulation in Equation~\ref{eq:usm} given
+This formulation is equivalent to the original USM updating rule in Equation~\ref{eq:usm1} given
 
 \begin{equation}
 \alpha = \frac{\lambda}{1+\lambda}
 \end{equation}
 \begin{equation}
-\lambda = \frac{\alpha}{1-\alpha}\;.
+\lambda = \frac{\alpha}{1-\alpha}\;,
 \end{equation}
-
-The only difference between the two formulations is therefore a rescaling of the parameter space from $\lambda\in[0,\infty)$ to $\alpha\in[0,1]$, as shown in Figure~\ref{fig:mapping}.
+the only difference being a rescaling of the parameter space from $\lambda\in[0,\infty)$ to $\alpha\in[0,1]$, as shown in Figure~\ref{fig:mapping}.
 
 <<setup, echo=FALSE>>=
 source("../knitr-setup.R")
 @
 
-<<mapping, fig.cap='Mapping between the $\\alpha$ and $\\lambda$ parameter spaces, $\\alpha = \\frac{\\lambda}{1+\\lambda}$ or $\\lambda = \\frac{\\alpha}{1-\\alpha}$, respectively. $\\lambda = 0$ corresponds to $\\alpha = 0$, $\\lambda = 1$ to $\\alpha = 0.5$, and $\\alpha = 1$ to the limit of $\\lambda\\rightarrow\\infty$.'>>=
+<<mapping, fig.scap="Mapping between the two USM learning rate parameter spaces", fig.cap='Mapping between the $\\alpha$ and $\\lambda$ parameter spaces, $\\alpha = \\frac{\\lambda}{1+\\lambda}$ or $\\lambda = \\frac{\\alpha}{1-\\alpha}$, respectively. $\\lambda = 0$ corresponds to $\\alpha = 0$, $\\lambda = 1$ to $\\alpha = 0.5$, and $\\alpha = 1$ to the limit of $\\lambda\\rightarrow\\infty$.'>>=
 # It should be noted that for our purposes only values of $\\lambda\\ll 1$ are of interest, so the only region which we really care about is the left half of the subfigure~(b).
 
 lambdatoalpha <- function(lambda) lambda/(1+lambda)
@@ -92,7 +92,7 @@ Since this thesis will not investigate the effect of either network structures o
 The parameter~$H$ in Equation~\ref{eq:perceivedfrequency} above is a square matrix which specifies the weights that all ordered pairs of individual agents give to each others' productions, with $H_{ij} \in [0,1]$. At the extreme of $H_{ij}=0$, agent~$i$ completely discards any input it receives from agent~$j$ and its perceived frequency~$y_i$ is consequently completely determined by its own productions.
 A value of $H_{ij}=0.5$ would give equal weight to both the speaker's and the listener's production in an interaction. By employing different values in the cells of $H$~(in particular by setting pairs of agents' mutual accommodation parameters $H_{ij}, H_{ji}$ unequal), the matrix can be used to model asymmetries in adoption structures in a population, as well as increased influence of some individuals' usage levels as a form of individual~(rather than variant) prestige, a mechanism that will be explored below.
 
-Beyond using~$H$ to introduce individual differences, it is also possible to set uniform accommodation behaviour by setting all matrix values $H_{ij}$ to the same fixed constant~$h\in[0,1]$. The degree of accommodation only affects the USM's dynamics when there are systematic differences in usage levels within the population, which could be due to inter-individual differences such as age-stratified populations or differing variant selection biases~\citep{Baxter2016} or otherwise due to clusters or differences in the degree of connectivity in a social network, cases which have only been investigated sparely~\citep{Blythe2007divided,Michaud2017}.
+Beyond using~$H$ to introduce individual differences, it is also possible to set uniform accommodation behaviour by setting all matrix values $H_{ij}$ to the same fixed constant~$h\in[0,1]$. The degree of accommodation only affects the USM's dynamics when there are systematic differences in usage levels within the population, which could be due to inter-individual differences such as age-stratified populations or differing variant selection biases~\citep{Baxter2016} or otherwise due to clusters or differences in the degree of connectivity in a social network, cases which have only seen limited investigation so far~\citep{Blythe2007divided,Michaud2017}.
 Since this thesis will not be concerned with inter-individual differences or stratified network structures, all simulations will be performed so that agents are set to only align with their interlocutor and not to their own productions, equivalent to~$h=H_{ij}=1$ for all~$i,j$.
 
 \subsubsection{Production sample resolution $T$}
@@ -125,7 +125,7 @@ Having covered the general mechanism of the USM, we can now investigate the pred
 
 %Neutral evolution and the dynamics of the USM's minimal assumptions: interactions of $\lambda$, $x$, and new input $n$
 
-While the USM's updating rule given in Equation~\ref{eq:usm} is very general and allows for a vast number of modifications through the additional parameters, it is interesting to analyse the model's learning dynamics in the absence of any pressures of either innovation or differential replication.
+While the USM's updating rule given in Equation~\ref{eq:usm1} is very general and allows for a vast number of modifications through the additional parameters, it is interesting to analyse the model's learning dynamics in the absence of any pressures of either innovation or differential replication.
 This \emph{neutral evolution} condition, so-called because it is based on completely neutral replication of existing traits from the population according to their current prevalence~\citep{Blythe2012neutral}, is achieved by using the identity function
 \begin{equation}
 f(u) = u
@@ -141,7 +141,7 @@ Using this simple assumption, we can investigate when the agents' internal~$x$~v
 Firstly, Figure~\ref{fig:singledxpern} shows the point change away from a internal usage proportion~$x=0$ for different input data points~$y$ as a function of the agent's learning rate~(plots are provided for both the $\alpha$ as well as the~$\lambda$ formulation of the learning rate).
 The equal spacing between the curves for different~$y$ means that the impact of different input data points is proportional to their difference to the agent's internal value~$x$.
 
-<<singledxpern, fig.cap='Absolute point change to $x$ for different learning rates with the same initial value $x=0$ given different input datapoints~$y$. Left: absolute point change as a function of the learning rate~$\\alpha$. Given an x value at one extreme and input data at the other, the maximum change to x is equal to $\\alpha$. Right: absolute point change as a function of the learning rate~$\\lambda$.'>>=
+<<singledxpern, fig.cap="Absolute point change to the agent's usage rate for different learning rates with the same initial value $x=0$ given different input datapoints~$y$. Left: absolute point change as a function of the learning rate~$\\alpha$. Given an x value at one extreme and input data at the other, the maximum change to x is equal to $\\alpha$. Right: absolute point change as a function of the learning rate~$\\lambda$.">>=
 ns = c(1, 0.75, 0.5, 0.25, 0)
 #barplot(dx, beside=TRUE, yaxt='n', ylab='absolute change dx', names.arg=sapply(x0s, Curry(paste, 'x=', sep='')), legend=sapply(ns, Curry(paste, 'n=', sep='')), args.legend=list(x='topright'))
 #axis(2, at=seq(-0.25, 0.5, 0.25), labels=c(expression(-lambda/4), 0, expression(lambda/4), expression(lambda/2)))
@@ -167,7 +167,7 @@ Generally, given our EWMA update rule we find that
 \Delta x = x'-x = \alpha\cdot n + (1-\alpha)\cdot x - x = \alpha\cdot(n-x)\;,
 \end{equation}
 i.e.~the point change to~$x$ is always directly proportional to the difference between the agent's current usage level~$x$ and the input data~$y$.
-The USM's individual agent update dynamics therefore follow a general learning framework that is free from nonlinearities and which, in the absence of any biasing, has been shown to be equivalent to several other models of neutral evolution in biology~\citep{Blythe2007divided}, and whose dynamics are not significantly affected by setting the neutrally copying agents in many different types of structured networks~\citep[but see \citealt{Kauhanen2016}]{Blythe2012copying,Michaud2017}.
+The USM's individual agent update dynamics therefore follow a general learning framework that is free from nonlinearities and which, in the absence of any biasing, has been shown to be equivalent to several other models of neutral evolution in biology~\citep{Blythe2007divided}, and whose dynamics are not significantly affected by setting the neutrally copying agents in many different types of structured networks~\citep[but see \citealt{Kauhanen2016}]{Blythe2010,Blythe2012copying}.
 %, but how are the individual interactions and their resulting perceived frequencies~$y_i$ and~$y_j$ determined?
 
 Due to the complete lack of asymmetries in the neutral evolution condition its underlying mechanism, often referred to as ``random copying'', has scarcely been proposed to be the underlying force of language change, or even cultural change more generally~\citep{Mesoudi2009}.
@@ -180,11 +180,10 @@ While the term selection is often associated with a preference for particular va
 \begin{equation}\label{eq:usmregularisation}
 f(u) = u + a\cdot u\cdot (1-u)\cdot(2u-1)\;,
 \end{equation}
-
 where values of the parameter~$a>0$ lead to a \emph{boost} of variants whose relative frequency is already greater than~$50\%$, while settings of~$a<0$ implement selection in favour of any variants currently in the minority.
 The two regimes of this non-linear selection function are displayed in Figure~\ref{fig:usmregularisation1}, giving a visual sense of the function's symmetry: mirroring the plots along both axes yields an identical curve, an indication that, mathematically, the function satisfies the symmetry criterion $f(u) = 1 - f(1-u)$~\citep{Blythe2012}.
 
-<<usmregularisation, fig.cap="The dynamics of frequency-dependent selection as implemented in the utterance selection model through Equation~\\ref{eq:usmregularisation}.", fig.subcap=c("The frequency-dependent selection mapping function from Equation~\\ref{eq:usmregularisation} against the baseline of neutral evolution, $f(u)=u$, indicated by the dotted line. \\emph{(i)}~conformity copying with $a=1$: all input frequencies $u>.5$ are mapped to even higher perceived frequencies so that~$f(u)>u$. \\emph{(ii)}~anti-conformity copying with $a=-.5$, leading to the opposite effect.", "Mean expected change to an agent's usage level~$x$ for different values of~$T$, assuming learning rate~$\\lambda=1$.")>>=
+<<usmregularisation, fig.cap="The dynamics of frequency-dependent selection as implemented in the utterance selection model through Equation~\\ref{eq:usmregularisation}.", fig.subcap=c("The frequency-dependent selection mapping function from Equation~\\ref{eq:usmregularisation} against the baseline of neutral evolution, $f(u)=u$, indicated by the dotted line. \\emph{(i)}~conformity copying with $a=1$: all input frequencies $u>.5$ are mapped to even higher perceived frequencies so that~$f(u)>u$. \\emph{(ii)}~anti-conformity copying with $a=-.5$, leading to an effect in the opposite direction.", "Mean expected change to an agent's usage level~$x$ for different values of~$T$, assuming learning rate~$\\lambda=1$.")>>=
 # The higher~$T$, the more points in the
 lplot <- function(...) plot(..., type='l')
 lplot2 <- function(...) lplot(..., lty=3) # dotted lines as default alternative, 2 for dashed
@@ -236,7 +235,7 @@ Particularly at low values, $T$~can therefore have a drastic impact on the dynam
 
 Using Equation~\ref{eq:usmdiff} we can then determine the average change to an agent's usage level for some constant learning rate, which is plotted in Figure~\ref{fig:usmregularisation2}. The first striking observation is that, for~$T=2$, the mean expected change~$\Delta x$ is~0 for the entire range of values of~$x$, i.e.~the model is equivalent to the random copying of the neutral evolution condition. This result can be explained by inspecting the mapping functions directly above: with~$T=2$, the functions are only ever evaluated at $0, 0.5$ and $1$, all values for which they are identical to neutral copying, i.e.~where~$f(u)=u$. For higher values of~$T$, however, both regimes exhibit the expected influence on the agent's usage rate, with conformity-copying~(left panel) decreasing the usage of infrequent variants while further boosting the frequency of those which are already used more than $50\%$~of the time, and the opposite for anti-confirmity copying~(right panel). Generally, the higher~$T$, the stronger the impact of the function~$f(.)$, since bigger samples allow more evidence for variation\footnote{In particular, less probability mass on the two homogeneous samples $n=0$ and~$n=T$ to which $f(.)$ does not apply.}, a necessary ingredient for differential replication.
 
-\citet{Blythe2012} report that with values of~$a>0$ any minority variants are rapidly eliminated from the population leading to the fixation of just one variant, while values~$a<0$ give rise to stable co-existence of all different variants, with the stability of co-existence dependent on the community size and learning rate of the individual agents~(p.286). These two regimes show that a frequency-dependent selection mechanism of this kind can be used to implement a bias for \emph{regularisation} (as well as~\emph{de-regularisation} of competing linguistic variants. \index{regularisation}
+\citet{Blythe2012} report that with values of~$a>0$ any minority variants are rapidly eliminated from the population leading to the fixation of just one variant, while values~$a<0$ give rise to stable co-existence of all different variants, with the stability of co-existence dependent on the community size and learning rate of the individual agents~(p.286). These two regimes show that a frequency-dependent selection mechanism of this kind can be used to implement a bias for \emph{regularisation} (as well as~\emph{de-regularisation}) of competing linguistic variants. \index{regularisation}
 However, neither of these two scenarios lead to directed transitions from the introduction of a novel variant to its complete adoption, as is the case in language change. While we will revisit the mechanism of regularisation based on \emph{innovation} rather than selection in a different evolutionary model in Section~\ref{sec:realigriffiths}, we now turn to the dynamics of USM configurations that implement \emph{asymmetries} of some kind.
 
 \subsection{Weighted interactor selection}\index{interactor selection}\label{sec:usminteractorselection}\index{asymmetry}
@@ -252,14 +251,13 @@ By adjusting the values in~$H$ accordingly, one can thus create an interaction s
 
 The most straightforward way to achieve a directed increase of one variant at the expense of the other is by implementing a bias function which consistently boosts the perceived frequency of that variant at the expense of all others. In this way, ``$f(u)>u$ for all frequencies $u$ between zero and one, and hence the listener perceives the innovation to be at a higher frequency than it was actually produced at, and overproduces accordingly''~\citep[p.291]{Blythe2012}. The simplest asymmetric linear function used by \citeauthor{Blythe2012},
 
-\begin{equation}
+\begin{equation}\label{eq:usmmultiplicative}
 f(u) = u\cdot(1+b_m)\;,
 \end{equation}
-
 with a selection bias applied for all $b_m>0$, has an interesting property, namely that it is asymmetric in two ways: not only does it skew the likelihood of adoption towards one of the two competing variants, the strength with which this bias is applied also increases for higher frequencies of the innovative variant, as can be seen in Figure~\ref{fig:replicatorselection1}(i).
 To confirm their finding that ``an S-shape is easily obtained through replicator selection''~(p.291) with little sensitivity to the precise selection function used, I will also be investigating a second model of replicator selection that employs an \emph{additive} instead of a multiplicative bias which exhibits equal strength across the entire trajectory,~i.e.
 
-\begin{equation}
+\begin{equation}\label{eq:usmadditive}
 f(u)=u+b_a\;,
 \end{equation}
 again capped at the maximum value of 1.0, as can be seen in Figure~\ref{fig:replicatorselection1}(ii).
@@ -278,7 +276,7 @@ For $T=2$ as well as $T=3$ the selection dynamics can be shown to be identical t
 
 % Filling in the three different replicator biases and solving the differential equations for them we can thus deduce the average trajectories:
 
-<<replicatorselection, fig.cap="Analysis of the selection dynamics for the original, multiplicative (left column) as well as additive (right column) replicator selection bias.", fig.subcap=c("Objective to perceived frequency mapping. \\emph{(i)}~multiplicative replicator bias presented in~\\citet{Blythe2012}, with $b_m=0.1$. \\emph{(ii)} additive bias with equivalent bias strength~$b_a=b_m/2=0.05$. All mapping functions are capped at 0 and 1 and impose $f(0)=f(1)=0$. The dotted line indicates the unbiased mapping characteristic of neutral evolution, i.e.~$f(u)=u$.", "Average bias applied for different values of~$T$, assuming~$\\lambda=1$. Left: for multiplicative replicator selection, the average bias applies is given by $\\langle g(\\frac{n}{T})\\rangle=\\frac{b_m\\cdot x\\cdot(1-x^{T-1})}{\\lambda}$. Right: additive replicator bias, $\\langle g(\\frac{n}{T})\\rangle=\\frac{b_a\\cdot(1-x^T-(1-x)^T)}{\\lambda}$.", "Typical average trajectories resulting from applying the multiplicative (left) and additive (right) replicator biases.")>>=
+<<replicatorselection, fig.cap="Analysis of the selection dynamics for the original, multiplicative (left column) as well as additive (right column) replicator selection bias.", fig.subcap=c("Objective to perceived frequency mapping under replicator selection. \\emph{(i)}~multiplicative replicator bias presented in~\\citet{Blythe2012}, with $b_m=0.1$. \\emph{(ii)} additive bias with equivalent bias strength~$b_a=b_m/2=0.05$. All mapping functions are capped at 0 and 1 and impose $f(0)=f(1)=0$. The dotted line indicates the unbiased mapping characteristic of neutral evolution, i.e.~$f(u)=u$.", "Average bias applied with multiplicative and additive replicator selection for different values of~$T$, assuming~$\\lambda=1$. The asymmetry of bias functions leads to an increase of the innovative variant across all frequency ranges, with generally stronger selection for higher~$T$. Mathematical derivations for the functions can be found in Appendix~\\ref{app:usm}.", "Typical average trajectories resulting from applying the multiplicative and additive replicator biases. For higher~$T$ the multiplicative bias extends the initial period of exponential growth, while the additive bias remains symmetric around the mid-point with fast growth from the very start of the trajectory.")>>=
 
 # purely ADDITIVE selection
 additiveselection <- function(lambda, b, t, x)
@@ -354,6 +352,6 @@ Despite the fact that the USM features a larger number of parameters than most o
 The sample resolution parameter~$T$, for example, while unusual in terms of its absence from other models of language change, is well-motivated by the model's strict separation of innovation and selection pressures.
 The persistence with which the model has been analysed, both via analytical methods and numerical simulation, means that the sensibility of its dynamics~(or lack thereof) with regard to different parameters and parameter combinations are much better understood than for most other models~\citep{Blythe2007divided,Baxter2009,Blythe2009,Blythe2012neutral,Baxter2016,Michaud2017}.
 
-Before I go on to expand the studies of the USM through another selection mechanism intended to tackle the question of how asymmetries between variants might emerge out of the replication dynamics itself, the main contribution of Chapter~\ref{ch:momentummodels}, I will first introduce a simpler, yet related, modelling framework that has also been used to investigate s-shaped curves, and which will also resurface again in Chapter~\ref{ch:conclusion}.
+Before I go on to expand the studies of the USM through another selection mechanism intended to tackle the question of how asymmetries between variants might emerge out of the replication dynamics itself, the main contribution of Chapter~\ref{ch:momentummodel}, I will first introduce a simpler, yet related, modelling framework that has also been used to investigate s-shaped curves, and which will also resurface again in Chapter~\ref{ch:conclusion}.
 
 %Similarly, since $f(u)$ can never go above 1, the impact of any asymmetric selection functions are necessarily diminished when more and more datapoints that come in are at or close to $1$, which happens more often the closer the population average is to $1$. Thus, the current population average value of variant use also affects how exactly~$f(u)$ affects learning. This interaction is shown in the next Figure. 

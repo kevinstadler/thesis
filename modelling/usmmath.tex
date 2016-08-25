@@ -1,20 +1,34 @@
-These intermediate plots~(call them~$g_T(u)$) are crucial in understanding the analytical solutions that can be derived for the trajectories for different $f(u)$. The mathematical appendix to~\citet{Blythe2012} lays out how we can derive these solutions: given a function of the general form $f(u)=u+\lambda g(u)$ the main change of speaker frequency in one interaction (given the homogeneity principle) is:
+The mathematical appendix to~\citet{Blythe2012} lays out how one can analytically derive the average trajectory resulting from the differential replication of variants according to some biasing function~$f(.)$ as a function of some of the USM's other parameters, in particular the learning rate~$\lambda$. These analyses rely on a number of simplifying assumptions, most importantly the \emph{homogeneity principle}, which ``requires two speakers to have the same probability of using an innovation at any point in time (after an initial relaxation)''~(p.2).
+Although this principle has only been proven to hold for the case of random copying~\citep{Blythe2010} some of our assumptions, such as the mutually strong weighting of the agents' productions through a single high accommodation term~$h$ as well as the densely connected network specified by the interaction matrix~$G$, go a long way towards satisfying the criterion, which essentially states that there should be no \emph{systematic} differences between the different agents' usage levels across the population.
 
-$$\langle(x_i'-x_i)\rangle=\lambda^2 \langle g(\frac{n_i}{T})\rangle + O(\lambda^3)$$
+In combination with the \emph{mean-field assumption} that, ``at any given time, a speaker’s usage frequency is well-represented by its mean value''~(p.3), in other words disregarding the influence of random fluctuations due to sampling effects, the dynamics of the population can then be described as a deterministic function of time. In particular, given a bias function of the general form $f(u)=u+\lambda\cdot g(u)$ the mean change to the average usage frequency~$x$ of the population in one interaction is:
 
-The deterministic mean-field equation is thus
+$$\langle(x'-x)\rangle=\frac{\lambda^2}{N}\cdot\langle g(\frac{n}{T})\rangle + O(\lambda^3)$$
 
-$$\frac{d}{dt}x(t)=2\langle g(\frac{n}{T})\rangle$$
+where $\langle g(\frac{n}{T})\rangle$ represents the weighted mean value of $g(.)$ over all possible sample productions $n\sim Bin(T,x)$.
+%, where $x$ is simply the current mean usage rate of the population, which is taken to be representative of all agents.
+To abstract away from the number of interactions to a time scale that generalises across different learning rates and population sizes we take one interaction to last~$\lambda^2/N$ time units~\citep[see][]{Baxter2006,Baxter2009}, which yields the deterministic mean-field equation
 
-i.e. the average trajectory is simply dependent on the average of the function $g(u)$ over the distribution of token productions for a given current population mean $x$. Assuming that tokens are produced independently, this is a binomial distribution with $n=T$ and $p=x$. Filling in the two different replicator biases~(original multiplicative and additive) and solving the differential equations for them we can thus deduce the average trajectories of the biases for different~$T$.
+$$\frac{d}{dt}x(t)=2\cdot\langle g(\frac{n}{T})\rangle\;.$$
 
-\subsubsection{Multiplicative replicator selection}
+In other words, the average trajectory is simply dependent on the average of the function $g(u)$ over the distribution of token productions for a given current population mean $x$. Assuming that tokens are produced independently, this is a binomial distribution with $n=T$ and $p=x$, which is the probability distribution~$P(.)$ referred to in all equations below. Filling in the two different replicator biases~(original multiplicative and additive) and solving the differential equations for them we can thus deduce the average trajectories of the biases for different~$T$.
 
-Assuming that $b_m$ is sufficiently small so that $g(\frac{n}{T})=\frac{b_m}{\lambda}\frac{n_i}{T}$ for all $n_i<T$~(i.e. that the biased value $(1+b_m)\frac{T-1}{T}$ never exceeds the maximum of $1$ which is true as long as $b\le\frac{1}{T-1}$), we can write the average of $g(u)$ as:
+\section{Multiplicative replicator selection}
 
-$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=0}^{T-1} P_b(n)\frac{n}{T}=\frac{b}{\lambda}[\langle\frac{n_i}{T}\rangle - P_b(T)]$$
+% Left: for multiplicative replicator selection, the average bias applies is given by $\\langle g(\\frac{n}{T})\\rangle=\\frac{b_m\\cdot x\\cdot(1-x^{T-1})}{\\lambda}$. Right: additive replicator bias, $\\langle g(\\frac{n}{T})\\rangle=\\frac{b_a\\cdot(1-x^T-(1-x)^T)}{\\lambda}$.
+To recapitulate,
 
-The term $P_b(T)$ subtracted is exactly that 'capping' term that substracts diminishing returns of biases as there is less and less 'space' for it to apply given almost-categorical use.
+$$f(u) = u\cdot(1+b) = u + u\cdot b$$
+which means that
+$$g(u) = \lambda\cdot b\cdot u\;.$$
+
+Assuming that $b$ is sufficiently small so that $g(\frac{n}{T})=\frac{b}{\lambda}\frac{n}{T}$ for all $n<T$~(i.e. that the biased value $(1+b)\cdot\frac{T-1}{T}$ never exceeds the maximum of $1$ which is true as long as $b<\frac{1}{T-1}$), we can write the average of $g(u)$ as:
+
+$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=0}^{T-1} P(n)\frac{n}{T}=\frac{b}{\lambda}(\langle\frac{n}{T}\rangle - P(T))$$
+
+where the final transformation is simply a reformulation of the weighted mean of the Binomial distribution for all $n<0\ldots T-1$. Invoking the deterministic mean-field assumption we can substitute the average population usage~$x$ for $\langle\frac{n}{T}\rangle$ to find
+
+%The term $P(T)$ subtracted is exactly that `capping' term that substracts diminishing returns of biases as there is less and less `space' for it to apply given almost-categorical use.
 
 $$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}x(1-x^{T-1})$$
 
@@ -22,31 +36,38 @@ and thus
 
 $$\frac{d}{dt}x(t)=\frac{2b}{\lambda}x(1-x^{T-1})$$
 
-solving the differential equation
+and
+%solving the differential equation
 
-$$\frac{1}{x(1-x^{T-1})}dx(t)=\frac{2b}{\lambda}dt$$
+$$\frac{1}{x(1-x^{T-1})}dx(t)=\frac{2b}{\lambda}dt\;.$$
 
-To be able to integrate the left fraction we have to separate the two elements in the denominator via:
+%To be able to integrate the left fraction we have to separate the two elements in the denominator via:
 
-$$\frac{1}{x(1-x^{T-1})}=\frac{A}{x}+\frac{Bx^{T-2}}{1-x^{T-1}}$$
+%$$\frac{1}{x(1-x^{T-1})}=\frac{A}{x}+\frac{Bx^{T-2}}{1-x^{T-1}}$$
 
-i.e. we are looking for values $A, B$ which satisfy $A(1-x^{T-1})+Bx^{T-2}x=A-Ax^{T-1}+Bx^{T-1}=1$. For the two $x^{T-1}$ terms to cancel each other out we need $A=B$, and moreover $A=1$ for the equation to be true. This gives us:
+%i.e. we are looking for values $A, B$ which satisfy $A(1-x^{T-1})+Bx^{T-2}x=A-Ax^{T-1}+Bx^{T-1}=1$. For the two $x^{T-1}$ terms to cancel each other out we need $A=B$, and moreover $A=1$ for the equation to be true. This gives us:
+
+Integrating
 
 $$\int(\frac{1}{x} + \frac{x^{T-2}}{1-x^{T-1}})=\frac{2bt}{\lambda}$$
 
-the right fraction has to be integrated using the chain substitution rule, where we take $y=1-x^{T-1}$ and consequently $\frac{dy}{dx}=-(T-1)x^{T-2}$ and $dy=-(T-1)x^{T-2}dx$
+%the right fraction has to be integrated using the chain substitution rule, where we take $y=1-x^{T-1}$ and consequently $\frac{dy}{dx}=-(T-1)x^{T-2}$ and $dy=-(T-1)x^{T-2}dx$
 
-$$\int\frac{x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{-(T-1)x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{1}{y}dy=\frac{1}{-(T-1)}\ln|y|=\frac{\ln|1-x^{T-1}|}{-(T-1)}$$
+%$$\int\frac{x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{-(T-1)x^{T-2}}{1-x^{T-1}}dx=\frac{1}{-(T-1)}\int\frac{1}{y}dy=\frac{1}{-(T-1)}\ln|y|=\frac{\ln|1-x^{T-1}|}{-(T-1)}$$
 
-So we have
+%So we have
 
-$$\ln|x|-\frac{\ln|1-x^{T-1}|}{T-1}=\frac{2bt}{\lambda}+c$$
+we find
 
-for $t=0$ we find:
+$$\ln|x|-\frac{\ln|1-x^{T-1}|}{T-1}=\frac{2bt}{\lambda}+c\;.$$
+
+Choosing $c$ so that $x(0)=x_0$,
 
 $$c=\ln|x_0|-\frac{\ln|1-x_0^{T-1}|}{T-1}$$
-$$C=\frac{x_0}{(1-x_0^{T-1})^\frac{1}{T-1}}$$
+$$C=\frac{x_0}{(1-x_0^{T-1})^\frac{1}{T-1}}\;.$$
 %$$C=\log\frac{x}{(1-x^{T-1})^\frac{1}{T}}=\log|x|-\log|(1-x^{T-1})^{1/T}|=\log|x|-\frac{1}{T}\log|(1-x^{T-1})|$$
+
+Returning to the original equation and solving for~$x$
 
 $$\frac{|x|}{|1-x^{T-1}|^\frac{1}{T-1}}=C\exp^{2bt/\lambda}$$
 
@@ -56,9 +77,9 @@ $$x^{T-1}=C^{T-1}\exp^{(2bt/\lambda)(T-1)}(1-x^{T-1})$$
 
 $$x^{T-1}(1+C^{T-1}\exp^{(2bt/\lambda)(T-1)})=C^{T-1}\exp^{(2bt/\lambda)(T-1)}$$
 
-$$x^{T-1}=\frac{C^{T-1}\exp^{(2bt/\lambda)(T-1)}}{1+C^{T-1}\exp^{(2bt/\lambda)(T-1)}}=\frac{C^{T-1}}{1-\exp^{-(2bt/\lambda)(T-1)}}$$
+$$x^{T-1}=\frac{C^{T-1}\exp^{(2bt/\lambda)(T-1)}}{1+C^{T-1}\exp^{(2bt/\lambda)(T-1)}}=\frac{C^{T-1}}{1-\exp^{-(2bt/\lambda)(T-1)}}\;.$$
 
-Substitute $C^{T-1}=\frac{x_0^{T-1}}{1-x_0^{T-1}}$ from above and we arrive at
+Substituting $C^{T-1}=\frac{x_0^{T-1}}{1-x_0^{T-1}}$ from above we arrive at
 
 $$x^{T-1}=\frac{\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{(2bt/\lambda)(T-1)}}{1+\frac{x_0^{T-1}}{1-x_0^{T-1}}\exp^{(2bt/\lambda)(T-1)}}$$
 
@@ -70,23 +91,39 @@ $$x^{T-1}=\frac{x_0^{T-1}}{(1-x_0^{T-1})\exp^{(-2bt/\lambda)(T-1)}+x_0^{T-1}}$$
 
 %$$x=\frac{C^{T-1}\exp^{(2bt/\lambda)}}{(1+C^{T-1}\exp^{(2bt/\lambda)(T-1)})^\frac{1}{T-1}}$$
 
-$$x(t)=\frac{x_0}{(x_0^{T-1}+(1-x_0)^{T-1}\exp^{-2(T-1)bt/\lambda})^\frac{1}{T-1}}$$
+$$x(t)=\frac{x_0}{(x_0^{T-1}+(1-x_0)^{T-1}\exp^{-2(T-1)bt/\lambda})^\frac{1}{T-1}}\;.$$
 
-\subsubsection{Additive replicator selection}
-$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=0}^{T-1} P_b(n)=\frac{b}{\lambda}[1-P_b(T)-P_b(0)]=\frac{b}{\lambda}[1-x^T-(1-x)^T]$$
+For $T=2$ this reduces to
 
+$$x(t)=\frac{x_0}{x_0+(1-x_0)\exp^{-2bt/\lambda}}$$
+
+which is equivalent to logistic growth with $r=2b/\lambda\;.$
+
+\section{Additive replicator selection}
+
+Performing the same steps for
+$$f(u)=u+b$$
+we obtain
+$$g(u) = \lambda\cdot b\;.$$
+
+Under the same assumption that $\frac{T-1}{T}+b$ never exceeds 1 we find
+
+$$\langle g(\frac{n}{T})\rangle=\frac{b}{\lambda}\sum_{n=1}^{T-1} P(n)=\frac{b}{\lambda}[1-P(T)-P(0)]=\frac{b}{\lambda}[1-x^T-(1-x)^T]$$
+which yields the differential equation
 $$\frac{d}{dt}x(t)=\frac{2b}{\lambda}(1-x^T-(1-x)^T)$$
-$$\frac{1}{1-x^T-(1-x)^T}dx=\frac{2b}{\lambda}dt$$
+$$\frac{1}{1-x^T-(1-x)^T}dx=\frac{2b}{\lambda}dt\;.$$
 
-at least for the cases $T=2,3$ Wolfram Alpha tells me that the integral of this is
+For $T=2$ and $T=3$ \emph{only} the integral can be solved as
+
 $$\frac{1}{T}(\log(x)-\log(1-x))=\frac{2bt}{\lambda}+c$$
 
-$$\frac{x}{1-x}=\exp^{cT}\exp^{2btT/\lambda}$$
+$$\frac{x}{1-x}=\exp^{cT}\exp^{2btT/\lambda}\;.$$
 
+Substituting
 $$C=\exp^{cT}=\frac{x_0}{1-x_0}$$
-
+in
 $$x=\frac{C\exp^{2btT/\lambda}}{C\exp^{2btT/\lambda}+1}$$
+we derive
+$$x(t)=\frac{x_0}{x_0+(1-x_0)\exp^{-2btT/\lambda}}\;.$$
 
-$$x(t)=\frac{x_0}{x_0+(1-x_0)\exp^{-2btT/\lambda}}$$
-
-which is in fact identical to logistic growth with growth rate~$r=-\frac{2bT}{\lambda}$
+For these two sampling rates, the additive replicator selection dynamic is thus equivalent to logistic growth with growth rate~$r=\frac{2bT}{\lambda}$.
