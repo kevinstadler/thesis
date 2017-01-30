@@ -25,8 +25,10 @@ bilm.transition.matrix.map <- function(N, alpha)
   new("markovchain", name=paste("BILM by averaging with alpha", alpha, sep="="), states=statenames(N), transitionMatrix=t(sapply(0:N, function(x) dbinom(0:N, N, pmax(0, pmin(1, (x + alpha/2 - 1) / (N + alpha - 2)))))))
 
 # assume sampling from the posterior Reali & Griffiths 2009 (p.321)
-bilm.transition.matrix.sample <- function(N, alpha)
-  new("markovchain", name=paste("BILM by sampling from the posterior with alpha", alpha, sep="="), state=statenames(N), transitionMatrix=sapply(0:N, function(target)choose(N, target)*beta(0:N+target+alpha/2, 2*N-0:N-target+alpha/2) / beta(0:N + alpha/2, N - 0:N + alpha/2)))
+bilm.transition.matrix.sample <- function(N, alpha) {
+  mx <- sapply(0:N, function(target)choose(N, target)*beta(0:N+target+alpha/2, 2*N-0:N-target+alpha/2) / beta(0:N + alpha/2, N - 0:N + alpha/2))
+  new("markovchain", name=paste("BILM by sampling from the posterior with alpha", alpha, sep="="), state=statenames(N), transitionMatrix=mx/rowSums(mx))
+}
 
 # calculate the Wright-Fisher model mutation rate equivalent to the BILM's N
 # and alpha. the bracketing in the paper itself is garbled and there's a '/'

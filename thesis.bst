@@ -379,7 +379,7 @@ FUNCTION {format.url}
   url
   duplicate$ empty$
     { pop$ "" }
-    { "\urlprefix\url{" swap$ * "}" * }
+    { "\url{" swap$ * "}" * } % omit \urlprefix
   if$
 }
 
@@ -523,6 +523,15 @@ FUNCTION {format.isbn}
 FUNCTION {format.doi}
 { doi empty$
     { "" }
+    {
+      new.block
+      "\doi{" doi * "}" *
+    }
+  if$
+}
+FUNCTION {format.doi.or.url}
+{ doi empty$
+    { format.url }
     {
       new.block
       "\doi{" doi * "}" *
@@ -898,7 +907,7 @@ FUNCTION {format.thesis.type}
 { type duplicate$ empty$
     'pop$
     { swap$ pop$
-      "t" change.case$ "type" bibinfo.check
+      "type" bibinfo.check
     }
   if$
 }
@@ -987,8 +996,8 @@ FUNCTION {article}
   format.doi output
   new.block
   format.note output
-  format.eprint output
-  format.url output
+%  format.eprint output
+%  format.url output
   fin.entry
 }
 FUNCTION {book}
@@ -1021,11 +1030,11 @@ FUNCTION {book}
   if$
   format.edition output
   format.isbn output
-  format.doi output
+  format.doi.or.url output
   new.block
   format.note output
   format.eprint output
-  format.url output
+%  format.url output
   fin.entry
 }
 FUNCTION {booklet}
@@ -1113,11 +1122,11 @@ FUNCTION {incollection}
       format.chapter.pages output
     }
   if$
-  format.doi output
+  format.doi.or.url output
   new.block
   format.note output
   format.eprint output
-  format.url output
+%  format.url output
   fin.entry
 }
 FUNCTION {inproceedings}
@@ -1150,7 +1159,7 @@ FUNCTION {inproceedings}
   new.block
   format.note output
   format.eprint output
-  format.url output
+%  format.url output
   fin.entry
 }
 FUNCTION {conference} { inproceedings }

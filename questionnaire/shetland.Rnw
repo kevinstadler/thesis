@@ -133,17 +133,19 @@ young females were more explicitly aware of an ongoing sound change in the Lleid
 
 Another interesting question regarding between-speaker differences pertains to how the sociolinguistic knowledge of age patterning might differ between participants of different ages. For example, in her experiment \citet{Drager2011} found an effect of listener \emph{age}, where only \emph{older} participants' perception of vowels that were currently undergoing a chain shift were affected by the perceived age of the speaker whose tokens they were asked to classify. In other words, older speakers were actively compensating more strongly for the manipulated age difference, with younger speakers exhibiting less sociophonetic sensitivity, at least in the sense that they were not actively employing their knowledge of ongoing changes in the classification task. Although we should consider the possibility that the age of our participants will affect their sociolinguistic knowledge of the variables under investigation in this work, it is not possible to derive a straightforward prediction regarding the presence or direction of an effect from the literature. While age effects are also attested in the large body of empirical research on language \emph{attitudes}~\citep{Giles2004}, it is not immediately obvious how and whether the \emph{qualitative} evaluation of innovations (often assumed to be primarily negative, see e.g.~\citealt{Labov2001,Tagliamonte2012}) corresponds to the \emph{quantitative} evaluation and perception of changes, with currently no conclusive results regarding the effect of age on the latter. % We will return to the question of research methodology below.
 
+<<setup, echo=FALSE>>=
+source("../knitr-setup.R")
+setwd("data")
+source("shetland-data.R")
+suppressMessages(source("orm.R"))
+setwd("..")
+@
+
 \section{Results}
 
 Pooling together the data from the paper-based and online questionnaires, the total number of responses was~$N=77$ for the imperative~(\texttt{imp}) and negation~(\texttt{neg}) variables, and~$N=69$ for the yes/no question~(\texttt{ynq}) as well as wh question~(\texttt{whq}) syntax. Both the locally collected and online samples had a similar age distribution, with participants ranging from \Sexpr{min(participants$age)} to \Sexpr{max(participants$age)} years, with a median age of \Sexpr{median(participants$age)}.
 
 %\Sexpr{round(mean(subset(participants, condition=="online")$age))}/\Sexpr{round(mean(subset(participants, condition=="paper")$age))}, median age \Sexpr{median(subset(participants, condition=="online")$age)}/\Sexpr{r median(subset(participants, condition=="paper")$age)}
-
-<<setup, echo=FALSE>>=
-source("../knitr-setup.R")
-source("shetland-data.R")
-suppressMessages(source("~/notes/orm.R"))
-@
 
 <<questionnairelocation, fig.width=smallwidth, fig.height=smallwidth, fig.scap="Origin of questionnaire participants within Shetland, by condition", fig.cap="Origin of questionnaire participants within Shetland, by condition~(online convenience sample vs. paper-based controlled sample)">>=
 counts <- table(participants$loc, participants$condition)[length(levels(participants$loc)):1,]
