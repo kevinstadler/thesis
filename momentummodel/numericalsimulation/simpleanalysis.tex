@@ -1,0 +1,198 @@
+\documentclass[a4paper]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={Kevin Stadler},
+            pdftitle={Momentum-based language change},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Momentum-based language change}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Kevin Stadler}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{Fri Nov 13 13:03:31 2015}
+
+
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+\begin{document}
+\maketitle
+
+\subsection{Simple numerical investigation of the
+transitions}\label{simple-numerical-investigation-of-the-transitions}
+
+Let us begin with a simple criterion of what a `transition' is. Assuming
+a threshold (say 5\%), we can define the two extreme areas where the
+mean population usage level of the minority variant is below this
+threshold as the two regions of `near-categorical use' of either
+variant. A transition, then, is the period in which the mean usage
+levels of the population cross from near-categorical use of one to
+near-categorical use of the other variant. Taking our grand total of
+\(124416\) runs, which were all initialised with mean usage levels
+between 1 and 3\%, we find that only 37094 (\textasciitilde{}30\%) ever
+exceeded the 5\% mark. And of those only an even smaller fraction,
+namely 16285 (\textasciitilde{}13\%) ever exhibited a transition
+(i.e.~crossed over into near-categorical usage of the other variant).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/ttransitions-1.pdf}
+\caption{Successful transitions generated for 4 settings of the sample
+resolution parameter \(T\). The remaining parameters were held fixed at
+\(a=0.01\), \(N=10\), \(b=2\), \(m=2\). The total number of attested
+transitions for each setting of \(T\) is 21, 34, 65, 50, with 144 runs
+per condition.}
+\end{figure}
+
+This surely tells us something.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/mtransitions-1.pdf}
+\caption{Successful transitions generated for 6 settings of parameter
+\(m\). The remaining parameters were held fixed at \(a=0.01\), \(N=10\),
+\(b=2\), \(T=5\). The total number of attested transitions for each
+setting of \(m\) is 51, 50, 78, 91, 97, 89, with 144 runs per
+condition.}
+\end{figure}
+
+This surely tells us something.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/btransitions-1.pdf}
+\caption{Successful transitions generated for 6 different settings for
+the momentum bias strength \(b\). The remaining parameters were held
+fixed at \(a=0.01\), \(N=10\), \(m=2\), \(T=5\). The total number of
+attested transitions for each setting of \(b\) is 0, 6, 37, 58, 50, 94,
+with 144 runs per condition.}
+\end{figure}
+
+This surely tells us something.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/ntransitions-1.pdf}
+\caption{Successful transitions generated for 6 different population
+sizes \(n\). The remaining parameters were held fixed at \(a=0.01\),
+\(N=10\), \(b=2\), \(m=2\), \(T=5\). The total number of attested
+transitions for each setting of \(n\) is 70, 78, 50, 63, 59, 66, with
+144 runs per condition.}
+\end{figure}
+
+The neutral evolution transitions are \emph{really} rare. Here's
+\emph{all} of them:
+
+\includegraphics{simpleanalysis_files/figure-latex/neutralevolutiontransitions-1.pdf}
+\includegraphics{simpleanalysis_files/figure-latex/interruptions-1.pdf}
+\includegraphics{simpleanalysis_files/figure-latex/interruptionsperparameter-1.pdf}
+
+\begin{verbatim}
+## [1] 0.5510204
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.965966
+\end{verbatim}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/interruptionsamples-1.pdf}
+\caption{Example of a successful and an interrupted transition created
+in runs with identical parameter settings: N=2, b=2.5, T=4, x0=0.03,
+i=1, a=0.01, m=4}
+\end{figure}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{simpleanalysis_files/figure-latex/largeninterruptions-1.pdf}
+\caption{N=30,b=1.5,T=2,x0=0.01,i=0,a=0.01,m=4}
+\end{figure}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\end{document}

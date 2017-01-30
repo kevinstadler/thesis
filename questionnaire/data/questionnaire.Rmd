@@ -1,0 +1,102 @@
+---
+title: Momentum exit-questionnaires
+output: pdf_document
+classoption: a4paper,12pt
+header-includes:
+  - \usepackage{fullpage}
+  - \renewcommand{\familydefault}{\sfdefault}
+  - \usepackage{array}
+  - \newcolumntype{x}{>{\centering\arraybackslash}p{2.75cm}}
+---
+
+\newenvironment{likert}
+ {\parskip=0cm\par\nopagebreak\centering\vspace{0.4cm}}
+ {\vspace{1.45cm}\par\noindent\ignorespacesafterend}
+
+\thispagestyle{empty}
+
+A questionnaire for testing people's awareness of (the directionality of) changes, with questions tapping into their explicit knowledge of:
+
+1. their own frequency of use
+2. their interlocutors' frequency of use
+3. the `age' of a variant (a naive way to get at their impression of the real-time nature of a change)
+4. the apparent time development of a change (asking about younger/older speakers' frequency of use)
+
+Now with 4 pages per individual: questions about a changing variable (imperatives, p.1), a stable one (negation, p.2), and two more changing and almost completed ones (yes/no questions and wh questions, p.3+4).
+
+The order of presentation of the two variants, their order in the 'which is older' question, and the order of the younger/older speakers question are all randomised, so there's 8 different versions of the same 4-page questionnaire.
+
+Open questions/things to try out/change away from too much linguistics lingo:
+
+1. replace '*use* this variant' with '*say*'?
+2. do people understand 'negating a sentence'?
+3. change from "people around you" to "people in Shetland" or "people you normally talk to"
+4. change from "Which variant do you think is *older*" to "Which variant do you think has been around for longer?"
+
+<!-- \newpage \begin{center} This page semi-intentionally left blank \end{center} -->
+
+```{r echo=FALSE, results="asis"}
+
+likert <- function(labels, question="") {
+  cat(question, "\\begin{likert}\\begin{tabular}{", rep("x", length(labels)), "}",
+  paste0(rep("$\\square$", length(labels)), collapse=" & "), "\\\\",
+  paste0(labels, collapse=" & "), "\\end{tabular}\\end{likert}")
+}
+
+usage <- function(prefix, left, right) {
+  c(paste(prefix, c("only", "more"), left), paste(prefix, "both equally"), paste(prefix, c("more", "only"), right))
+}
+
+questionnaire <- function(left, right, variabledescription) {
+  cat("\\newpage You are probably familiar with these two ways of", variabledescription)
+  cat("\\begin{likert}", left$presentation, "\\hspace{3cm}", right$presentation, "\\end{likert}")
+
+  # How much of the time are you using the variants? If you are strictly using one of the variants circle in that variant.
+  likert(usage("I use", left$use, right$use), "How much do you use either of these variants?")
+
+  likert(usage("People use", left$use, right$use), "How much do you think are people around you using either of the variants?")
+
+  # Which of these variants do you think is the older one/has been used for longer? (i.e. tapping into either real time or apparent time knowledge) # (I.e. which one has been used for a longer period of time?) #"They have been around for the same time"
+  likert(c(paste(c(left$realtime, right$realtime), "is older"), "People have always used both"), "Which of the two variants do you think is *older*?")
+  # people used to say more "..." / used "..." more often / which one was used before
+
+  # people use more A these days <> the mix of the two variants isn't changing <> people use more B these days
+
+  # apparent age (Do you think the first/second variant is used more often by younger/older speakers? (i.e. explicitly asking for their knowledge about apparent age))
+  likert(usage(paste(left$age, "use"), left$use, right$use), paste("How much do you think\\emph{", left$age, "}use either of the variants?"))
+
+  likert(usage(paste(right$age, "use"), left$use, right$use), paste("How much do you think\\emph{", right$age, "}use either of the variants?"))
+}
+
+variable <- function(long, short) {
+  long <- paste("``\\emph{", long, "}''", sep="")
+  short <- paste("`", short, "'", sep="")
+  r <- expand.grid(use=short, realtime=short, age=c("younger speakers", "older speakers"), stringsAsFactors=FALSE)
+  r$presentation <- rep_len(long, nrow(r))
+  return(r)
+}
+
+randomisation <- function(v, i, description="saying the same thing") {
+  questionnaire(v[i,], v[1+nrow(v)-i,], paste(description, ":", sep=""))
+}
+
+negation <- variable(c("He didna go", "He didnoo go"), c("didna", "didnoo"))
+
+# Tak du a peerie sweetie!
+imperative <- variable(c("Mak du dy ain denner!", "Du mak dy ain denner!"), c("Mak~du..", "Du~mak.."))
+
+# Does du hear yun?
+yesnoquestion <- variable(c("Kens du Sarah?", "Does du ken Sarah?"), c("Kens~du..?", "Does~du~ken..?"))
+
+# Whaar cam he fae?
+whquestion <- variable(c("Whit gae du him?", "Whit did du gie him?"), c("Whit~gae~du..?", "Whit~did~du~gie..?"))
+
+for (i in 1:nrow(imperative)) {
+  randomisation(imperative, i, "asking somebody to do something")
+  cat("\\setcounter{page}{1}")
+  randomisation(negation, i, "negating a sentence") # saying something didn't happen
+  # extended questionnaire
+  randomisation(yesnoquestion, i, "asking somebody a question")
+  randomisation(whquestion, i, "asking somebody a question")
+}
+```

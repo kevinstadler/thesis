@@ -102,7 +102,7 @@ imp <- subset(d, var == "imp")
 whq <- subset(d, var == "whq")
 ynq <- subset(d, var == "ynq")
 
-# TODO: given the two distribution of responses to younger/older, what is the
+# given the two distribution of responses to younger/older, what is the
 # baseline distribution of differences between them that could have occurred by
 # chance?
 
@@ -120,8 +120,6 @@ diffchancelevels <- function(p1, p2=p1) {
 
 #diffchancelevels(rep(0.2, 5), rep(0.2, 5))
 #diffchancelevels(c(0,0,1,0,0), rep(0.2, 5))
-#diffchancelevels(c(0,0,1,0,0))
-#diffchancelevels(c(0.5,0,0,0,0.5), rep(0.2, 5))
 
 # grammaticality judgments
 

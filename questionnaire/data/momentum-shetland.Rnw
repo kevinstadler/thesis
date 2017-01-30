@@ -1,0 +1,433 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fullpage}
+\usepackage{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{float}
+
+\title{Awareness of a syntactic change in Shetland}
+%\title{Age vectors of syntactic variables: an empirical investigation and model}
+%\author{Kevin Stadler, Elyse Jamieson, Kenny Smith, Simon Kirby}
+
+\begin{document}
+
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+%\tableofcontents
+
+%\newpage
+%\section{Introduction}
+
+%What drives linguistic changes?
+
+%The degree to which the historical development of languages is inferred and used by language learners has long been of interest to sociolinguists~\citep{Labov1989}. Recently, speakers' perception of changes has even been proposed as a solution to the problem of \emph{incrementation}: being able to detect the direction (and rate) of a change would be fundamental to a mechanism which allows speakers to \emph{advance} language changes systematically across generations~\citep{Labov2001}.
+
+%Age vectors have been proposed as a mechanism for advancing (continuous) phonetic changes, but there is a general underrepresentation of work on sociolinguistic awareness/indexicality in the domain of (necessarily categorical) \emph{syntactic} change.
+
+\section{Quantifying speakers' impressions of syntactic changes}
+
+In this work we investigate the human capacity for tracking changes in syntactic variables by probing speakers' awareness of three instances of the loss of verb movement in the variety of Scots spoken in Shetland. (Some more information on Shetland/Shetland Scots here.) The changing variables in question are:
+
+\begin{itemize}
+\item verb positioning in imperatives: change from verb inversion (VS) to Standard SVO structure
+\item yes/no question syntax: change from VS with initial main verb to a `periphrastic do' structure
+\item wh question syntax: change from WhVS with main verb to a `periphrastic do' structure
+\end{itemize}
+
+In all three cases the usage is moving from quite frequent use of the incoming variant among the average speaker towards its near-categorical use in younger speakers (?)
+
+\subsection{Methodology}
+
+%The goal of this research was to quantify people's explicit knowledge about ongoing language changes, in particular their impressions about the changes' directionality.
+To quantify people's explicit knowledge about ongoing language changes we adapted a self-evaluation method originally used to investigate the perception of phonetic changes by \cite{Labov1966} and \cite{Trudgill1972}, who asked speakers to self-assess their relative usage of several phonetic variables. We refined the methodology, so that every sociolinguistic variable under investigation was covered by a one page questionnaire eliciting both speakers' estimates of their own usage, as well as that of other social groups, and even properties of the variants themselves. At the top of each questionnaire page, the two competing syntactic variants were introduced in the following way:
+
+\begin{framed}
+\begin{center}
+You are probably familiar with these two ways of asking somebody to do something:\\
+``\emph{Mak du dy ain denner!''\hspace{3cm}``Du mak dy ain denner!''}
+\end{center}
+\end{framed}
+
+The order of the two variants was randomised between individuals, in the above example the outgoing variant is on the left, the incoming one (akin to Standard English ``You make your own dinner!'') on the right. The dialectal spelling of the example sentences is quasi-standardised on Shetland, and their mixing with the Standard English formulations of the questionnaire is not unusual. The actual questionnaire consisted of the following five questions which tapped into different aspects of people's explicit knowledge about the changes in question:
+
+\begin{description}
+\item[Question 1:] ``How much do you use either of these variants?'' \hfill \\ This explicit question regarding speakers' own frequency of use could be answered on a 5-point scale, with the options labelled `I use only~(V1)', `I use mostly~(V1)', `I use both equally', `I use mostly~(V2)' and `I use only~(V2)', with the order of V1 and V2 matching those of the presentation of the two variants above. % This information can be correlated with grammaticality judgments
+\item[Question 2:] ``How much do you think are people around you using either of the variants?'' \hfill \\ This question could again be answered on a 5-point scale with options `People use only~(V1/2)/mostly~(V1/2)/both equally'. This question does not just provide information on speakers' perception of their average interlocutors' frequency of use, but the \emph{relative difference} between the answers to questions 1 and 2 can potentially provide information on whether speakers think of themselves as being `ahead' or `behind' the curve of a particular change relative to their speech community. % (but see results)
+\item[Question 3:] ``Which of the two variants do you think is \emph{older}?'' \hfill \\ This (intentionally vague) question is intended to get at speakers' beliefs or connotations regarding the `age' of the competing variants, without yet drawing explicit attention to the fact that the variable is in fact changing. The three possible answers were `V1 is older', `V2 is older' and `People have always used both', with the order of V1 and V2 randomised.
+\item[Questions 4+5:] ``How much do you think \emph{younger/older speakers} use either of the variants?'' \hfill \\ The final two questions tap into speakers' awareness of the apparent time development of a change, with the same 5-point options as above: `Younger/older speakers use only~(V1/2)/mostly~(V1/2)/both equally'. The order of the two questions was randomised between individuals.
+\end{description}
+
+Data collection proceeded in three stages: first, to pilot the methodology, 8~participants were asked to complete the paper version of the questionnaire on site in Shetland for two variables with the following example sentences:
+
+\begin{enumerate}
+\item verb positioning in imperatives: \emph{Mak du dy ain denner!} vs. \emph{Du mak dy ain denner!}, with the latter (incoming) variant akin to Standard English syntax, i.e.~`You~(sg.) make your~(sg.) own dinner!'
+\item negation marking: \emph{He didna go} vs. \emph{He didnoo go} -- this stable variable was added as a control, with `didna' being the widespread variant against very localised used of `didnoo' on the island of Whalsay to the East of Shetland's main island (more explanation?) % this variable is related to the negation via nae vs. nee in mainland Scots
+\end{enumerate}
+
+Following the successful pilot, 16 more participants were asked to complete an extended 4-page version of the questionnaire which covered two further variables:
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item yes/no question syntax: ``Kens du Sarah?'' vs. ``Does du ken Sarah?'', `ken' being the Scots lexeme for `to know'
+\item wh question syntax: ``Whit gae du him?'' vs. ``Whit did du gie him?''
+\end{enumerate}
+
+These first 24 participants were part of a balanced sample matched for gender, age, and geographic location within Shetland. All participants grew up in Shetland, were currently living in Shetland, and hadn't lived outside Shetland for more than X years (typically to study at university before returning). In all cases, the questionnaire was administered as an exit-questionnaire following a \~40(?) minute task which involved providing grammaticality judgments for a large number of examples of the changing variables in question (as well as fillers?), which was carried out in pairs. % with the researcher being a Shetland local
+
+Finally, we created an identical online version of the 4-variable questionnaire which was advertised via email and social networks. The online questionnaire was self-contained (i.e.~not preceded by the grammaticality judgment task) and provided us with a convenience sample of another 53 participants from all over Shetland. Apart from their age, gender and current geographical location we also collected information on all participants' occupation, where in Shetland they grew up, any extended times they spent outside the isles, as well as the origin of their parents.
+
+\subsection{Results}
+
+%The type of data collection did not come out as a significant predictor in any of our statistical tests.
+Pooling together the data from the paper-based and online questionnaires, the total number of responses was~$N=77$ for the imperative and negation variables, and~$N=69$ for the yes/no as well as wh question syntax. We will go through the results question by question.
+
+\subsubsection{Demographic information of the sample}
+
+Both the locally collected and online samples had a similar age distribution, with participants ranging from 18 to 73 years old with a mean age of around~40. Report on geographical distribution and socioeconomic background?
+
+% TODO correlation between per-individual responses to the three variables?
+% -> mantel test??
+
+\subsubsection{Self-estimates of own usage}
+
+People's assessment of their own usage is traditionally not regarded as reliable since self-reports often reflect a communities' overt prestige values rather than people's actual usage~(Labov, Trudgill, inter alia). Assuming the self-reports \emph{were} accurate in our case, we might expect individual responses to be predicted well by the speakers' age, with younger speakers claiming higher usage levels of the incoming variants. While the distribution of ages per response shown in Figure~\ref{fig:selfresponses} suggests that there might be such an effect the amount of data per response is strongly skewed, with the majority of responses falling onto just three options of our 5-point scale. Using a conditional inference framework to construct a recursive binary partitioning~\citep{Hothorn2006} with R's \texttt{party} package\footnote{\url{https://cran.r-project.org/web/packages/party/}} we find that, from all possible predictor variables, it is actually the \emph{sociolinguistic variable} itself that best predicts the distribution of responses. The partitioning in Figure~\ref{fig:selfresponsesmodel} shows that for both wh and yes/no questions all but one of participants report using the incoming variant at least half the time, while responses for the imperative show a much flatter distribution~(this result is confirmed by an ordinal logistic regression model using the response distribution of the imperatives as a baseline, with~$p<.0001$). % rms::orm(self ~ var+age, data=changing) % rms::lrm(self ~ var+age, data=changing)
+This first result indicates that the change in verb position in imperatives might be lagging behind the two question variables. This conclusion receives independent support from the grammaticality judgments elicited from the first 24~participants, which exhibited high acceptability for both imperative variants, in contrast to comparatively lower acceptability ratings for the outgoing question forms.
+
+Beyond the role of sociolinguistic variable, conditional inference also finds a second significant binary partitioning for the two question types, with the participants' age a good predictor of their self-evaluation responses~(left branch in Figure~\ref{fig:selfresponsesmodel}). The effect is in the direction we would expect, with younger participants mostly claiming categorical usage of the incoming variant, while older speakers are most likely to still report some usage of the outgoing question variants. This result is borne out beyond the strict binary split by an ordinal logistic regression model with age as a continuous predictor variable, at significance level~$p<.01$).%>\Sexpr{rms::orm(self ~ age, data=changing)$stats["Score P"]}$).
+% additional tests per dataset below
+
+<<selfresponses, echo=FALSE, fig.height=4, fig.width=7.7, fig.pos='H', fig.align='center', fig.cap="Age distribution per self-use response for all three changing variables pooled together. While all of the five possible responses were selected by people across all ages, the visualisation suggests that younger people are more likely to self-report higher usage of the incoming variants.">>=
+source("shetland-data.R")
+b <- boxplot(age~self, data=changing, plot=0)
+boxplot(age~self, data=changing, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
+points(jitter(as.numeric(changing$self)), changing$age, pch=20, col=rainbow(3)[factor(changing$var)])
+legend("topleft", legend=levels(factor(changing$var)), horiz=T, fill=rainbow(3))
+
+# 4 separate boxplots, also for negation variable
+#b <- boxplot(age~self+var, data=d, plot=0)
+#boxplot(age~self+var, data=d, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
+
+# add condition information
+#boxplot(age~self+condition, data=changing, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
+#points(jitter(5*(as.numeric(changing$condition)-1)+as.numeric(changing$self)), changing$age, pch=20)
+knitr::opts_chunk$set(echo=FALSE, fig.align='center', fig.pos='H', fig.width=6.3, fig.height=3.8)
+@
+
+<<selfresponsesmodel, fig.width=8, fig.cap="Distribution of the self-reported usage levels for the three changing variables along the 5-point scale. Imperatives exhibit higher self-reports of using the outgoing variants~(rightmost node), while most people claim categorical or near-categorical use of the incoming variant for both question types. Within the responses for the two question variables~(left branch), age is a significant predictor of a binary partitioning with a cutoff age of~51, with younger speakers most likely to report using only the incoming variant, and older speakers more likely to select `mostly' the incoming variant.">>=
+plot(party::ctree(self~loc+age+gender+var+firstvar, data=changing))
+# imp branch off first, then neg branches off, predicted by location
+#plot(party::ctree(self~loc+age+gender+var+firstvar, data=d))
+
+# .003 coef(rms::orm(self ~ age, data=changing))$stats["Score P"]
+#summary(MASS::polr(self ~ age, data=changing))
+
+lme4::glmer(self ~ age + (1|id) + (1|var), data=d, family=binomial(link="probit"))
+
+
+# the coefficient for age is always negative, using the individual datasets
+# it is only significant for the whq questions - that's interesting, should've
+# expected it to be the imperatives since it has the most spread out responses!
+# .01 rms::orm(self ~ age+var, data=subset(changing, var!='imp'))$stats["Score P"]
+# .01 rms::orm(self ~ age, data=whq)
+# .36 rms::orm(self ~ age, data=ynq)
+# .23 rms::orm(self ~ age, data=imp)
+# for negation effect in opposite direction at p=0.71:
+#rms::orm(self ~ age, data=neg)
+
+# .225 rms::orm(selfdiff ~ age, data=whq)
+# .007 rms::orm(selfdiff ~ age, data=ynq)
+# .19  rms::orm(selfdiff ~ age, data=imp)
+#rms::orm(selfdiff ~ age, data=neg)
+
+#check.orm(d, "self", "age + var", g=3)
+#fit <- rms::orm(self ~ age + var, data=changing)
+#dd <- rms::datadist(age=d$age, var=d$var)
+#options(datadist="dd")
+#plot(rms::Predict(fit, age, var), anova=anova(fit))
+#check.orm(whq, "self", "age", g=3)
+
+# gender is also significant but only for the self-usage levels (see section at the end)
+#rms::lrm(self ~ gender, data=changing)
+# negative coefficient for males == women report higher incoming variant usage
+#mosaicplot(table(d$var, d$gender, d$self), color=temp.colors(5))
+#plot(self ~ gender, data=imp)
+@
+
+(optional TODO? Correlate responses of the first 24 participants with the grammaticality judgments obtained from them for cross-validation -- gotta select proper subset of judgment stimuli that matches the awareness questionnaires in terms of verb arity etc.)
+
+\subsubsection{`Other people' usage estimates}
+
+When it comes to reporting on the linguistic usage levels of other individuals in their speech community the overall pattern is similar to the self-evaluation responses, but with an added central tendency or edge-avoiding effect in the responses, as can be seen in Figure~\ref{fig:otherresponses}. This presumably stems from the fact that, when imagining an `average' individual, the informants will model this on the population average, which is almost necessarily non-categorical.
+
+<<otherresponses, fig.cap="Speakers' estimates of the population-level usage of the three changing variables is best predicted by the sociolinguistic variable, with the two question types again clustering together and the imperatives showing a more spread-out distribution of responses. Both distributions are similar to the self-evaluation responses shown in Figure~\\ref{fig:selfresponsesmodel} except that they are shifted away from both of the extreme options, indicating that the population average is perceived to be variable rather than categorical.">>=
+plot(party::ctree(other~loc+age+gender+var+firstvar, data=changing))
+# age only significant for y/n questions: rms::orm(other ~ age, data=ynq)
+# interestingly, GENDER is significant, with females estimating higher usage of the incoming form
+#rms::lrm(other ~ gender, data=changing)
+#barplot(table(changing$other, changing$gender))
+#plot(other ~ gender, data=changing)
+@
+
+The data from the first two questions implicitly contains another interesting piece of information, namely where the speakers regard their own variable usage to be relative to the community-level. We measure this by looking at the number of ordinal categories along the 5-point scale that separates the self-evaluation vs reported community-level usage, where positive numbers indicate that a speaker reported a relatively higher usage of the incoming variant for themselves than for the community. The participants' age is a good predictor of this difference between themselves and the community, as can be seen in Figure~\ref{fig:selfdiffmodel}. The binary partitioning suggested by conditional inference shows that the majority of under-58-year-olds regard themselves as `ahead' of their community in terms of using the incoming variants, whereas those over 58 are most likely to report being level with the community~(an ordinal regression model using age as a continuous predictor variable is significant at p=\Sexpr{rms::orm(selfdiff ~ age, data=changing)$stats["Score P"]}). % although the coefficient is again pretty small
+
+% The model assumes that the inverse of the assumed cumulative distribution function, when applied to one minus the true cumulative distribution function and plotted on the y-axis (with the original y on the x-axis) yields parallel curves (though not necessarily linear). This can be checked by plotting the inverse cumulative probability function of one minus the empirical distribution function, stratified by X, and assessing parallelism
+% recommended visual inspection strategy: http://www.ats.ucla.edu/stat/r/dae/ologit.htm
+
+%check.orm(d, "selfdiff", "age + var + gender", g=3)
+
+%orm.probabilities <- function(mdl) {
+%  newdat <- data.frame()
+%  cbind(newdat, predict(mdl, newdat, type = "probs"))
+%}
+
+% s <- with(d, summary(self ~ var, fun=function(x)sf(x,levels(d$self))))
+% plot(s, which=1:4, pch=1:4, xlab='logit', xlim=range(s[,3:ncol(s)], finite=T))
+
+% intriguing fact about selfdiff: 50% of people report themselves as being ahead, under 10% as being behind
+%counts <- table(subset(d, var!='neg')$selfdiff, factor(subset(d, var!='neg')$var))
+%barplot(t(t(counts)/colSums(counts)), legend=rownames(counts), col=cm.colors(5))
+
+<<selfdiffmodel, fig.cap="Conditional inference tree predicting the relative difference between the self-evaluation usage level vs. reported community usage level for the three changing variables, in number of ordinal categories on the 5-point scale. Positive numbers indicate that a speaker reported a higher usage of the incoming variant for themselves than for the community, and vice versa. No speaker indicated their own usage to be more than two ordinal categories away from the community level. Younger speakers are more likely to perceive themselves to be ahead of the community level usage, while older speakers are most likely to report their usage to be level with the community.">>=
+#counts <- table(d$selfdiff, d$var)
+#par(xpd=NA, mar=par("mar")+c(0,0,0,3))
+#barplot(counts, legend=rownames(counts), col=temp.colors(-2,4), xlab="sociolinguistic variable", ylab="no. of responses", args.legend=list(x="topright", inset=c(-0.23,-.1), title="Relative difference\nof 'self' usage\nminus 'community' usage", bty="n"), bty="l")
+
+plot(party::ctree(selfdiff~loc+age+gender+firstvar+condition, data=changing))
+#check.orm(subset(d, var!="neg"), "selfdiff", "age")
+# .002 for age: rms::orm(selfdiff ~ age, data=changing)$stats["Score P"]
+# .0017 when also adding var:
+#fit <- rms::orm(selfdiff ~ age + var, data=changing)
+#fit$stats["Score P"]
+#dd <- rms::datadist(age=d$age, var=d$var)
+#options(datadist="dd")
+#library(rms)
+#plot(rms::Predict(fit, age, var), anova=anova(fit))
+# .04 rms::orm(selfdiff ~ var, data=changing)$stats["Score P"]
+# .014 rms::orm(selfdiff ~ var!='imp', data=changing)$stats["Score P"]
+
+# selfrelative: questions vs. imp significant
+# plot(party::ctree(selfrelative~loc+age+gender+var+firstvar+condition, data=changing))
+# plot(party::ctree(selfdiff~loc+age+gender+var+firstvar+condition, data=changing))
+# .001 rms::orm(selfrelative ~ age, data=changing)$stats["Score P"]
+# .001 rms::orm(selfrelative ~ var, data=changing)$stats["Score P"]
+
+# gender is NOT significant for selfdiff
+@
+
+\subsubsection{Beliefs about the age of competing linguistic variants}
+
+%Before explicitly drawing attention to the fact that the linguistic variables are changing~(and that this might be reflected in apparent time differences),
+The third question of the questionnaire aimed at eliciting the speakers' beliefs about the variants by explicitly asking which they thought was the `older' of the two, with `people have always used both' given as a neutral third option. Results show that, for the three changing variables, people reliably identify the outgoing variant as the `older' one. For the stable negation control variable results are more mixed, but many also report the less widespread `didna' variant as being older. Conditional inference on the data shows that the changing vs. stable variant division is the only significant predictor of the participants' responses to the question~(see Figure~\ref{fig:variantagemodel}). While this result indicates that the community shares common beliefs about the directionality of these changes, these beliefs could be based on any or all of real time observation of the change, connotations of variants being archaic, or apparent time differents in variable usage across age groups~(although up to this point in the questionnaire it was avoided to draw explicit attention to such differences).
+
+Previous sociolinguistic research which has revealed gender differences where women were often found to be leading linguistic changes has been used to argue that, due to their social position, women are more sensitive to sociolinguistic cues~(Labov, inter alia). Interestingly, for the three changing variables pooled together, whether participants correctly report the outgoing variant to be older is not predicted well by any of the participant variables, in particular not by gender or age~($p>.1$, logistic regression model).
+% N=215 because in the paper-based condition fewer data points collected for the two question types, plus one `NA` for the negation which was correctly pointed out to be a geographic variation rather than a temporal one
+%rms::lrm(oldervar=="out" ~ age+gender+firstolder+condition, data=changing)
+
+%<<variantage, fig.height=4, fig.cap="Individuals' responses to the question ``Which of the two variants do you think is \\emph{older}?''. For the three changing variables~(on the right) most individuals report the outgoing forms which have already become the \\emph{min}ority variants to be older. For the stable negation variable most respondents picked the more widespread `didna' variant, but with a comparatively larger proportion indicating that ``people have always used both'' variants.">>=
+%cols <- c("red", "white", "blue")
+%counts <- table(d$oldervarfreq, d$var)
+%#colnames(counts) <- paste(colnames(counts), " (n=", colSums(counts), ")", sep="")
+%par(xpd=NA, mar=par("mar")+c(-3,0,1.5,0))
+%barplot(counts, col=cols, ylab="no. of responses")
+%legend("top", inset=c(0,-.3), title="Which variant is older?", legend=c("majority", "equally old", "minority"), fill=cols, horiz=T)
+%@
+
+<<variantagemodel, fig.cap="The type of sociolinguistic variable is the only significant predictor of the participants' response to the question ``Which of the two variants do you think is \\emph{older}?''. There appears to be no effect of age, gender, order of presentation or whether the questionnaire was filled out on-site following the grammaticality judgment task vs. online. For the three changing variables~(left branch) most individuals report the outgoing forms which have already become the \\emph{min}ority variants to be older. For the stable negation variable most respondents also picked the minority (because geographically limited) `didna' variant, but with more answers falling on the majority variant as well as the ``people have always used both'' option.">>=
+model <- party::ctree(oldervarfreq ~ loc+age+gender+firstvar+firstolder+condition+var, na.omit(d))
+plot(model, terminal_panel=party::node_barplot(model, fill=temp.colors(3, intensity=.7), id=F))
+#plot(oldervarfreq ~ var, d)
+# responses to the two question types are *not* significantly different from the imperative responses:
+#rms::lrm(oldervarfreq ~ var, data=changing)
+
+# age is a significant predictor for answers to the negation variable (with)
+#rms::lrm(oldervarfreq ~ age+gender+firstvar+firstolder+condition, data=neg)
+# no significant predictors for the changing variables
+#rms::lrm(oldervarfreq ~ loc+age+gender+firstvar+firstolder+condition+var, data=changing)
+@
+
+\subsubsection{Perception of apparent time differences}
+
+The final pair of questions, which ask for the participants' impression of the relative usage level of the two competing variants in otherwise underspecified `younger' and `older speakers' was aimed at helping us to determine whether individuals can perceive and report apparent time differences in categorical variables. As can be seen in Figure~\ref{fig:agegrading}, speakers consistently report higher usage of the majority incoming variant among younger speakers.
+
+<<agegrading, fig.cap="Relative difference between the reported usage of the two variants between `older' and `younger' speakers, for each of the four variables. The relative difference indicates the number of ordinal categories that separates an individuals' responses for the two age groups along the 5-point scale, where positive numbers (in shades of pink) correspond to reporting higher usage of the majority variant among younger speakers, and vice versa. For the three changing variables~(on the right) this majority variant is indeed the incoming variant.">>=
+# this representation collapses different responses, e.g. +3 can mean 'older only out, younger more in' as well as 'older mostly out, younger only in', 0 could be 'older usage = younger usage' for any of the 5 usage levels
+counts <- table(d$apparentdiff, d$var)
+par(xpd=NA, mar=par("mar")+c(0,0,0,3))
+barplot(counts, legend=rownames(counts), col=temp.colors(-2,4), xlab="sociolinguistic variable", ylab="no. of responses", args.legend=list(x="topright", inset=c(-0.23,-.1), title="Relative difference\nof 'younger' usage\nminus 'older' usage", bty="n"), bty="l")
+# 'young' and 'old' responses are significantly different between imp vs. questions
+#rms::orm(young ~ var, data=changing)
+#plot(party::ctree(young ~ loc+age+gender+firstvar+firstolder+condition+var, changing))
+#rms::orm(old ~ var, data=changing)
+#plot(party::ctree(old ~ loc+age+gender+firstvar+firstolder+condition+var, changing))
+
+# this indicates that their apparent time diff answers aren't *just* due to
+# their answer to question 3. but are the informants consistent between the
+# population average and younger/older questions??
+# TODO plot distribution of other-young and other-old - should've done this on
+# separate pages so people can't look back and be uber-consistent!!
+# tricky to do an ordinal-ordinal model:
+#options(contrasts=c("contr.treatment","contr.treatment"))
+#rms::orm(old ~ other, data=changing)
+#rms::orm(young ~ other, data=changing)
+
+# BUT the apparent age difference pattern is similar for all three variables
+#rms::orm(apparentdiff ~ var, data=changing)
+#check.orm(changing, "apparentdiff", c("var", "age", "gender"))
+# response to older speakers question significantly predicted by previously chosen older var
+#rms::orm(old ~ oldervar, data=changing)
+# response to younger speakers doesn't appear to be affected
+#rms::orm(young ~ oldervar, data=changing)
+
+# what predicts people's answers to the apparent time differences?
+#rms::orm(apparentdiff ~ age, data=neg)
+#rms::orm(apparentdiff ~ age, data=changing)
+# gender not significant at all
+#rms::lrm(apparentdiff ~ gender, data=changing)
+# the only thing is a possible ordering effect
+#rms::lrm(apparentdiff ~ firstvar, data=changing)
+@
+
+While this might suggest that individuals can accurately perceive and report on apparent age differences in variable usage, we cannot straightforwardly jump to this conclusion. The conditional inference model in Figure~\ref{fig:agegradingmodel} shows that our participants' responses to question~3, and in particular the `wrong' classification of the incoming variant as the `older' one, is a significant predictor of whether younger speakers are reported to be `ahead', `behind' or `level' in their relative usage of the incoming variant. Conversely, the direction of the relative ordinal difference between the reported younger/older speaker usage is also a significant predictor of the answer to the preceding `Which of the two variants is \emph{older}?' question, shown in Figure~\ref{fig:agegradingmodel2}, with a reported apparent time difference~(i.e.~an ordinal difference~$>0$) predicting increased identification of the outgoing variant as the `older' one.
+
+Based on this it remains an open question whether people might have inferred their answer to question~3 based on an apparent time difference they perceived, or if participants felt led to answer questions~4 and 5 in a way that would post-hoc justify their response to question~3, which might have been based on other~(socio-indexical) knowledge. One potential way to find out whether the latter is the case is by checking whether the absolute progression of the changes, where the imperatives seem to lag behind a bit, is also evident in the answers about the specific age group questions. The overall pattern of relative apparent age differences does not differ for the questions vs. the imperatives~(ordered regression model predicting the relative difference between responses to the last two questions, from~$-4$ to~$4$, with sociolinguistic variable as a predictor, $p=\Sexpr{rms::orm(apparentdiff ~ var, data=changing)$stats["Score P"]}$). The \emph{absolute} magnitude of the answers to both the younger and older speaker groups does however differ for imperatives, with generally lower usage levels reported for the imperatives~($p=\Sexpr{rms::orm(young ~ var, data=changing)$stats["Score P"]}$), as we would expect.
+%rms::orm(young ~ var, data=changing)
+%rms::orm(old ~ var, data=changing)
+%plot(party::ctree(young ~ loc+age+gender+firstvar+firstolder+condition+var, data=changing))
+%plot(party::ctree(old ~ loc+age+gender+firstvar+firstolder+condition+var, data=changing))
+% people are also VERY consistent in their 'young' reports viz. the earlier 'other people' community average
+%plot(party::ctree(young ~ other+loc+age+gender+firstvar+firstolder+condition+var, data=changing))
+% the same isn't true for the older speakers, for which the variable remains the only significant predictor
+%plot(party::ctree(old ~ other+loc+age+gender+firstvar+firstolder+condition+var, data=changing))
+% ordered logistic models of this fail due to many empty cells in the 5x5 table...
+
+% correctly identifying the outgoing variable is a good predictor for rating older speakers as *really* outdated
+%plot(party::ctree(olddiff ~ oldervar+loc+age+gender+firstvar+firstolder+condition+var, changing))
+% but younger speakers are actually mostly marked as level (could be a combination of ceiling+edge-avoidance??)
+%plot(party::ctree(youngdiff ~ oldervar+loc+age+gender+firstvar+firstolder+condition+var, changing))
+
+To avoid the same problem, an improved methodology should therefore randomise the order of questions~3~vs.~4+5 between individuals, and ideally also embed~4+5 in a bigger set of distractor questions.
+
+<<agegradingmodel, fig.cap="Predicting individual apparent time differences of the three changing variables: whether the incoming variant is incorrectly reported as being the `older' of the two variants~(right branch) is a significant predictor of whether younger speakers are reported to be `ahead', `behind' or `level' in their relative usage of the incoming variant. This result could indicate that answers about the age of the variants were based on perceived differences in the apparent time distribution, but it could also be that the responses to the later apparent time questions were influenced (so as to provide a post-hoc justification of the earlier variant age answer).">>=
+#plot(party::ctree(apparentdiff ~ oldervar+loc+age+gender+firstvar+firstolder+condition+var, changing))
+plot(party::ctree(apparentrelative ~ oldervar+loc+age+gender+firstvar+firstolder+condition+var, changing))
+@
+
+<<agegradingmodel2, fig.cap="Using reported apparent time differences of the three changing variables as a predictor: the direction of the relative ordinal difference between reported younger/older speaker usage~(\\texttt{apparentdiff}) is a significant predictor of the answer to the preceding `Which of the two variants is \\emph{older}?' question, with reports of younger speakers' increased use of the incoming variant predicting improved identification of the outgoing variant.">>=
+plot(party::ctree(oldervar ~ apparentdiff+loc+age+gender+firstvar+firstolder+condition+var, changing))
+# responses from people who don't report the correct apparent time difference not significantly different from guessing
+#chisq.test(table(subset(changing, apparentdiff<1)$oldervar))
+@
+
+\subsection{Using variant age responses to control for leading questions in apparent time responses}
+
+<<apparenttimepervariantage, fig.cap="Reported apparent time difference per answer to the 'which variant do you think is older' question. While at least some of the apparent time responses for the changing variables go away when the participants did not report having any age beliefs, the apparent time reports disappear much more strongly for the negation, indicating that the reported differences may have been driven by the preceding question only. Still outstanding is a test against the underlying baseline distributions given the responses, which are plotted below">>=
+
+#plot(party::ctree(apparentdiff ~ oldervar + var + var*oldervar, data=d))
+
+table(changing$oldervar, changing$apparentdiff)
+lattice::histogram( ~ apparentdiff | oldervar, data=neg, col=temp.colors(-1, 4), main="stable negation")
+lattice::histogram( ~ apparentdiff | oldervar, data=changing, col=temp.colors(-1, 4), main="changing variables")
+
+obliviousneg <- subset(neg, oldervar=="same")
+obliviouschanging <- subset(changing, oldervar=="same")
+
+# .006
+wilcox.test(as.numeric(obliviousneg$old), as.numeric(obliviousneg$young))
+# 7e-9
+wilcox.test(as.numeric(obliviouschanging$old), as.numeric(obliviouschanging$young))
+
+
+
+plotapparentdiffbaseline <- function(d)
+  barplot(diffchancelevels(table(d$old)/nrow(d), table(d$young)/nrow(d)), col=temp.colors(9), ylab="Difference")
+
+par(mfrow=c(3,2))
+plotapparentdiffbaseline(neg)
+plotapparentdiffbaseline(changing)
+plotapparentdiffbaseline(subset(neg, oldervar=="out"))
+plotapparentdiffbaseline(subset(changing, oldervar=="out"))
+plotapparentdiffbaseline(subset(neg, oldervar=="same"))
+plotapparentdiffbaseline(subset(changing, oldervar=="same"))
+@
+
+\section{Summary of relevant results per predictor}
+
+Following the ad-hoc approach of determining the best predictors for every answer via binary partitioning as done above, we can probe the data for particular effects that we would have expected.
+
+\subsection{Gender effects}
+
+The only significant gender effect that can be found is in the first two questions, i.e.~the reported `self' as well as `rest of the population' usage levels, where females tend to report \emph{higher} levels of the incoming variant both for themselves~(for all four variables) as well as the general population~(only for the changing variables). While not significant for the four variables taken individually the effect goes in the same direction in all cases, with it being strongest for the two question types, somewhat less for the imperatives, and unreliable/inconsistent for the negation variable. The bare data of the responses split by variable and gender is shown in Figure~\ref{fig:genderreports}. This gender effect does \emph{not} translate to a higher difference between perceived self-usage and perceived community usage, i.e. females do \emph{not} perceive themselves to be further `ahead' the community than males do, the answers to both questions appear to be shifted in unison. Also, despite an often purported increased sensitivity to linguistic changes among females, neither the identification of the `older' variants nor the strength of the perceived apparent time differences show any effects of gender.
+
+<<genderreports, fig.width=9, fig.height=6, fig.cap="Raw data for responses regarding self-usage (left) and general population/people around you usage (right), split by sociolinguistic variable~(x-axis) and gender~(y-axis). For the changing variables, females generally report a higher level usage of the incoming variable~(redder responses) for both self-usage as well as perceived community average than do males. Higher bars for females than males indicate the skewed distribution towards female participants in the convenience sample.">>=
+par(mfrow=c(2,1), mar=par("mar")-c(4,2,2,2))
+mosaicplot(table(d$var, d$gender, d$self), color=temp.colors(5), main="Reported self-usage")
+mosaicplot(table(d$var, d$gender, d$other), color=temp.colors(5), main="Reported population usage")
+#plot(party::ctree(self ~ gender+var, data=d))
+#plot(party::ctree(other ~ gender+var, data=d))
+
+# age and gender effects appear to be orthogonal/cumulative
+#rms::orm(self ~ age + gender, data=changing)
+# but when interactions are taken into account, age effects seem to be more robust than gender
+#rms::orm(self ~ age + gender + age*gender, data=changing)
+
+# this result does not translate to a gender difference in the perceived 'self/community-difference'
+#rms::orm(selfdiff ~ gender, data=changing)
+#rms::lrm(oldervar ~ gender, data=changing)
+#rms::orm(apparentdiff ~ gender, data=changing)
+@
+
+\subsection{Age effects}
+
+There are several significant age effects: firstly, age is a good predictor for participants' reported self-use of the changing variables, in particular for the dataset of responses to the wh questions, as could be seen in Figure~1. Combined with no age effect for participants' estimates of the community-level usage, age is consequently a good predictor for how much the respondents think they are `ahead' or `behind' their estimated community level usage, as discussed in section 1.2.3. The effect size for these two effects is in the range of $-0.0265$, meaning that for every year somebody is older, their probability of choosing the next-lower category increases by about $2.5\%$~(the coefficient is given in log-odds, so the cumulative effect is not linear but slightly less so). While the effect of age on self-reports could already be seen in Figure~1, a visualisation of this effect on the difference between reported self and community-level usage is shown in Figure~\ref{fig:selfdiffeffectsize}.
+
+<<selfdiffeffectsize, fig.height=5, fig.cap="Age distribution of the difference between reported self and community-level usage. Apart from the moderately visible age effect, it is intriguing that very few individuals report themselves to be `behind' the curve for the question types, as opposed to the imperatives. This effect might be a matter of the measure used here: the imperatives, still very much a change in progress, allow for a wider range of putting yourself `relative' to the community usage (on either extreme). Maybe, instead of measuring the absolute difference between selected categories per individual, the relative difference should be measured relative to the distribution of community-level responses?">>=
+dt <- subset(neg, loc!="Whalsay")
+dt <- changing
+#library(vioplot)
+#vioplot(subset(changing,selfdiff==-2)$age, subset(changing,selfdiff==-1)$age, subset(changing,selfdiff==0)$age, subset(changing,selfdiff==1)$age, subset(changing,selfdiff==2)$age)
+b <- boxplot(age ~ selfdiff, data=dt, plot=0)
+boxplot(age ~ selfdiff, data=dt, xlab="difference between reported self vs. community-level usage", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
+points(jitter(as.numeric(dt$selfdiff)), dt$age, pch=20, col=rainbow(3)[factor(dt$var)])
+legend("topleft", legend=levels(factor(dt$var)), horiz=T, fill=rainbow(3))
+@
+
+For the changing variables, there is no significant age effect on perceived `age' of the variants, the reported apparent time differences, or on the estimates of how much `younger' and `older' speaker groups use the variants.
+%rms::orm(old ~ age, data=changing)
+%rms::orm(young ~ age, data=changing)
+%rms::orm(youngdiff ~ age, data=changing)
+%rms::orm(olddiff ~ age, data=changing)
+
+\subsubsection{Age effects on the stable negation variable}
+
+Since age does not affect the reported self-usage levels of the negation variable, and the reported community-level usage is consistent for all variables, there is consequently no effect of age on how much people report to use the negation variants relative to their surrounding community.
+
+In terms of perceived age of the variants, the only significant age effect is actually with the stable negation variable, where older people are more likely to identify the geographically more widespread `didnoo' variant as being the `older' one~(caveat: that is still only 8 out of 76 people, and those 8 happen to contain relatively older speakers).
+%boxplot(age ~ oldervarfreq, data=neg)
+%rms::lrm(oldervarfreq ~ age+gender+firstvar+firstolder+condition, data=neg)
+
+The other question is whether apparent time negation answers are predicted by user age -- while there is no significant effect for the changing variables, age is a borderline significant predictor for the apparent time reports for negation. However, this effect goes away once the answer to question 3 is taken into account, i.e. which variant the informants thought were older explains most of their reported apparent time differences. The raw data for informant age vs. reported apparent time differences~(with notes on the statistical test results) is shown in Figure~\ref{fig:ageapparentdiff}.
+%boxplot(apparentdiff~oldervarfreq+var, data=d)
+
+%rms::orm(apparentdiff ~ age, data=neg)
+%rms::orm(apparentdiff ~ age+oldervarfreq, data=neg)
+%boxplot(age ~ apparentdiff+var, data=d)
+
+<<ageapparentdiff, fig.width=7.5, fig.height=5, fig.cap="Age distribution of the difference between reported `older' and `younger' speaker usage levels for all four sociolinguistic variables. Response `0' means that the informant reported the same usage levels for both the `older' and `younger' speaker groups, reponse `1' means that younger speakers were reported to be one ordinal category more advanced in their usage of the incoming variant, etc. It is evident that the 0 response works as a `hard edge' (hardly anyone reports older speakers to be more advanced than younger ones), which goes against the assumptions of the ordinal regression method used. As a consequence, re-levelling the responses (or running a different statistical technique) could potentially yield a much bigger effect of age.">>=
+b <- boxplot(age ~ apparentdiff, data=d, plot=0)
+boxplot(age ~ apparentdiff, data=d, xlab="difference in reported variant usage between the old/young speaker age groups", ylab="informant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
+points(jitter(as.numeric(d$apparentdiff)), d$age, pch=20, col=rainbow(4)[factor(d$var)])
+legend("topright", legend=levels(factor(d$var)), horiz=T, fill=rainbow(4))
+@
+
+%\section{Conclusion}
+
+%Results from 77 speakers show that people are reliably capable of assessing variant age and determining the directionality of the change for three syntactic variables. % that operate below the level of social indexicality.
+
+\bibliographystyle{apalike}
+\bibliography{../../../library}
+
+\end{document}

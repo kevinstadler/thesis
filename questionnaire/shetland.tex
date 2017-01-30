@@ -73,7 +73,7 @@ So while the changes are in a sense nearing completion, all members of the speec
 %\subcaptionbox{Shetland's location in the North Sea}{\includegraphics[height=\twosubht]{figure/shetlandcontext}}%
 %\subcaptionbox{The islands of Shetland\label{fig:whalsay}}{\includegraphics[height=\twosubht]{figure/shetlandold}}%
 %\includegraphics[width=0.6\textwidth]{figure/shetland}
-\includegraphics[height=0.9\textwidth]{figure/shetlandcontext}
+\includegraphics[width=0.9\textwidth]{figure/shetlandcontext}
 \caption[Shetland's location in the North Sea]{Shetland's location in the North Sea. \textcircled{c} OpenStreetMap contributors}
 \label{fig:shetland}
 \end{figure}
@@ -135,20 +135,22 @@ Another interesting question regarding between-speaker differences pertains to h
 
 \section{Results}
 
-Pooling together the data from the paper-based and online questionnaires, the total number of responses was~$N=77$ for the imperative~(\texttt{imp}) and negation~(\texttt{neg}) variables, and~$N=69$ for the yes/no question~(\texttt{ynq}) as well as wh question~(\texttt{whq}) syntax. Both the locally collected and online samples had a similar age distribution, with participants ranging from \Sexpr{min(participants$age)} to \Sexpr{max(participants$age)} years, with a median age of \Sexpr{median(participants$age)}.
+Pooling together the data from the paper-based and online questionnaires, the total number of responses was~$N=77$ for the imperative~(\texttt{imp}) and negation~(\texttt{neg}) variables, and~$N=69$ for the yes/no question~(\texttt{ynq}) as well as wh question~(\texttt{whq}) syntax. Both the locally collected and online samples had a similar age distribution, with participants ranging from 18 to 73 years, with a median age of 32.
 
-%\Sexpr{round(mean(subset(participants, condition=="online")$age))}/\Sexpr{round(mean(subset(participants, condition=="paper")$age))}, median age \Sexpr{median(subset(participants, condition=="online")$age)}/\Sexpr{r median(subset(participants, condition=="paper")$age)}
+%round(mean(subset(participants, condition=="online")$age))/round(mean(subset(participants, condition=="paper")$age)), median age median(subset(participants, condition=="online")$age)/r median(subset(participants, condition=="paper")$age)
 
-<<setup, echo=FALSE>>=
-source("../knitr-setup.R")
-source("shetland-data.R")
-suppressMessages(source("~/notes/orm.R"))
-@
 
-<<questionnairelocation, fig.width=smallwidth, fig.height=smallwidth, fig.scap="Origin of questionnaire participants within Shetland, by condition", fig.cap="Origin of questionnaire participants within Shetland, by condition~(online convenience sample vs. paper-based controlled sample)">>=
-counts <- table(participants$loc, participants$condition)[length(levels(participants$loc)):1,]
-barplot(counts, col=rainbow(nrow(counts)), ylab="number of participants", xlim=c(0,4), legend.text=TRUE, args.legend=list(x="right", fill=rev(rainbow(nrow(counts)))), mar=c(0,0,0,0)) # xlab="condition"
-@
+
+\begin{figure}[htbp]
+
+{\centering \includegraphics[width=\maxwidth]{figure/questionnairelocation-1} 
+
+}
+
+\caption[Origin of questionnaire participants within Shetland, by condition]{Origin of questionnaire participants within Shetland, by condition~(online convenience sample vs. paper-based controlled sample)}\label{fig:questionnairelocation}
+\end{figure}
+
+
 
 In terms of the geographical location of our participants there was a bigger difference between the two samples, as can be seen in Figure~\ref{fig:questionnairelocation}. The balanced sample explicitly excluded speakers originally from Shetland's capital Lerwick, home to 7,500 of the islands' total population of 23,000. The Scots vernacular of Lerwick is undergoing a more rapid change towards Standard Scottish English~(SSE) forms than rural variants~\citep{Sundkvist2011}, a development that can be attributed to the larger influx of speakers of other English varieties due to the capital's role as a hub for offshore oil drilling in the surrounding sea.
 % For example, the outgoing verb-initial constructions for questions are not attested even in older speakers from Lerwick~(Durham, p.c.).
@@ -191,19 +193,22 @@ In order to assess the reliability of our usage estimates by correlating it with
 The first question regards exactly \emph{which} acceptability judgments should be correlated with the usage estimates. The acceptability judgment data collected by~\citet{Jamieson2015} is more abundant: each of the 24~informants provided judgments for a total of 49~example sentences across the three changing variables, covering 17~different verb types, and some of the verbs were chosen because they are known to exhibit strong lexical effects that affect the choice of syntactic construction. The two principled ways to limit the lexical effects on the acceptability measures are, on one hand, to only correlate the judgments for those sentences where the verbs match those used in the respective example sentences from the questionnaire or, alternatively, to wash out lexical effects by taking the average acceptability score over all verbs used in the acceptability judgment task. Both approaches turn out to result in almost identical correlation coefficients, and even the inclusion of all individual lexical items leads to a highly significant (if~lower) correlation coefficient.
 
 The second decision relates to how the two acceptability judgments for the two competing variants should be converted into one measure capturing their relative acceptability, akin to the direct juxtaposition of the ``which variant do you use more'' measure employed by the questionnaire. The two most straightforward ways to combine them into one measure is by taking the difference between the ratings for the incoming and the outgoing variant, either by subtraction (absolute difference in acceptability) or division (relative difference in acceptability). %\footnote{While division is in principle not a legal operation for ordinal responses, acceptability judgments collected on a Likert scale are frequently treated as numeric responses, and subjected to parametric statistical tests, see e.g.~\citet{TODO}.}.
-Both approaches produce a numeric scale with a neutral centre point occupied by pairs of judgements where the incoming and outgoing variants were rated to be equally acceptable~($0$ for the absolute difference by subtraction, and $1$ for the relative difference by division). In terms of the relative ranking of pairs with differing judgments the two scales only differ marginally, as can be seen in Figure~\ref{fig:judgments} below, where it is relatively easy to identify the matching pairs of datapoints between the two graphs based on their y-axis position.\footnote{The main difference between the two different ways to convert the acceptability judgments concerns the resolution of the resulting scale: pairwise subtraction of the 7 possible ranks of the ordinal acceptability judgments yields a total of~\Sexpr{length(unique(as.vector(outer(1:7, 1:7, "-"))))} possible relative ratings, while the division method results in up to~\Sexpr{length(unique(as.vector(outer(1:7, 1:7, "/"))))} theoretically possible values, and consequently fewer ties. The impact of choosing either of the two approaches on the resulting correlation coefficients is still only marginal, and our results are not highly sensitive to either choice, as can be seen below.} %The coefficients derived from both calculations are reported in the results below.
+Both approaches produce a numeric scale with a neutral centre point occupied by pairs of judgements where the incoming and outgoing variants were rated to be equally acceptable~($0$ for the absolute difference by subtraction, and $1$ for the relative difference by division). In terms of the relative ranking of pairs with differing judgments the two scales only differ marginally, as can be seen in Figure~\ref{fig:judgments} below, where it is relatively easy to identify the matching pairs of datapoints between the two graphs based on their y-axis position.\footnote{The main difference between the two different ways to convert the acceptability judgments concerns the resolution of the resulting scale: pairwise subtraction of the 7 possible ranks of the ordinal acceptability judgments yields a total of~13 possible relative ratings, while the division method results in up to~35 theoretically possible values, and consequently fewer ties. The impact of choosing either of the two approaches on the resulting correlation coefficients is still only marginal, and our results are not highly sensitive to either choice, as can be seen below.} %The coefficients derived from both calculations are reported in the results below.
 
 Having transformed the absolute acceptability judgments to a relative acceptability scale, there is still a third decision to be made, namely which of the usage estimate ratings it should be correlated with. The separate questions in the questionnaire gathered data regarding different speaker groups, including the informants themselves as well as several idealised interlocutor groups. Intuitively, we would expect people's acceptability judgments to reflect their own probability of producing the respective variants, and it is indeed only their self-usage estimates that yield a significant correlation with the derived relative acceptability scores.
 
-The relationship between the reported relative self-usage rates and both the absolute and relative difference in acceptability reported by the 24~participants in the paper condition are shown in Figure~\ref{fig:judgments}. Due to the large number of ties along the 5-point ordinal scale of the questionnaire we chose Kendall's $\tau_B$ to calculate the correlation between the two measures. We found the strongest correlation between informants' self-usage estimates and the relative difference of their acceptability judgments by division, with $\tau_B=\Sexpr{dx <- merge(meanmatchedjudgments, da); pvrank::rankor(as.numeric(dx[["self"]]), dx[["reldiff"]], "kendall", print=FALSE, type="greater")$Value}$. This correlation is significant at $p<.01$, as determined using the \texttt{pvrank} R package which provides p-value calculation for rank order correlation tests accounting for ties~\citep{pvrank1.1}. % TODO could also do clme(self ~ judgment, random=id, data=da) ??
+The relationship between the reported relative self-usage rates and both the absolute and relative difference in acceptability reported by the 24~participants in the paper condition are shown in Figure~\ref{fig:judgments}. Due to the large number of ties along the 5-point ordinal scale of the questionnaire we chose Kendall's $\tau_B$ to calculate the correlation between the two measures. We found the strongest correlation between informants' self-usage estimates and the relative difference of their acceptability judgments by division, with $\tau_B=0.22207$. This correlation is significant at $p<.01$, as determined using the \texttt{pvrank} R package which provides p-value calculation for rank order correlation tests accounting for ties~\citep{pvrank1.1}. % TODO could also do clme(self ~ judgment, random=id, data=da) ??
 
-<<judgments, fig.scap="Correlation between the 24 informants' reported self-usage rate of the two variants for the three changing variables and the relative acceptability derived from the average acceptability judgments", fig.cap="Correlation between the 24 informants' reported self-usage rate of the two variants for the three changing variables~(x-axis, jittered) and the relative acceptability derived from the average acceptability judgments (y-axis), for two ways of calculating the relative preference of the variants: (a)~\\emph{absolute} difference in acceptability, calculated by subtracting the rating of the outgoing variant from the incoming one (b)~\\emph{relative} difference of the incoming vs. outgoing ratings, calculated by division. The mid-points of the two relative acceptability scales~(where two competing variants are judged as equally acceptable) are indicated by dashed lines.">>=
-tightmargin(mfrow=c(1, 2), pty="s")
-plotjudgmentcor(meanmatchedjudgments, "self", "absdiff", render="jitteredself", xlab="(a)")
-plotjudgmentcor(meanmatchedjudgments, "self", "reldiff", render="jitteredself", xlab="(b)")
-#plotjudgmentcor(meanmatchedjudgments, "other", "absdiff")
-#plotjudgmentcor(meanmatchedjudgments, "other", "reldiff")
-@
+\begin{figure}[htbp]
+
+{\centering \includegraphics[width=\maxwidth]{figure/judgments-1} 
+
+}
+
+\caption[Correlation between the 24 informants' reported self-usage rate of the two variants for the three changing variables and the relative acceptability derived from the average acceptability judgments]{Correlation between the 24 informants' reported self-usage rate of the two variants for the three changing variables~(x-axis, jittered) and the relative acceptability derived from the average acceptability judgments (y-axis), for two ways of calculating the relative preference of the variants: (a)~\emph{absolute} difference in acceptability, calculated by subtracting the rating of the outgoing variant from the incoming one (b)~\emph{relative} difference of the incoming vs. outgoing ratings, calculated by division. The mid-points of the two relative acceptability scales~(where two competing variants are judged as equally acceptable) are indicated by dashed lines.}\label{fig:judgments}
+\end{figure}
+
+
 
 %(TODO could delve into comparing the two data types a bit more here, e.g. by looking at the marginal distributions of the acceptability vs. usage estimate data and see how the difference between them might capture facts about how far the change has already progressed?)
 
@@ -222,75 +227,18 @@ we can now turn to analysing our participants' responses, and the patterns found
 The first measure elicited from our participants was an estimate of their own usage levels for each of the linguistic variables in question.
 The overall data, split by sociolinguistic variable and informant age, is shown in Figure~\ref{fig:selfresponses}. The first impression is that the response distribution is highly uneven, with the majority of responses falling onto the three categories of our 5-point-scale that indicate at least 50\% usage of the incoming variants.\footnote{Since the control variable exhibits stable variation, there is no `incoming' or `outgoing' variant in this sense. Instead, we have coded the more frequently used (i.e. geographically more widespread) variant as the `incoming' one.}
 
-<<selfresponses, fig.scap="Distribution of informant age per reported level of own usage for the three changing variables as well as the stable, geographically conditioned control", fig.cap="Distribution of informant age per reported level of own usage for the three changing variables as well as the stable, geographically conditioned control. The five response levels correspond to the five possible responses described in Section~\\ref{sec:questionnaire}, ranging from the leftmost `I only use the incoming variant' to `I only use the outgoing variant' at the very right.">>=
+\begin{figure}[htbp]
 
-# previously: a single boxplot over the three changing variables, with superimposed scatterplot
-#b <- boxplot(age~self, data=changing, plot=0)
-#boxplot(age~self, data=changing, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
-#points(jitter(as.numeric(changing$self)), changing$age, pch=20, col=changingcolors[changing$var])
-#legend("topleft", legend=levels(changing$var), horiz=T, fill=changingcolors)
+{\centering \includegraphics[width=\maxwidth]{figure/selfresponses-1} 
 
-# 4 scatterplots - manually change factor order so the plot arrangement makes sense
-#lattice::xyplot(d$age ~ d$self | factor(d$var, levels=c("imp", "whq", "neg", "ynq")))#, col=varcolors[d$var])
-
-# 4 scatterplots superimposed on boxplots - maximum information transparency
-fourboxplots <- function(formula) {
-  par(mfcol=c(2, 2))
-  for (v in vars) {
-    dx <- variable(v)
-    b <- boxplot(formula, data=dx, plot=0)
-    boxplot(formula, data=dx, main=vardesc[[v]], ylab="participant age (years)", names=paste(b$names, "\n(n=", b$n, ")", sep=""), las=2)# col=temp.colors(5))
-    # axis(1, at=1:length(labels), labels=levels(), srt=45)
-    points(jitter(as.numeric(dx[[labels(terms(formula))]])), dx$age, col=varcolors[dx$var])
-  }
 }
 
-fourboxplots(age ~ self)
-# lattice::bwplot(age ~ self | var, data=d)
-
-# 4 boxplots next to each other
-#b <- boxplot(age~self+var, data=d, plot=0)
-#boxplot(age~self+var, data=d, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
-
-# add condition information (who knows what that was...)
-#boxplot(age~self+condition, data=changing, xlab="self-reported variant usage for the three changing variables", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""))
-#points(jitter(5*(as.numeric(changing$condition)-1)+as.numeric(changing$self)), changing$age, pch=20)
+\caption[Distribution of informant age per reported level of own usage for the three changing variables as well as the stable, geographically conditioned control]{Distribution of informant age per reported level of own usage for the three changing variables as well as the stable, geographically conditioned control. The five response levels correspond to the five possible responses described in Section~\ref{sec:questionnaire}, ranging from the leftmost `I only use the incoming variant' to `I only use the outgoing variant' at the very right.}\label{fig:selfresponses}
+\end{figure}
 
 
-nullmdl <- clme(self ~ 1, random=id)
-#agemdl <- clme(self ~ age, random=id)
-varmdl <- clme(self ~ var, random=id)
-varagemdl <- clme(self ~ age + var, random=id)
-vargendermdl <- clme(self ~ gender + var, random=id)
-vargenderagemdl <- clme(self ~ age + gender + var, random=id)
-suppressWarnings(vargenderchangingmdl <- clme(self ~ gender*stable + var, random=id))
-# age-gender interaction is near significance
-#agegendermdl <- clme(self ~ age*gender, random=id)
-#agechangingmdl <- clme(self ~ age*stable, random=id)
-@
 
-<<rankdeficientmodels, warning=FALSE, cache=FALSE>>=
-# these ones are rank deficient
-agevarchangingmdl <- clme(self ~ age*stable + var, random=id)
-# this one is equivalent (Helmert coding) needed for the prediction
-helmertagevarchangingmdl <- clme(self ~ age*notchanging + question + whq, random=id)
 
-# age and gender effects appear to be orthogonal/cumulative
-agegenderchangingvarmdl  <- clme(self ~ age*stable + gender + var, random=id)
-# n.s.
-#agegenderchangingvarmdl2  <- clme(self ~ var + age*stable + gender*stable, random=id)
-fullmdl <- clme(self ~ age*var+gender, random=id)
-
-# clmm2 confint() doesn't work for anything but stdev at the moment...
-#fixedmodel <- clm(self ~ age*stable+var, data=d)
-#fixedmodel <- clm(self ~ age*notchanging + question + whq, data=d)
-#confint(fixedmodel)
-
-# gender result does not translate to a gender difference in the perceived 'self/community-difference'
-#rms::orm(selfdiff ~ gender, data=changing)
-#rms::lrm(oldervar ~ gender, data=changing)
-#rms::orm(apparentdiff ~ gender, data=changing)
-@
 
 As expected, the self-reports on the stable negation variable are patterned by the informants' geographical location, with the only four informants indicating categorical usage of the more localised variant all originating from the isle of Whalsay. In contrast, responses for the three changing variables appear to reflect differences in usage patterns in \emph{apparent time}, the familiar phenomenon where the language use of younger speakers is found to be more \emph{advanced}, i.e.~they exhibit higher usage rates of the new, incoming variants~\citep{Wagner2012theory}.
 %In other words, if speakers are reporting their own usage accurately, we should expect individual responses to be predicted by the speakers' age, with younger speakers reporting higher usage levels of the incoming variants. The distribution of ages per response suggests that there might be such an effect:
@@ -312,117 +260,88 @@ Looking at the succession of models in Table~\ref{table:selfresponsesmodelordina
 When taking into account differences between the different sociolinguistic variables, we do find evidence for an effect of age for the changing variables only.
 Rather than using the \texttt{var} term, a 4-level factor that distinguishes all sociolinguistic variables covered by the questionnaire, model~4 adds an interaction between the age coefficient and the \emph{type} of sociolinguistic variable, with the binary \texttt{stable} factor opposing the three changing variables against the stable negation variable.
 Even though the model \emph{comparison} between models~3 and~4 in Table~\ref{table:selfresponsesmodelordinalcomparison} is not significant, 
-the model coefficient $\beta_{age}=\Sexpr{round(coef(agegenderchangingvarmdl)[["age"]], 3)}$ means that the relative probability of responding in a higher category is multiplied by $\exp(\Sexpr{round(coef(agegenderchangingvarmdl)[["age"]], 3)})=\Sexpr{round(exp(coef(agegenderchangingvarmdl)[["age"]]), 3)}$ for every year that a participant is \emph{older}. This is equivalent to their probability of reporting a relatively higher usage level of the incoming variant \emph{decreasing} slightly (by about \Sexpr{100*(1-round(exp(coef(agegenderchangingvarmdl)[["age"]]), 3))}\%). The coefficient of the \texttt{age:stable} interaction term, which is of a similar amplitude but in the opposite direction~($\beta_{age:stable}=\Sexpr{round(coef(agegenderchangingvarmdl)[["age:stableTRUE"]], 3)}$), implies that this effect of age is effectively cancelled out for the stable control variable.
+the model coefficient $\beta_{age}=\ensuremath{-0.028}$ means that the relative probability of responding in a higher category is multiplied by $\exp(\ensuremath{-0.028})=0.972$ for every year that a participant is \emph{older}. This is equivalent to their probability of reporting a relatively higher usage level of the incoming variant \emph{decreasing} slightly (by about 2.8\%). The coefficient of the \texttt{age:stable} interaction term, which is of a similar amplitude but in the opposite direction~($\beta_{age:stable}=0.039$), implies that this effect of age is effectively cancelled out for the stable control variable.
 
-<<selfresponsesmodel, fig.align="center">>=
 
-# agechanginggendermdl is worse than simple varmdl
-#agevarchangingmdl,vargenderchangingmdl
-ormtables(nullmdl, varmdl, varagemdl, vargenderagemdl, agegenderchangingvarmdl, fullmdl, of="of participants' own usage estimates.", label="table:selfresponsesmodelordinal")
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 13:49:00
+\begin{table}[htbp] \centering 
+  \caption{Ordered logistic regression model (coefficients and standard errors) of participants' own usage estimates.} 
+  \label{table:selfresponsesmodelordinal} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+\hline \\[-1.8ex] 
+ age &  & $-$0.019 & $-$0.020 & $-$0.028$^{*}$ & $-$0.019 \\ 
+  &  & (0.011) & (0.011) & (0.012) & (0.016) \\ 
+  stable &  &  &  & 1.031 &  \\ 
+  &  &  &  & (0.901) &  \\ 
+  gendermale &  &  & $-$0.788$^{*}$ & $-$0.817$^{*}$ & $-$0.838$^{*}$ \\ 
+  &  &  & (0.359) & (0.365) & (0.370) \\ 
+  age:varynq &  &  &  &  & $-$0.005 \\ 
+  &  &  &  &  & (0.023) \\ 
+  age:varwhq &  &  &  &  & $-$0.033 \\ 
+  &  &  &  &  & (0.023) \\ 
+  age:varneg &  &  &  &  & 0.030 \\ 
+  &  &  &  &  & (0.024) \\ 
+  varynq & 1.909$^{***}$ & 1.874$^{***}$ & 1.864$^{***}$ & 1.865$^{***}$ & 2.052$^{*}$ \\ 
+  & (0.372) & (0.372) & (0.372) & (0.374) & (0.960) \\ 
+  varwhq & 1.770$^{***}$ & 1.736$^{***}$ & 1.732$^{***}$ & 1.733$^{***}$ & 2.997$^{**}$ \\ 
+  & (0.365) & (0.365) & (0.366) & (0.367) & (0.985) \\ 
+  varneg & 2.558$^{***}$ & 2.575$^{***}$ & 2.567$^{***}$ &  & 1.403 \\ 
+  & (0.414) & (0.414) & (0.415) &  & (0.979) \\ 
+  age:stable &  &  &  & 0.039 &  \\ 
+  &  &  &  & (0.021) &  \\ 
+  only out\textbar more out & $-$3.204$^{***}$ & $-$3.965$^{***}$ & $-$4.261$^{***}$ & $-$4.648$^{***}$ & $-$4.290$^{***}$ \\ 
+  & (0.450) & (0.651) & (0.665) & (0.711) & (0.801) \\ 
+  more out\textbar both & $-$2.282$^{***}$ & $-$3.036$^{***}$ & $-$3.336$^{***}$ & $-$3.713$^{***}$ & $-$3.366$^{***}$ \\ 
+  & (0.348) & (0.579) & (0.595) & (0.642) & (0.738) \\ 
+  both\textbar more in & $-$0.996$^{***}$ & $-$1.747$^{**}$ & $-$2.051$^{***}$ & $-$2.407$^{***}$ & $-$2.065$^{**}$ \\ 
+  & (0.280) & (0.532) & (0.547) & (0.590) & (0.692) \\ 
+  more in\textbar only in & 0.884$^{**}$ & 0.132 & $-$0.172 & $-$0.493 & $-$0.135 \\ 
+  & (0.274) & (0.512) & (0.522) & (0.558) & (0.669) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-# second: lme models over the responses as numeric values
-#library(lme4)
-#linearnullmdl <- lmer(as.numeric(self) ~ (1|id), data=d)
-#linearvarmdl <- lmer(as.numeric(self) ~ var + (1|id), data=d)
-#linearagemdl <- lmer(as.numeric(self) ~ age + (1|id), data=d)
-#linearchangingmdl <- lmer(as.numeric(self) ~ age*stable + (1|id), data=d)
-#linearagevarmdl <- lmer(as.numeric(self) ~ age*var + (1|id), data=d)
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 13:49:01
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:selfresponsesmodelordinal}.} 
+  \label{table:selfresponsesmodelordinalcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $287$ & $606.566$ &  & $$ & $$ &  \\ 
+(1) & var & $284$ & $551.283$ & 0 vs 1 & $3$ & $55.282$ & \textless  .001 \\ 
+(2) & age + var & $283$ & $548.353$ & 1 vs 2 & $1$ & $2.930$ & .087 \\ 
+(3) & age + gender + var & $282$ & $543.518$ & 2 vs 3 & $1$ & $4.835$ & .028 \\ 
+(4) & age:stable + gender + var & $281$ & $540.054$ & 3 vs 4 & $1$ & $3.464$ & .063 \\ 
+(5) & age:var + gender & $279$ & $537.920$ & 4 vs 5 & $2$ & $2.134$ & .344 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
 
-#linearrandomvarmdl <- lmer(as.numeric(self) ~ age*(1|var) + (1|id), data=d)
-# this one's rank deficient
-#suppressMessages(linearagevarchangingmdl <- lmer(as.numeric(self) ~ age*stable + var + (1|id), data=d))
 
-#linearhelmertmdl <- lmer(as.numeric(self) ~ age*notchanging + age*notimp + age*notynq + (1|id), data=d)
+\begin{figure}[htbp]
 
-#ormtable(linearagemdl, linearchangingmdl, linearvarmdl, linearagevarchangingmdl, linearagevarmdl, title="Linear regression model for participants' own usage estimates, converted to a continuous response scale from 1-5.", label="table:selfresponsesmodelnumeric")
+{\centering \subfloat[Empirical distribution of the self-reported usage levels for the three changing variables, with the participants split into two age groups ($\le32$ years, $N=39$; $>32$ years, $N=38$). The younger the speaker, the more likely they are to report higher usage of the incoming variant.\label{fig:selfresponsesprediction1}]{\includegraphics[width=\maxwidth]{figure/selfresponsesprediction-1} }
+\subfloat[Prediction of response distributions of ordered logistic model (4) from Table~\ref{table:selfresponsesmodelordinal} for the mean ages of the two age groups plotted above.\label{fig:selfresponsesprediction2}]{\includegraphics[width=\maxwidth]{figure/selfresponsesprediction-2} }
 
-#modelcomparisontable(anova(linearnullmdl, linearagemdl, linearchangingmdl, linearvarmdl, linearagevarchangingmdl, linearagevarmdl), of="between the models in Table~\\ref{table:selfresponsesmodelnumeric}", label="table:numericmodelcomparison")
-@
-
-<<selfresponsesprediction, fig.cap="Comparison of empirical own usage reports and corresponding model prediction.", fig.subcap=c("Empirical distribution of the self-reported usage levels for the three changing variables, with the participants split into two age groups ($\\le32$ years, $N=39$; $>32$ years, $N=38$). The younger the speaker, the more likely they are to report higher usage of the incoming variant.", "Prediction of response distributions of ordered logistic model (4) from Table~\\ref{table:selfresponsesmodelordinal} for the mean ages of the two age groups plotted above.")>>=
-# TODO could include error bars showing amplitude of random participant effect?
-# actual data
-defaultscales <- list(x=list(tck=1:0, rot=45, alternating=1), y=list(alternating=3))# axs="i"
-defaultbarcol <- temp.colors(5)
-
-defaultsettings <- list(strip.border=list(col="black"), strip.background=list(col=c(gray(0.85), gray(0.6))), fontsize=list(text=10))
-# layout.heights=list(strip=0.9)
-lattice::trellis.par.set(defaultsettings)
-
-# as.table=TRUE for panel draw order
-lattice::lattice.options(default.args=list(aspect=0.8), par.strip.text=list(col="black"))#, strip=lattice::strip.custom(strip.names=c(TRUE, TRUE)))
-
-# No mention of 'scales'. But xyplot has an argument 'default.scales' which you can set globally: add this  default.scales = def.scal to the arguments in your xyplot call.
-groupedhistogram <- function(formula, ..., data=d, type="percent", scales=defaultscales, col=defaultbarcol, aspect=0.8, xlab="", ylab="responses (%)") { # to count or not to count?
-  lattice::histogram(formula, ..., data=data, aspect=aspect, type=type, scales=scales, col=col, xlab=xlab, ylab=ylab, between=list(x=0.7, y=0.7))
 }
 
-groupedhistogram(~ self | longvar + agecat, col=temp.colors(5), ylim=c(0, 93))
-# main="reported own usage"
+\caption[Comparison of empirical own usage reports and corresponding model prediction]{Comparison of empirical own usage reports and corresponding model prediction.}\label{fig:selfresponsesprediction}
+\end{figure}
 
-#plot(party::ctree(self~loc+age+gender+var+firstvar, data=changing))
-# imp branch off first, then neg branches off, predicted by location
-#plot(party::ctree(self~loc+age+gender+var+firstvar, data=d))
-#Imperatives exhibit higher self-reports of using the outgoing variants~(rightmost node), while most people claim categorical or near-categorical use of the incoming variant for both question types. Within the responses for the two question variables~(left branch), age is a significant predictor of a binary partitioning with a cutoff age of~51, with younger speakers most likely to report using only the incoming variant, and older speakers more likely to select `mostly' the incoming variant.
 
-# .003 coef(rms::orm(self ~ age, data=changing))$stats["Score P"]
-#summary(ordinal::clm(self ~ age, data=changing))
-#summary(MASS::polr(self ~ age, data=changing))
-# random effects eat up a lot of power
-
-#check.orm(d, "self", "age + var", g=3)
-#fit <- rms::orm(self ~ age + var, data=changing)
-#dd <- rms::datadist(age=d$age, var=d$var)
-#options(datadist="dd")
-#plot(rms::Predict(fit, age, var), anova=anova(fit))
-#check.orm(whq, "self", "age", g=3)
-
-# gender is also significant but only for the self-usage levels (see section at the end)
-#rms::lrm(self ~ gender, data=changing)
-# negative coefficient for males == women report higher incoming variant usage
-#mosaicplot(table(d$var, d$gender, d$self), color=temp.colors(5))
-#plot(self ~ gender, data=imp)
-
-# model predictions for all variables
-
-# calculate mean age for each of the three age categories
-ages <- round(aggregate(participants$age, by=list(participants$agecat), FUN=mean)$x)
-
-# OLD RMS PREDICTIONS
-# effect is mainly driven by whq, but still evident (if not significant) for the other two variables
-#predictions <- foreach(v = levels(changing$var), .combine=rbind) %do% {
-#  m <- ordinal::clm(self ~ age, data=variable(v))
-#  p <- predict(m, expand.grid(age=ages))[[1]]
-#  cbind(data.frame(prediction=as.vector(p), response=rep(colnames(p), each=3)), var=v, age=ages)
-#}
-
-# fill missing cells with 0s to avoid lattice skipping the colours
-#predictions <- aggregate(prediction ~ response + age + var, data=rbind(expand.grid(prediction=0, response=lvls, var=levels(changing$var), age=ages), predictions), FUN=sum)
-
-# apply proper order
-#predictions$response <- factor(predictions$response, levels=lvls)
-
-# https://cran.r-project.org/web/packages/ordinal/vignettes/clmm2_tutorial.pdf
-# this doesn't work because of the dropped level, use helmert coding instead:
-#predictions <- expand.grid(age=ages, var=vars, self=levels(d$self))
-predictions <- expand.grid(age=ages, self=lvls, longvar=longvars)
-predictions[,helmertvars] <- helmertlevels(as.numeric(predictions$longvar))
-
-predictions$response <- predict(helmertagevarchangingmdl, predictions)
-
-predictions$age <- factor(paste("age=", predictions$age, sep=""), levels=paste("age=", ages, sep=""))
-
-# TODO fix proportions to match above
-lattice::barchart(100*response ~ self | longvar + age, data=predictions, col=defaultbarcol, scales=defaultscales, ylab="predicted usage response (%)", ylim=c(0, 93), box.width=1, aspect=0.8, between=list(x=0.7, y=0.7))
-
-#par(mfcol=c(3,3), mar=rep(1,4)))
-#rms: p <- predict(m, expand.grid(age=c(20,50,80)), type="fitted.ind")
-#sapply(1:3, function(i) barplot(p[i,], main=paste("Prediction for age=", ages[i], sep=""), col=temp.colors(5), ylim=c(0, 0.7)))
-@
 
 Finally, fitting a model with separate interaction terms for each of the four variables (by substituting the \texttt{age:stable} term with \texttt{age:var}, model~5) does not improve the model fit significantly, indicating that the presence of the age effect is mostly explained by whether the sociolinguistic variable is undergoing change or not.
 
-To help visualise the effect of age and aid in interpreting the log odd ratio coefficients, the empirical responses by age as well as the corresponding predictions made by the ordered logistic models are shown in Figure~\ref{fig:selfresponsesprediction}. For this purpose we split the responses we collected into two evenly sized age groups, %($\Sexpr{paste(names(table(participants$agecat)), ", N=", table(participants$agecat), sep="", collapse="$; $")}$)
+To help visualise the effect of age and aid in interpreting the log odd ratio coefficients, the empirical responses by age as well as the corresponding predictions made by the ordered logistic models are shown in Figure~\ref{fig:selfresponsesprediction}. For this purpose we split the responses we collected into two evenly sized age groups, %($age <= 32, N=39$; $age > 32, N=38$)
 and the distribution of responses per age group and sociolinguistic variable is shown in Figure~\ref{fig:selfresponsesprediction}a: despite differing baseline distributions (with imperatives generally exhibiting a flatter distribution), we can see the general trend of increasing incoming variant usage for younger speakers. The predictions made by model~4 for the different variables and a typical member of each of the two age groups are plotted underneath in Figure~\ref{fig:selfresponsesprediction}b, showing good agreement with the empirical data.
 
 \subsection{`Other people' usage estimates}
@@ -433,41 +352,76 @@ When it comes to reporting on the linguistic usage levels of other individuals i
 Again, we performed ordered logistic regression models with participant as a random effect, reported in Tables~\ref{table:otherresponsesmodel} and~\ref{table:otherresponsesmodelcomparison}.
 In contrast to the self-usage reports, we find no effect of age for any of the variables~(models~1+2). Instead, the models reveal that the only significant predictors of the reported usage levels are the type of sociolinguistic variable~(model~3) as well as the participant's gender, with females again estimating slightly \emph{higher} usage of the incoming variant in the community~(model~4). Importantly we find no significant interaction between the type of variable and any of the other predictors, i.e. the effect of gender again pertains to all four variables, and not just the changing ones~(model~5).
 
-<<otherresponses, fig.scap="Comparison of own vs. community-level usage estimates by binary gender", fig.cap="Comparison of own vs. community-level usage estimates by binary gender.", fig.subcap=c("Overall distribution of reported \\emph{own} usage, per sociolinguistic variable.", "Responses to the question ``How much do you think are people around you using either of the variants?''. While the distribution of responses to the imperative question is again consistently flatter than for the other responses, in comparison to the self-usage estimates shown in (a) there is a clear shift away from both of the extreme response options, indicating that individuals perceive the population average to be variable rather than categorical.")>>=
 
-# main="Estimated own usage of the competing variants"
-#groupedhistogram(~ self | longvar, data=d, layout=c(4,1), ylim=c(0, 85))
-groupedhistogram(~ self | longvar + gender, ylim=c(0, 90))
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 25, 2016 - 14:00:23
+\begin{table}[htbp] \centering 
+  \caption{Ordered logistic regression model (coefficients and standard errors) predicting participants' answers to the question ``How much do you think are people around you using either of the variants?''} 
+  \label{table:otherresponsesmodel} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+\hline \\[-1.8ex] 
+ age & 0.005 & $-$0.002 &  &  &  \\ 
+  & (0.011) & (0.012) &  &  &  \\ 
+  stable &  & $-$0.560 &  &  &  \\ 
+  &  & (0.771) &  &  &  \\ 
+  age:stable &  & 0.023 &  &  &  \\ 
+  &  & (0.019) &  &  &  \\ 
+  varynq &  &  & 1.750$^{***}$ & 1.749$^{***}$ & 1.751$^{***}$ \\ 
+  &  &  & (0.404) & (0.404) & (0.404) \\ 
+  varwhq &  &  & 1.888$^{***}$ & 1.883$^{***}$ & 1.884$^{***}$ \\ 
+  &  &  & (0.410) & (0.410) & (0.410) \\ 
+  varneg &  &  & 1.491$^{***}$ & 1.487$^{***}$ & 1.222$^{**}$ \\ 
+  &  &  & (0.387) & (0.388) & (0.450) \\ 
+  gendermale &  &  &  & $-$0.832$^{*}$ & $-$1.019$^{*}$ \\ 
+  &  &  &  & (0.368) & (0.406) \\ 
+  gendermale:stable &  &  &  &  & 0.743 \\ 
+  &  &  &  &  & (0.654) \\ 
+  only out\textbar more out & $-$5.821$^{***}$ & $-$6.045$^{***}$ & $-$5.294$^{***}$ & $-$5.615$^{***}$ & $-$5.717$^{***}$ \\ 
+  & (1.092) & (1.120) & (1.037) & (1.053) & (1.059) \\ 
+  more out\textbar both & $-$3.465$^{***}$ & $-$3.686$^{***}$ & $-$2.829$^{***}$ & $-$3.141$^{***}$ & $-$3.232$^{***}$ \\ 
+  & (0.537) & (0.591) & (0.408) & (0.440) & (0.451) \\ 
+  both\textbar more in & $-$1.659$^{***}$ & $-$1.873$^{***}$ & $-$0.835$^{**}$ & $-$1.136$^{***}$ & $-$1.215$^{***}$ \\ 
+  & (0.446) & (0.509) & (0.289) & (0.322) & (0.332) \\ 
+  more in\textbar only in & 2.471$^{***}$ & 2.300$^{***}$ & 3.825$^{***}$ & 3.519$^{***}$ & 3.464$^{***}$ \\ 
+  & (0.469) & (0.516) & (0.419) & (0.421) & (0.424) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-# main="Estimated population-wide usage of the competing variants"
-# main="reported community usage"
-groupedhistogram(~ other | longvar + gender, data=d, ylim=c(0, 90))
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 25, 2016 - 14:00:24
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:otherresponsesmodel}.} 
+  \label{table:otherresponsesmodelcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $287$ & $507.936$ &  & $$ & $$ &  \\ 
+(1) & age & $286$ & $507.702$ & 0 vs 1 & $1$ & $0.234$ & .628 \\ 
+(2) & age:stable & $284$ & $505.271$ & 1 vs 2 & $2$ & $2.431$ & .297 \\ 
+(3) & var & $284$ & $478.018$ & 1 vs 3 & $2$ & $29.684$ & \textless  .001 \\ 
+(4) & var + gender & $283$ & $472.928$ & 3 vs 4 & $1$ & $5.089$ & .024 \\ 
+(5) & var + gender:stable & $282$ & $471.625$ & 4 vs 5 & $1$ & $1.303$ & .254 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+\begin{figure}[htbp]
 
-#fourboxplots(age ~ other)
-#groupedhistogram(~ other | longvar + agecat, data=changing, ylab="actual usage response (%)", ylim=c(0, 85))
-# age only significant for y/n questions
-# report that questions pattern together and imp+neg pattern together?
+{\centering \subfloat[Overall distribution of reported \emph{own} usage, per sociolinguistic variable.\label{fig:otherresponses1}]{\includegraphics[width=\maxwidth]{figure/otherresponses-1} }
+\subfloat[Responses to the question ``How much do you think are people around you using either of the variants?''. While the distribution of responses to the imperative question is again consistently flatter than for the other responses, in comparison to the self-usage estimates shown in (a) there is a clear shift away from both of the extreme response options, indicating that individuals perceive the population average to be variable rather than categorical.\label{fig:otherresponses2}]{\includegraphics[width=\maxwidth]{figure/otherresponses-2} }
 
-nullmdl <- clme(other ~ 1, random=id)
-#gendermdl  <- clme(other ~ gender, random=id)
-agemdl <- clme(other ~ age, random=id)
-# this is worse than the simple gendermdl which has higher df
-agechangingmdl <- clme(other ~ age*stable, random=id)
-varmdl <- clme(other ~ var, random=id)
-vargendermdl  <- clme(other ~ var + gender, random=id)
+}
 
-# switching the order of variables around here makes finding of start values fail...?
-suppressWarnings(vargenderchangingmdl <- clme(other ~ var + gender*stable, random=id))
+\caption[Comparison of own vs. community-level usage estimates by binary gender]{Comparison of own vs. community-level usage estimates by binary gender.}\label{fig:otherresponses}
+\end{figure}
 
-#helmertvarmdl <- clme(other ~ notchanging + question + whq, random=id)
-#agevarmdl <- clme(other ~ age*var, random=id)
-# this one's rank deficient
-#suppressWarnings(agevarchangingmdl <- clme(other ~ age*stable + var, random=id))
-# need this for the prediction
-#helmertagevarchangingmdl <- clme(other ~ age*notchanging + question + whq, random=id)
 
-ormtables(nullmdl, agemdl, agechangingmdl, varmdl, vargendermdl, vargenderchangingmdl, of="predicting participants' answers to the question ``How much do you think are people around you using either of the variants?''", label="table:otherresponsesmodel")
-@
 
 The data from the first two questions implicitly contains another piece of information, namely where the speakers regard their own variable usage to be relative to the community-level. We measure this by looking at the number of ordinal categories along the 5-point scale that the self-usage response \emph{differs} from the reported community-level usage, and subtracting their ordinal ranks. In this representation of the relative difference, positive numbers indicate that a speaker reported a relatively higher usage of the incoming variant for themselves than for the community, and vice versa.
 % this representation collapses different responses, e.g. +3 can mean 'older only out, younger more in' as well as 'older mostly out, younger only in', 0 could be 'older usage = younger usage' for any of the 5 usage levels
@@ -475,43 +429,76 @@ The data from the first two questions implicitly contains another piece of infor
 If we look at the distribution of this measure in Figure~\ref{fig:selfdiff}, we see that the participants' age is a good predictor of this difference between themselves and the community. %The binary partitioning suggested by conditional inference shows that the majority of under-58-year-olds regard themselves as `ahead' of their community in terms of using the incoming variants, whereas those over 58 are most likely to report being level with the community~(
 Ordinal logistic regression models paralleling those fit to the self-usage reports in Table~\ref{table:selfresponsesmodelordinalcomparison} above confirm this picture: as can be seen in Tables~\ref{table:selfdiffmodel} and~\ref{table:selfdiffmodelcomparison}, the most parsimonious model predicts the difference between individuals' reported own and community usage based on the type of sociolinguistic variable as well as the informant's age. Although the effect of age is again greater for the changing variables~(compare models~2 and~3), the models indicate no significant difference between the stable as opposed to any of the changing variables~(models~3+4).
 
-<<selfdiff, fig.cap="Relative difference in number of ordinal categories between participants' reported \\emph{own} vs community usage levels of the competing variants, by sociolinguistic variable and age group. Positive numbers indicate that a speaker reported a higher usage of the incoming variant for themselves than for the community, and vice versa. While the 5-point response scale allows for differences of up to $\\pm4$, no speaker indicated their own usage to be more than two ordinal categories away from the community level. Younger speakers are more likely to perceive themselves to be ahead of the community level usage~(more red), while older speakers are most likely to report their usage to be level with the community~(white) or behind~(blue).">>=
-# TODO exclude whalsay data points? also show full +-4 scale and don't truncate at 2?
-groupedhistogram(~ selfdiff | longvar + agecat, data=d, col=temp.colors(9), ylim=c(0, 85), xlab="difference score", drop.unused.levels=FALSE) # , xlab="difference in number of ordinal categories between individuals' 'self' and 'other' reponses"
+\begin{figure}[htbp]
 
-#counts <- table(d$selfdiff, d$var)
-#par(xpd=NA, mar=par("mar")+c(0,0,0,3))
-#barplot(counts, legend=rownames(counts), col=temp.colors(-2,4), xlab="sociolinguistic variable", ylab="no. of responses", args.legend=list(x="topright", inset=c(-0.23,-.1), title="Relative difference\nof 'self' usage\nminus 'community' usage", bty="n"), bty="l")
+{\centering \includegraphics[width=\maxwidth]{figure/selfdiff-1} 
 
-#plot(party::ctree(selfdiff~loc+age+gender+firstvar+condition, data=changing))
-#check.orm(subset(d, var!="neg"), "selfdiff", "age")
+}
 
-# gender is NOT significant for selfdiff
-nullmdl <- clme(selfdiff ~ 1, random=id)
-agemdl <- clme(selfdiff ~ age, random=id)
-# TODO FIXME need to include location here OR filter out whalsay speakers?
-#agepluschangingmdl <- clme(selfdiff ~ age+stable, random=id)
-#agechangingmdl <- clme(selfdiff ~ age*stable, random=id)
-varmdl <- clme(selfdiff ~ var, random=id)
-ageplusvarmdl <- clme(selfdiff ~ age+var, random=id)
-agevarmdl <- clme(selfdiff ~ age*var, random=id)
-# this one's rank deficient
-suppressWarnings(agevarchangingmdl <- clme(selfdiff ~ age*stable + var, random=id))
-# need this for the prediction
-helmertagevarchangingmdl <- clme(selfdiff ~ age*notchanging + question + whq, random=id)
+\caption[Relative difference in number of ordinal categories between participants' reported \emph{own} vs community usage levels of the competing variants, by sociolinguistic variable and age group]{Relative difference in number of ordinal categories between participants' reported \emph{own} vs community usage levels of the competing variants, by sociolinguistic variable and age group. Positive numbers indicate that a speaker reported a higher usage of the incoming variant for themselves than for the community, and vice versa. While the 5-point response scale allows for differences of up to $\pm4$, no speaker indicated their own usage to be more than two ordinal categories away from the community level. Younger speakers are more likely to perceive themselves to be ahead of the community level usage~(more red), while older speakers are most likely to report their usage to be level with the community~(white) or behind~(blue).}\label{fig:selfdiff}
+\end{figure}
 
-ormtables(nullmdl, varmdl, ageplusvarmdl, agevarchangingmdl, agevarmdl, of="of the relative difference between participants' reported own and community-level usage.", label="table:selfdiffmodel")
 
-# old plot style
-#library(variant ioplot)
-#vioplot(subset(changing,selfdiff==-2)$age, subset(changing,selfdiff==-1)$age, subset(changing,selfdiff==0)$age, subset(changing,selfdiff==1)$age, subset(changing,selfdiff==2)$age)
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 14:11:56
+\begin{table}[htbp] \centering 
+  \caption{Ordered logistic regression model (coefficients and standard errors) of the relative difference between participants' reported own and community-level usage.} 
+  \label{table:selfdiffmodel} 
+\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+\hline \\[-1.8ex] 
+ age &  & $-$0.022$^{*}$ & $-$0.027$^{*}$ & $-$0.023 \\ 
+  &  & (0.010) & (0.011) & (0.016) \\ 
+  stable &  &  & 0.633 &  \\ 
+  &  &  & (0.745) &  \\ 
+  varynq & 0.883$^{**}$ & 0.850$^{*}$ & 0.841$^{*}$ & 1.481 \\ 
+  & (0.337) & (0.336) & (0.337) & (0.879) \\ 
+  varwhq & 0.677$^{*}$ & 0.636 & 0.624 & 0.494 \\ 
+  & (0.336) & (0.336) & (0.337) & (0.881) \\ 
+  varneg & 1.305$^{***}$ & 1.322$^{***}$ &  & 0.796 \\ 
+  & (0.343) & (0.343) &  & (0.858) \\ 
+  age:stable &  &  & 0.018 &  \\ 
+  &  &  & (0.017) &  \\ 
+  age:varynq &  &  &  & $-$0.017 \\ 
+  &  &  &  & (0.022) \\ 
+  age:varwhq &  &  &  & 0.004 \\ 
+  &  &  &  & (0.022) \\ 
+  age:varneg &  &  &  & 0.013 \\ 
+  &  &  &  & (0.020) \\ 
+  -2\textbar -1 & $-$3.312$^{***}$ & $-$4.156$^{***}$ & $-$4.377$^{***}$ & $-$4.223$^{***}$ \\ 
+  & (0.422) & (0.583) & (0.627) & (0.759) \\ 
+  -1\textbar 0 & $-$1.934$^{***}$ & $-$2.788$^{***}$ & $-$3.000$^{***}$ & $-$2.847$^{***}$ \\ 
+  & (0.307) & (0.504) & (0.549) & (0.692) \\ 
+  0\textbar +1 & 0.432 & $-$0.426 & $-$0.618 & $-$0.461 \\ 
+  & (0.269) & (0.462) & (0.500) & (0.652) \\ 
+  +1\textbar +2 & 4.180$^{***}$ & 3.324$^{***}$ & 3.129$^{***}$ & 3.302$^{***}$ \\ 
+  & (0.414) & (0.535) & (0.568) & (0.715) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-# caption: Age distribution of the difference between reported self and community-level usage. 
-#b <- boxplot(age ~ selfdiff, data=changing, plot=0)
-#boxplot(age ~ selfdiff, data=changing, xlab="difference between reported self vs. community-level usage", ylab="participant age (years)", names=paste(b$names, " (n=", b$n, ")", sep=""), col=temp.colors(9), drop.unused.levels=FALSE)
-#points(jitter(as.numeric(changing$selfdiff)), changing$age, pch=20, col=changingcolors[changing$var])
-#legend("topleft", legend=levels(changing$var), horiz=T, fill=changingcolors)
-@
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 14:11:56
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:selfdiffmodel}.} 
+  \label{table:selfdiffmodelcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $287$ & $657.692$ &  & $$ & $$ &  \\ 
+(1) & var & $284$ & $642.109$ & 0 vs 1 & $3$ & $15.583$ & .001 \\ 
+(2) & age + var & $283$ & $637.137$ & 1 vs 2 & $1$ & $4.972$ & .026 \\ 
+(3) & age:stable + var & $282$ & $636.056$ & 2 vs 3 & $1$ & $1.081$ & .298 \\ 
+(4) & age:var & $280$ & $635.065$ & 3 vs 4 & $2$ & $0.990$ & .609 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
 
 \subsection{Beliefs about the age of competing linguistic variants}
 \label{sec:oldervar}
@@ -523,54 +510,70 @@ The ordered logistic regression models reported in Tables~\ref{table:variantagem
 
 %While the consistency of individual responses indicate that the community shares common beliefs about the \emph{directionality} of these changes, this result does not speak to the source of these beliefs. We will return to this issue in the Discussion.
 
-<<variantage, fig.cap="Distribution of responses to the question ``Which of the two variants do you think is \\emph{older}?'', split by sociolinguistic variable and age of the informant. In comparison to the stable negation variant, where about half of the people considered the geographically more limited (minority) variant `didnoo' to be older, the response distribution was more extreme for the three changing variables. Here, around 80\\% of respondents report the outgoing forms (which are already the minority forms) to be older, with even fewer answers falling on the majority variant as well as the ``people have always used both'' option.">>=
-# TODO not actually true: At least for the changing variables, older informants are more likely to identify the outgoing variant as the `older' one, as confirmed by the models in Tables~\\ref{table:variantagemodel} and~\\ref{table:variantagemodelcomparison}.
-# (TODO include N per variable?)
-#$N=\Sexpr{colSums(table(d$oldervarfreq, d$var))}$
+\begin{figure}[htbp]
 
-groupedhistogram( ~ oldervar | longvar + agecat, data=d, col=temp.colors(3, intensity=0.5), ylim=c(0, 90))
-# xlab="Which of the variants do you think is older?"
+{\centering \includegraphics[width=\maxwidth]{figure/variantage-1} 
 
-# these should be reported as a multinomial logistic, not ordinal, although
-# underlyingly the model fitting is the same (see documentation of clm2):
-# https://cran.r-project.org/web/packages/ordinal/ordinal.pdf
-ovnullmdl <- clme(oldervar ~ 1, random=id)
-agemdl <- clme(oldervar ~ age, random=id)
-gendermdl <- clme(oldervar ~ gender, random=id)
-ovstablemdl <- clme(oldervar ~ stable, random=id)
-varmdl <- clme(oldervar ~ var, random=id)
-stableplusgendermdl <- clme(oldervar ~ stable+gender, random=id)
-#stablegendermdl <- clme(oldervar ~ stable*gender, random=id)
-#vargendermdl <- clme(oldervar ~ var+gender, random=id)
-#vargendermdl <- clme(oldervar ~ var*gender, random=id)
-stableplusagemdl <- clme(oldervar ~ age+stable, random=id)
-stableagemdl <- clme(oldervar ~ age*stable, random=id)
+}
 
-# none of those improve
-suppressWarnings(changingvarmdl <- clme(oldervar ~ age*stable + var, random=id))
-#varagemdl <- clme(oldervar ~ age*var, random=id)
-#fullmdl <- clme(oldervar ~ age*stable + var + gender, random=id)
+\caption[Distribution of responses to the question ``Which of the two variants do you think is \emph{older}?'', split by sociolinguistic variable and age of the informant]{Distribution of responses to the question ``Which of the two variants do you think is \emph{older}?'', split by sociolinguistic variable and age of the informant. In comparison to the stable negation variant, where about half of the people considered the geographically more limited (minority) variant `didnoo' to be older, the response distribution was more extreme for the three changing variables. Here, around 80\% of respondents report the outgoing forms (which are already the minority forms) to be older, with even fewer answers falling on the majority variant as well as the ``people have always used both'' option.}\label{fig:variantage}
+\end{figure}
 
-# neither var*gender nor age*var are good/worth including
-# varmdl and stablegendermdl after stablemdl
-# gendermdl and agemdl both crap
 
-# TODO stableplusagemdl missing
-ormtables(ovnullmdl, gendermdl, agemdl, ovstablemdl, varmdl, stableagemdl, changingvarmdl, of="of responses to the question ``Which of the two variants do you think is \\emph{older}?''.", label="table:variantagemodel")
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 13:20:50
+\begin{table}[htbp] \centering 
+  \caption{Ordered logistic regression model (coefficients and standard errors) of responses to the question ``Which of the two variants do you think is \emph{older}?''.} 
+  \label{table:variantagemodel} 
+\begin{tabular}{@{\extracolsep{5pt}}lcccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6)\\ 
+\hline \\[-1.8ex] 
+ gendermale & 0.494 &  &  &  &  &  \\ 
+  & (0.373) &  &  &  &  &  \\ 
+  age &  & 0.007 &  &  & $-$0.016 & $-$0.016 \\ 
+  &  & (0.012) &  &  & (0.015) & (0.015) \\ 
+  stable &  &  & 1.404$^{***}$ &  & $-$0.751 & $-$0.617 \\ 
+  &  &  & (0.308) &  & (0.789) & (0.843) \\ 
+  varynq &  &  &  & 0.373 &  & 0.320 \\ 
+  &  &  &  & (0.435) &  & (0.438) \\ 
+  varwhq &  &  &  & 0.080 &  & 0.028 \\ 
+  &  &  &  & (0.440) &  & (0.444) \\ 
+  varneg &  &  &  & 1.557$^{***}$ &  &  \\ 
+  &  &  &  & (0.401) &  &  \\ 
+  age:stable &  &  &  &  & 0.058$^{**}$ & 0.057$^{**}$ \\ 
+  &  &  &  &  & (0.020) & (0.020) \\ 
+  outgoing older\textbar always both & 1.232$^{***}$ & 1.315$^{**}$ & 1.531$^{***}$ & 1.685$^{***}$ & 0.963 & 1.103 \\ 
+  & (0.249) & (0.490) & (0.248) & (0.359) & (0.604) & (0.678) \\ 
+  always both\textbar incoming older & 3.251$^{***}$ & 3.332$^{***}$ & 3.727$^{***}$ & 3.891$^{***}$ & 3.254$^{***}$ & 3.403$^{***}$ \\ 
+  & (0.355) & (0.556) & (0.384) & (0.472) & (0.674) & (0.747) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{6}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-# There is a significant difference in response distributions between the three changing variables and the stable negation variable (model 1), but none between the changing variables themselves (model 2).
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 13:20:51
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:variantagemodel}.} 
+  \label{table:variantagemodelcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $288$ & $434.312$ &  & $$ & $$ &  \\ 
+(1) & gender & $287$ & $432.539$ & 0 vs 1 & $1$ & $1.773$ & .183 \\ 
+(2) & age & $287$ & $433.952$ & 0 vs 2 & $1$ & $0.360$ & .549 \\ 
+(3) & stable & $287$ & $412.654$ & 0 vs 3 & $1$ & $21.658$ & \textless  .001 \\ 
+(4) & var & $285$ & $411.839$ & 3 vs 4 & $2$ & $0.815$ & .665 \\ 
+(5) & age:stable & $285$ & $403.374$ & 3 vs 5 & $2$ & $9.279$ & .01 \\ 
+(6) & age:stable + var & $283$ & $402.723$ & 5 vs 6 & $2$ & $0.652$ & .722 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
 
-#model <- party::ctree(oldervarfreq ~ loc+age+gender+firstvar+firstolder+condition+var, na.omit(d))
-#plot(model, terminal_panel=party::node_barplot(model, fill=temp.colors(3, intensity=.7), id=F))
-#plot(oldervarfreq ~ var, d)
-# responses to the two question types are *not* significantly different from the imperative responses:
-#rms::lrm(oldervarfreq ~ var, data=changing)
-
-# age is a significant predictor for answers to the negation variable (with)
-#rms::lrm(oldervarfreq ~ age+gender+firstvar+firstolder+condition, data=neg)
-# no significant predictors for the changing variables
-#rms::lrm(oldervarfreq ~ loc+age+gender+firstvar+firstolder+condition+var, data=changing)
-@
 
 \subsection{Perception of apparent time differences}
 \label{sec:apparenttime}
@@ -581,95 +584,79 @@ While there appears to be a general trend to attribute the usage of minority var
 In contrast to the responses to question~3, the age of our informants does not appear to have a systematic effect on how they perceive apparent time differences for any of the variables under investigation~(models~1+4).
 % TODO report responses to individual q4+5 answers: only type of variable makes a difference!
 
-<<apparenttime, fig.cap="Relative difference between the reported usage of the two variants between `older' and `younger' speakers, for each of the four variables. The relative difference indicates the number of ordinal categories that separates an individuals' responses for the two age groups along the 5-point scale, where positive numbers (in shades of red) correspond to reporting higher usage of the majority variant among younger speakers, and vice versa. The most extreme points of the scale at $\\pm4$ correspond to reporting the `older' and `younger' speakers to be categorical users of opposing variants, the mid-point at $0$ to reporting the same usage levels for both.">>=
-# Response `0' means that the informant reported the same usage levels for both the `older' and `younger' speaker groups, reponse `1' means that younger speakers were reported to be one ordinal category more advanced in their usage of the incoming variant, etc.
+\begin{figure}[htbp]
 
-groupedhistogram(~ apparentdiff | longvar, data=d, xlab="difference score", layout=c(4, 1), drop.unused.levels=FALSE, col=temp.colors(9), ylim=c(0, 48))
+{\centering \includegraphics[width=\maxwidth]{figure/apparenttime-1} 
 
-# individual younger/older responses: only variable makes a difference, nothing else!
-nullmdl <- clme(old ~ 1, random=id)
-varmdl <- clme(old ~ var, random=id)
-ordermdl <- clme(old ~ var+firstvar, random=id)
-varagemdl <- clme(old ~ var+age, random=id)
-vargendermdl <- clme(old ~ var+gender, random=id)
-suppressWarnings(stablemdl <- clme(old ~ var+age*stable, random=id))
-#modelcomparison(nullmdl, varmdl, ordermdl, vargendermdl, varagemdl, stablemdl)
+}
 
-# same thing with young responses
-nullmdl <- clme(young ~ 1, random=id)
-# only works with clm2, not clmm2: ordinal:::addterm.clm2(nullmdl, young ~ var+firstvar+gender+stable+age, test="Chisq")
-varmdl <- clme(young ~ var, random=id)
-ordermdl <- clme(young ~ var+firstvar, random=id)
-varagemdl <- clme(young ~ var+age, random=id)
-vargendermdl <- clme(young ~ var+gender, random=id)
-# doesn't converge: stablemdl <- clme(young ~ var+age*stable, random=id)
-#modelcomparison(nullmdl, varmdl, ordermdl, vargendermdl, varagemdl)
+\caption[Relative difference between the reported usage of the two variants between `older' and `younger' speakers, for each of the four variables]{Relative difference between the reported usage of the two variants between `older' and `younger' speakers, for each of the four variables. The relative difference indicates the number of ordinal categories that separates an individuals' responses for the two age groups along the 5-point scale, where positive numbers (in shades of red) correspond to reporting higher usage of the majority variant among younger speakers, and vice versa. The most extreme points of the scale at $\pm4$ correspond to reporting the `older' and `younger' speakers to be categorical users of opposing variants, the mid-point at $0$ to reporting the same usage levels for both.}\label{fig:apparenttime}
+\end{figure}
 
 
-# oldervarfreq is NA for one negation answer, so na.omit()
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Mon, Aug 22, 2016 - 13:45:08
+\begin{table}[htbp] \centering 
+  \caption{Ordered logistic regression model (coefficients and standard errors) of the relative difference in individuals' estimates for `younger' and `older' speaker groups in number of ordinal categories, a proxy for perceived apparent time differences. Raw data is shown in Figure~\ref{fig:apparenttime}.} 
+  \label{table:apparenttimemodel} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+\hline \\[-1.8ex] 
+ age & $-$0.011 &  &  & $-$0.005 &  \\ 
+  & (0.008) &  &  & (0.010) &  \\ 
+  stable &  & $-$1.535$^{***}$ &  & $-$0.804 & $-$1.215$^{***}$ \\ 
+  &  & (0.266) &  & (0.653) & (0.274) \\ 
+  varynq &  &  & $-$0.432 &  &  \\ 
+  &  &  & (0.310) &  &  \\ 
+  varwhq &  &  & 0.052 &  &  \\ 
+  &  &  & (0.312) &  &  \\ 
+  varneg &  &  & $-$1.674$^{***}$ &  &  \\ 
+  &  &  & (0.322) &  &  \\ 
+  age:stable &  &  &  & $-$0.020 &  \\ 
+  &  &  &  & (0.016) &  \\ 
+  oldervaralways both &  &  &  &  & $-$1.325$^{***}$ \\ 
+  &  &  &  &  & (0.317) \\ 
+  oldervarincoming older &  &  &  &  & $-$2.316$^{***}$ \\ 
+  &  &  &  &  & (0.575) \\ 
+  -2\textbar -1 & $-$5.109$^{***}$ & $-$5.445$^{***}$ & $-$5.590$^{***}$ & $-$5.697$^{***}$ & $-$6.176$^{***}$ \\ 
+  & (0.673) & (0.620) & (0.648) & (0.730) & (0.661) \\ 
+  -1\textbar 0 & $-$4.108$^{***}$ & $-$4.435$^{***}$ & $-$4.581$^{***}$ & $-$4.680$^{***}$ & $-$5.121$^{***}$ \\ 
+  & (0.494) & (0.417) & (0.457) & (0.567) & (0.466) \\ 
+  0\textbar +1 & $-$1.801$^{***}$ & $-$1.970$^{***}$ & $-$2.114$^{***}$ & $-$2.171$^{***}$ & $-$2.454$^{***}$ \\ 
+  & (0.354) & (0.215) & (0.284) & (0.432) & (0.254) \\ 
+  +1\textbar +2 & $-$0.328 & $-$0.301 & $-$0.432 & $-$0.490 & $-$0.636$^{***}$ \\ 
+  & (0.327) & (0.164) & (0.242) & (0.402) & (0.189) \\ 
+  +2\textbar +3 & 1.690$^{***}$ & 1.914$^{***}$ & 1.810$^{***}$ & 1.726$^{***}$ & 1.730$^{***}$ \\ 
+  & (0.354) & (0.220) & (0.275) & (0.424) & (0.230) \\ 
+  +3\textbar +4 & 5.397$^{***}$ & 5.689$^{***}$ & 5.591$^{***}$ & 5.500$^{***}$ & 5.572$^{***}$ \\ 
+  & (1.049) & (1.013) & (1.026) & (1.077) & (1.016) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-nullmdl <- clme(apparentdiff ~ 1, random=id, data=na.omit(d))
-agemdl <- clme(apparentdiff ~ age, random=id, data=na.omit(d))
-gendermdl <- clme(apparentdiff ~ gender, random=id, data=na.omit(d))
-stablemdl <- clme(apparentdiff ~ stable, random=id, data=na.omit(d))
-#stablegendermdl <- clme(apparentdiff ~ stable * gender, random=id, data=na.omit(d))
-#modelcomparison(nullmdl, agemdl, stablemdl, stablegendermdl)
-#oldervarmdl <- clme(apparentdiff ~ oldervar, random=id, data=na.omit(d))
-varmdl  <- clme(apparentdiff ~ var, random=id, data=na.omit(d))
-#stablegendermdl <- clme(apparentdiff ~ stable+gender, random=id, data=na.omit(d))
-#vargendermdl <- clme(apparentdiff ~ var+gender, random=id)
-#stableplusagemdl  <- clme(apparentdiff ~ age+stable, random=id, data=na.omit(d))
-stableagemdl <- clme(apparentdiff ~ age*stable, random=id, data=na.omit(d))
-#suppressWarnings(changingvarmdl <- clme(apparentdiff ~ age*stable + var, random=id))
-#varagemdl <- clme(apparentdiff ~ age*var, random=id)
-q3mdl <- clme(apparentdiff ~ stable+oldervar, random=id, data=na.omit(d))
-# neither age nor gender help more than that
-#q3mdl2 <- clme(apparentdiff ~ stable+oldervar +age, random=id, data=na.omit(d))
-#q3mdl2 <- clme(apparentdiff ~ age*stable+oldervar, random=id, data=na.omit(d))
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Mon, Aug 22, 2016 - 13:45:09
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:apparenttimemodel}.} 
+  \label{table:apparenttimemodelcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $284$ & $829.962$ &  & $$ & $$ &  \\ 
+(1) & age & $283$ & $828.119$ & 0 vs 1 & $1$ & $1.842$ & .175 \\ 
+(2) & stable & $283$ & $794.396$ & 0 vs 2 & $1$ & $35.565$ & \textless  .001 \\ 
+(3) & var & $281$ & $791.493$ & 2 vs 3 & $2$ & $2.904$ & .234 \\ 
+(4) & age:stable & $281$ & $791.456$ & 2 vs 4 & $2$ & $2.941$ & .23 \\ 
+(5) & stable + oldervar & $281$ & $764.235$ & 2 vs 5 & $2$ & $30.161$ & \textless  .001 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
 
-# agemdl/stableagemdl bad, gender bad, varmdl also bad but could include anyway
-ormtables(nullmdl, agemdl, stablemdl, varmdl, stableagemdl, q3mdl, of="of the relative difference in individuals' estimates for `younger' and `older' speaker groups in number of ordinal categories, a proxy for perceived apparent time differences. Raw data is shown in Figure~\\ref{fig:apparenttime}.", label="table:apparenttimemodel")
-
-# same result for relative difference
-#nullmdl <- clme(apparentrelative ~ 1, random=id, data=na.omit(d))
-#agemdl <- clme(apparentrelative ~ age, random=id, data=na.omit(d))
-#stablemdl <- clme(apparentrelative ~ stable, random=id, data=na.omit(d))
-##varmdl  <- clme(apparentrelative ~ var, random=id, data=na.omit(d))
-#q3mdl <- clme(apparentrelative ~ stable+oldervarfreq, random=id, data=na.omit(d))
-#ormtables(nullmdl, agemdl, stablemdl, q3mdl, of="of the relative relative #difference in individuals' estimates for `younger' and `older' speaker groups in number of ordinal categories, a proxy for perceived apparent time differences.", label="table:apparenttimemodel2")
-
-#counts <- table(d$apparentdiff, d$var)
-# truncate count table so as not to include irrelevant colours
-#rng <- range(which(rowSums(counts)>0))
-#counts <- counts[rng[1]:rng[2],]
-#par(xpd=NA, mar=par("mar")+c(0,0,0,3))
-#barplot(counts, legend=rownames(counts), col=temp.colors(min(as.numeric(rownames(counts))), max(as.numeric(rownames(counts)))), xlab="sociolinguistic variable", ylab="no. of responses", args.legend=list(x="topright", inset=c(-0.18,-.1), title="Relative difference\nof 'younger' usage\nminus 'older' usage", bty="n"), bty="l")
-# 'young' and 'old' responses are significantly different between imp vs. questions
-#rms::orm(young ~ var, data=changing)
-#plot(party::ctree(young ~ loc+age+gender+firstvar+firstolder+condition+var, changing))
-#rms::orm(old ~ var, data=changing)
-#plot(party::ctree(old ~ loc+age+gender+firstvar+firstolder+condition+var, changing))
-
-# this indicates that their apparent time diff answers aren't *just* due to
-# their answer to question 3. but are the informants consistent between the
-# population average and younger/older questions??
-# TODO plot distribution of other-young and other-old - should've done this on
-# separate pages so people can't look back and be uber-consistent!!
-
-# BUT the apparent age difference pattern is similar for all three variables
-#rms::orm(apparentdiff ~ var, data=changing)
-#check.orm(changing, "apparentdiff", c("var", "age", "gender"))
-# response to older speakers question significantly predicted by previously chosen older var
-#rms::orm(old ~ oldervar, data=changing)
-# response to younger speakers doesn't appear to be affected
-#rms::orm(young ~ oldervar, data=changing)
-
-# what predicts people's answers to the apparent time differences?
-# gender not significant at all
-#rms::lrm(apparentdiff ~ gender, data=changing)
-# the only thing is a possible ordering effect
-#rms::lrm(apparentdiff ~ firstvar, data=changing)
-@
 
 While this might suggest that individuals can accurately perceive and report on apparent age differences in changing categorical variables, we cannot straightforwardly jump to this conclusion. Model~5 shows that our participants' responses to question~3 (i.e. their reported belief about which if any of the competing variants is `older') %, and in particular the `wrong' classification of the incoming variant as the `older' one
 is a significant predictor of how far they reported younger speakers to be `ahead' or `behind' in their relative usage of the incoming variant.
@@ -697,21 +684,54 @@ What the models do not suggest, however, is that folk-linguistic beliefs are bas
 Based on these results it remains an open question whether people might have inferred their answer to question~3 independently from a perceived apparent time difference, or if participants felt led to answer questions~4 and 5 in a way that would post-hoc justify their earlier response, which was itself based on other~(socio-indexical) knowledge.
 In order to understand the different sources of socio-indexical knowledge that might be at play here, it is insightful to take a closer look at the responses to our control variable.
 
-<<oldervarq3model>>=
-apparentdiffmdl <- clme(oldervar ~ apparentdiffN, random=id)
 
-stableapparentdiffmdl <- clme(oldervar ~ stable + apparentdiffN, random=id)
-# not significant at all (because stable and apparentdiff are highly correlated)
-#stableapparentdiffmdl2 <- clme(oldervar ~ stable * apparentdiffN, random=id)
-#modelcomparison(stableapparentdiffmdl, stableapparentdiffmdl2)
-#agediffmdl <- clme(oldervar ~ age + apparentdiffN, random=id)
-stableplusagediffmdl <- clme(oldervar ~ age + stable + apparentdiffN, random=id)
-stableagediffmdl <- clme(oldervar ~ age*stable + apparentdiffN, random=id)
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 14:45:13
+\begin{table}[htbp] \centering 
+  \caption{Extension of the ordered logistic regression model in Table~\ref{table:variantagemodel}, adding individuals' perceived apparent time difference as an additional predictor for their responses tothe question ``Which of the two variants do you think is older?''.} 
+  \label{table:oldervarq3model} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+\hline \\[-1.8ex] 
+ age &  &  &  & 0.002 & $-$0.020 \\ 
+  &  &  &  & (0.013) & (0.016) \\ 
+  stable & 1.404$^{***}$ &  & 0.816$^{*}$ & 0.815$^{*}$ & $-$1.229 \\ 
+  & (0.308) &  & (0.332) & (0.332) & (0.841) \\ 
+  apparentdiffN &  & $-$1.124$^{***}$ & $-$1.002$^{***}$ & $-$1.001$^{***}$ & $-$0.984$^{***}$ \\ 
+  &  & (0.185) & (0.190) & (0.190) & (0.190) \\ 
+  age:stable &  &  &  &  & 0.055$^{**}$ \\ 
+  &  &  &  &  & (0.021) \\ 
+  outgoing older\textbar always both & 1.531$^{***}$ & $-$0.234 & 0.176 & 0.264 & $-$0.504 \\ 
+  & (0.248) & (0.280) & (0.332) & (0.618) & (0.684) \\ 
+  always both\textbar incoming older & 3.727$^{***}$ & 2.199$^{***}$ & 2.675$^{***}$ & 2.764$^{***}$ & 2.075$^{**}$ \\ 
+  & (0.384) & (0.348) & (0.415) & (0.678) & (0.726) \\ 
+ \hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+\end{tabular} 
+\end{table} 
 
-# everything here is better than stableagemdl (model 3 from Table \ref{table:variantagemodel})
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Thu, Aug 18, 2016 - 14:45:14
+\begin{table}[!htbp] \centering 
+  \caption{Pairwise comparison of the models in Table~\ref{table:oldervarq3model}.} 
+  \label{table:oldervarq3modelcomparison} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & Model & Res. df & -2LL & Test & df & LR & P(\textgreater Chi) \\ 
+\hline \\[-1.8ex] 
+(0) & 1 & $288$ & $434.312$ &  & $$ & $$ &  \\ 
+(1) & stable & $287$ & $412.654$ & 0 vs 1 & $1$ & $21.658$ & \textless  .001 \\ 
+(2) & apparentdiffN & $287$ & $384.260$ & 0 vs 2 & $1$ & $50.053$ & \textless  .001 \\ 
+(3) & stable + apparentdiffN & $286$ & $378.250$ & 2 vs 3 & $1$ & $6.009$ & .014 \\ 
+(4) & age + stable + apparentdiffN & $285$ & $378.222$ & 3 vs 4 & $1$ & $0.029$ & .866 \\ 
+(5) & age:stable + apparentdiffN & $284$ & $370.925$ & 4 vs 5 & $1$ & $7.297$ & .007 \\ 
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
 
-ormtables(ovnullmdl, ovstablemdl, apparentdiffmdl, stableapparentdiffmdl, stableplusagediffmdl, stableagediffmdl, label="table:oldervarq3model", title="Extension of the ordered logistic regression model in Table~\\ref{table:variantagemodel}, adding individuals' perceived apparent time difference as an additional predictor for their responses tothe question ``Which of the two variants do you think is older?''.")
-@
 
 %So while there is strong correlation between the folk-linguistic beliefs and perceived apparent time differences, our analysis suggests that it might not be possible to reduce either of them to the other: in both models other predictors are highly significant, showing that the responses mutual influence explains some, but not all of the effect.
 
@@ -722,69 +742,22 @@ ormtables(ovnullmdl, ovstablemdl, apparentdiffmdl, stableapparentdiffmdl, stable
 %One potential way to find out whether the latter is the case is by checking whether the absolute progression of the changes, where the imperatives seem to lag behind a bit, is also evident in the answers about the specific age group questions. The overall pattern of relative apparent age differences does not differ for the questions vs. the imperatives TODO redo this
 % i.e.check whether people's young/old responses are better predicted by their self/other responses or by oldervar?
 
-<<q3effects>>=
-nullmdl <- clm2(young ~ 1, data=na.omit(d))
-# even when both 'other' and 'var' are used as baseline, 'oldervar' still explains some of the shift
-#nullmdl <- clm2(young ~ other+var, data=na.omit(d))
-#addterm(nullmdl, young ~ firstvar + firstolder + old + age + stable + var + oldervar + self + other, sorted=TRUE, test="Chisq")
-# ordering of young/old group first has no effect
-nullmdl <- clm2(young ~ firstolder + oldervar, data=na.omit(d))
-#addterm(nullmdl, young ~ firstvar + firstolder*oldervar + old + age + stable + var + self + other, sorted=TRUE, test="Chisq")
 
-# for the 'older' speaker group on the other hand, oldervar is a better predictor than even 'var' and 'other'!
-nullmdl <- clm2(old ~ 1, data=na.omit(d))
-#addterm(nullmdl, old ~ firstvar + firstolder + young + age + var + oldervar + self + other, sorted=TRUE, test="Chisq")
-# even when both 'other' and 'var' are used as baseline, 'oldervar' still explains some of the shift
-#nullmdl <- clm2(young ~ other+var, data=na.omit(d))
-
-# 'other' is generally much much better at predicting than 'self'
-#modelcomparison(clme(old ~ var + oldervar, random=id, data=d), clme(old ~ var + oldervar + other, random=id, data=d))
-
-# ordering of young/old group first has no effect
-#nullmdl <- clm2(old ~ firstolder + oldervar, data=na.omit(d))
-#addterm(nullmdl, old ~ firstvar + firstolder*oldervar + old + age + stable + var + self + other, sorted=TRUE, test="Chisq")
-
-# best predictors of apparentdiff
-nullmdl <- clm2(apparentdiff ~ 1, data=na.omit(d))
-# best predictor is 'old', which subsumes most of the power of 'oldervar'
-#nullmdl <- clm2(apparentdiff ~ old + other + var, data=na.omit(d))
-#addterm(nullmdl, apparentdiff ~ firstvar + firstolder + old + age + var + oldervar + self + other, test='Chisq', sorted=TRUE)
-@
 
 \subsection[Variant age and perceived apparent time differences]{Variant age and perceived apparent time differences: evidence from the control variable}
 
 Some more evidence regarding the primary source of inividuals' knowledge can be glanced from the responses to our control variable. As the distribution of negation variants on Shetland is stable, determined by geography rather than by generational change, we would not expect any information on the history of the two variants to be available to our speakers.
 Regarding their answers to the first two questions, the control patterned as expected. Own usage reports were predicted perfectly by geographical location, with all four participants indicating categorical usage of the `noo' variant~(coded as `outgoing' in the Figures) coming from the isle of Whalsay. The estimates of the community-wide usage consequently fell chiefly in the `more incoming' category, with no clear internal patterning of responses along any of the participant variables~(see Figure~\ref{fig:otherresponses}).
 
-<<stablemodels>>=
-# predicting the older variable:
-# for negation only - age!
-#suppressMessages(library(MASS))
-suppressWarnings(library(ordinal))
 
-nullmdl <- ordinal::clm(oldervar ~ 1, data=neg)
-nullmdl <- ordinal::clm(oldervar ~ as.numeric(apparentdiff), data=neg)
-# addterm on "clm" gives Hessian warnings, while it doesn't for "clm2"?
-#addterm(nullmdl, oldervar ~ as.numeric(apparentdiff) + age + gender + condition + firstvar + loc + self + other + selfdiff, test="Chisq", sorted=TRUE)
-
-# for changing data, age n.s., 'self' significant for whq
-nullmdl <- ordinal::clm2(oldervar ~ 1, data=changing)
-#addterm(nullmdl, oldervar ~ var + age + gender + condition + firstvar + loc + self + other + selfdiff, test="Chisq", sorted=TRUE)
-# confirmed by fitting mixed effects model to changing data only
-#modelcomparison(clme(oldervar ~ 1, random=id, data=changing), clme(oldervar ~ age, random=id, data=changing))
-
-#agemdl <- rms::orm(oldervar ~ age, data=neg)
-#agemdl <- ordinal::clm(oldervar ~ as.numeric(apparentdiff)+age, data=neg)
-#anova(nullmdl, agemdl)
-@
 
 %Since age does not affect the reported self-usage levels of the negation variable, and the reported community-level usage is consistent for all variables, there is consequently no effect of age on how much people report to use the negation variants relative to their surrounding community.
 When it came to beliefs about the relative age of the two negation variants in question~3 we found that, despite the apparent absence of any evidence for it, almost half of the participants stated that they believed that the geographically limited negation variant was `older' than its more widespread counterpart, as could be seen in Figure~\ref{fig:variantage}.
 This result is puzzling: the geographical distribution of the two variants is well-known to Shetland inhabitants, an assumption that was confirmed by the fact that 17~out of 77~participants used the optional comment field to point out that the variable realisation of negation patterned geographically and not by time, the dimension investigated by the questionnaire. %(one participant in the on-site paper-based version of the questionnaire even omitting this question, instead noting the geographical pattern as a side comment).
 
-% TODO mention that apparent time diff is best predictor, but adding age still improves the model significantly~($p=\Sexpr{format.p.value(anova(nullmdl, agemdl)[["Pr(>Chisq)"]][-1])}$) % TODO include Chisq stats?
+% TODO mention that apparent time diff is best predictor, but adding age still improves the model significantly~($p=format.p.value(anova(nullmdl, agemdl)[["Pr(>Chisq)"]][-1])$) % TODO include Chisq stats?
 %While this result in itself requires explanation, we also observed an additional interaction with age, indicating that the age of the participant affected their beliefs about the stable variables different from the changing ones.
-%Fitting a simple ordered logistic regression model to the negation data only confirms a significant effect of age, with older participants \emph{less} likely to identify the localised minority variant as the older one~($p=\Sexpr{format.p.value(agemdl$stats["Score P"])}$).
+%Fitting a simple ordered logistic regression model to the negation data only confirms a significant effect of age, with older participants \emph{less} likely to identify the localised minority variant as the older one~($p=format.p.value(agemdl$stats["Score P"])$).
 %In terms of perceived age of the variants, the only significant age effect is actually with the stable negation variable, where older people are more likely to identify the geographically more widespread `didnoo' variant as being the `older' one~(caveat: that is still only 8 out of 76 people, and those 8 happen to contain relatively older speakers).
 %rms::orm(oldervarfreq ~ age+gender+firstvar+firstolder+condition, data=neg)
 
@@ -793,18 +766,7 @@ This result is puzzling: the geographical distribution of the two variants is we
 The distribution of perceived apparent time differences for our control revealed a similarly intriguing result: as the negation variable isn't changing we would have expected the distribution of difference scores to be centered around the zero mark.
 While Figure~\ref{fig:apparenttime} showed that identical estimates for the `older' and `younger' speaker groups was indeed the most frequently reported result across all our participants, the overall distribution of responses is skewed towards reporting higher usage of the more widespread variant for younger speakers, with almost no apparent time differences reported in the opposite direction.
 
-<<stablemodels2>>=
-# FIXME this is already numeric by here?
-nullmdl <- ordinal::clm(apparentdiff ~ 1, data=na.omit(neg))
-# mainly predicted by previous answers
-#nullmdl <- ordinal::clm(apparentdiff ~ oldervar, data=na.omit(neg))
-#addterm(nullmdl, apparentdiff ~ oldervar + age + gender + condition + firstvar + loc + self + other + selfdiff, test="Chisq", sorted=TRUE)
 
-# the interaction between the apparent time difference and type of variable isn't quite significant
-#modelcomparison(clme(oldervar ~ as.numeric(apparentdiff)+stable, random=id), clme(oldervar ~ as.numeric(apparentdiff)*stable, random=id))
-# the interaction between folk belief and variable type isn't at all
-#modelcomparison(clme(apparentdiff ~ oldervar+stable, random=id), clme(apparentdiff ~ oldervar*stable, random=id))
-@
 
 This raises the question of why speakers would extrapolate from a geographical pattern to history, or at least to the historical origin of variants. While there is currently no evidence that the relative usage of the more localised negation variant is decreasing~(Jamieson, p.c.), it is imaginable that it shares a few meta-linguistic features with the outgoing variants of the changing variables. As the more `local' variant, it could have gathered connotations of `dialectality' and `authenticity' that are typically associated with older speakers. %~(TODO are there results regarding whether this is generally the case, sociolinguistically? Is there any particular reason to believe this might be true on Shetland?).
 This (possibly imagined) prevalent usage among older speakers could in turn give rise to both effects observed in the responses: firstly, it could be regarded to speak to the variant's historical primacy~\citep{Bailey2002}, and secondly, the usage pattern by authentic `older' speakers stands in natural opposition to younger speakers, explaining the reported differences in apparent time, an effect that was possibly amplified by the ordering of questions in the survey.
@@ -824,35 +786,7 @@ measuring the effect of first explicitly drawing attention to either linguistic 
 
 %Despite the fact that up to this point in the questionnaire we avoided to draw explicit attention to such differences
 
-<<apparenttimepervariantage, fig.cap="Reported apparent time difference per answer to the 'which variant do you think is older' question. While at least some of the apparent time responses for the changing variables go away when the participants did not report having any age beliefs, the apparent time reports disappear much more strongly for the negation, indicating that the reported differences may have been driven by the preceding question only.", fig.subcap=c("a", "b")>>=
-# TODO Still outstanding is a test against the underlying baseline distributions given the responses, which are plotted below
 
-#plot(party::ctree(apparentdiff ~ oldervar + var + var*oldervar, data=d))
-
-#table(changing$oldervar, changing$apparentdiff)
-# TODO redo with table() and normal hist() (percent) plots that include the n per oldervar response (because highly skewed)
-#groupedhistogram( ~ apparentdiff | oldervar*stable, data=d, col=temp.colors(9), drop.unused.levels=FALSE, main="stable vs. changing variables")
-#groupedhistogram( ~ apparentdiff | oldervar, data=changing, col=temp.colors(9), drop.unused.levels=FALSE, main="changing variables", layout=c(3,1))
-
-#obliviousneg <- subset(neg, oldervar=="same")
-#obliviouschanging <- subset(changing, oldervar=="same")
-
-# .006
-#wilcox.test(as.numeric(obliviousneg$old), as.numeric(obliviousneg$young))
-# 7e-9
-#wilcox.test(as.numeric(obliviouschanging$old), as.numeric(obliviouschanging$young))
-
-plotapparentdiffbaseline <- function(d)
-  barplot(diffchancelevels(table(d$old)/nrow(d), table(d$young)/nrow(d)), col=temp.colors(9), ylab="Difference")
-
-#par(mfrow=c(3,2))
-#plotapparentdiffbaseline(neg)
-#plotapparentdiffbaseline(changing)
-#plotapparentdiffbaseline(subset(neg, oldervar=="out"))
-#plotapparentdiffbaseline(subset(changing, oldervar=="out"))
-#plotapparentdiffbaseline(subset(neg, oldervar=="same"))
-#plotapparentdiffbaseline(subset(changing, oldervar=="same"))
-@
 
 \subsection{Between-participant differences: age}
 
@@ -867,16 +801,16 @@ or the perceived differences in apparent time~(Section~\ref{sec:apparenttime}).%
 The only significant effects of binary gender were found in the first two questions, i.e.~the reported `self' as well as `other speakers' usage levels: females tended to report \emph{higher} levels of the incoming variant both for themselves and the population as a whole. This tendency was present across all four sociolinguistic variables, whether changing or not.
 The raw data of the responses split by variable and gender is shown in Figure~\ref{fig:genderreports}.
 
-<<genderreports, fig.cap="Raw data for responses regarding self-usage by sociolinguistic variable and binary gender. For the changing variables, females generally report higher level usage of the incoming majority variants.">>=
+\begin{figure}[htbp]
 
-# TODO do groups and make stacked?
-groupedhistogram(~ self | longvar + gender, ylim=c(0, 90))
+{\centering \includegraphics[width=\maxwidth]{figure/genderreports-1} 
 
-#groupedhistogram(~ other | longvar + gender, data=d)
-#par(mfrow=c(2,1), mar=par("mar")-c(4,2,2,2))
-#mosaicplot(table(d$var, d$gender, d$self), color=temp.colors(5), main="Reported self-usage")
-#mosaicplot(table(d$var, d$gender, d$other), color=temp.colors(5), main="Reported population usage")
-@
+}
+
+\caption[Raw data for responses regarding self-usage by sociolinguistic variable and binary gender]{Raw data for responses regarding self-usage by sociolinguistic variable and binary gender. For the changing variables, females generally report higher level usage of the incoming majority variants.}\label{fig:genderreports}
+\end{figure}
+
+
 
 This gender effect does \emph{not} translate to a higher difference between perceived self-usage and perceived community usage, i.e.~females do \emph{not} perceive themselves to be further `ahead' the community than males do, the answers to both questions appear to be shifted in unison. Also, despite an often purported increased sensitivity to linguistic changes among females, neither the identification of the `older' variants~(Section~\ref{sec:oldervar}) nor the strength of the perceived apparent time differences~(Section~\ref{sec:apparenttime}) showed significant effects of participant gender.
 %In relation to previous sociolinguistic research which has revealed gender differences where women were often found to be leading linguistic changes has been used to argue that, due to their social position, women are more sensitive to sociolinguistic cues~(Labov, inter alia).

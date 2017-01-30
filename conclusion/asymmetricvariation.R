@@ -12,7 +12,7 @@ bilm.eq <- function(N, alpha)
   (0:N + alpha/2) / (N + alpha)
 # create the (N+1)x(N+1) Markov chain transition matrix for the given N and alpha
 bilm.transition.matrix <- function(N, alpha)
-  t(sapply(0:N, function(n)dbinom(0:N, N, (n + alpha / 2) / (N + alpha))))
+  t(sapply(0:N, function(n) dbinom(0:N, N, (n + alpha / 2) / (N + alpha))))
 
 # m0 and m1 are mutation probabilities of spontaneously generating variants
 # sigma is a replicator bias (fitness advantage of variant 2 over 1)
@@ -106,10 +106,10 @@ rep.matrix <- function(m, times=1, each=1, times.row=times, times.col=times, eac
 }
 
 # calculate stationary http://www.stat.berkeley.edu/~mgoldman/Section0220.pdf
-stationarydistribution <- function(m, maxmomentum=0) {
-  x <- cbind((m-diag(ncol(m)))[,-ncol(m)], rep(1, ncol(m)))
-  colSums(matrix(solve(t(x), c(rep(0, nrow(m)-1), 1)), nrow=1+2*maxmomentum))
-}
+#stationarydistribution <- function(m, maxmomentum=0) {
+#  x <- cbind((m-diag(ncol(m)))[,-ncol(m)], rep(1, ncol(m)))
+#  colSums(matrix(solve(t(x), c(rep(0, nrow(m)-1), 1)), nrow=1+2*maxmomentum))
+#}
 
 discretephasediagram <- function(m, maxmomentum) {
   N <- nrow(m)/(1+2*maxmomentum) # -1
@@ -134,7 +134,7 @@ discretephasediagram <- function(m, maxmomentum) {
   plot(0, N/2, xlim=c(-maxmomentum, maxmomentum), ylim=c(0, 1), xlab="m", ylab="x")
   arrows(moffsets-dm, xoffsets-dx, moffsets+dm, xoffsets+dx, length=0.1)
 }
-discretephasediagram(updown.momentum.matrix(5, 0.01), 1)
+#discretephasediagram(updown.momentum.matrix(5, 0.01), 1)
 
 
 # compare stationary distributions
@@ -152,41 +152,20 @@ foo <- function(N) {
   barplot(stationarydistribution(updown.momentum.matrix(N, .01, .02), 1))
   barplot(stationarydistribution(updown.momentum.matrix(N, .01, .02, b=1.99), 1))
 }
-foo(25)
+#foo(25)
 
-momentumstationarydistribution(updown.momentum.matrix(5, .001, .001))
-momentumstationarydistribution(updown.momentum.matrix(5, .001, .002))
-momentumstationarydistribution(updown.momentum.matrix(5, .001, .002, b=1.99))
+#momentumstationarydistribution(updown.momentum.matrix(5, .001, .001))
+#momentumstationarydistribution(updown.momentum.matrix(5, .001, .002))
+#momentumstationarydistribution(updown.momentum.matrix(5, .001, .002, b=1.99))
 
-momentumstationarydistribution(updown.momentum.matrix(10, .001))
-momentumstationarydistribution(updown.momentum.matrix(10, .001, b=1))
+#momentumstationarydistribution(updown.momentum.matrix(10, .001))
+#momentumstationarydistribution(updown.momentum.matrix(10, .001, b=1))
 
-x <- momentumstationarydistribution(updown.momentum.matrix(10, .001))
+#x <- momentumstationarydistribution(updown.momentum.matrix(10, .001))
 
-barplot(x)
+#barplot(x)
 
 # inspect durations of transitions
-
-# compute the development of the Markov chain probability distribution for the
-# specified number of iterations. initstate is a vector of length N and
-# transitionmatrix an NxN matrix (with rows summing to 1)
-markov.chain <- function(transitionmatrix, niterations, initstate=c(1, rep(0, ncol(transitionmatrix)-1))) {
-  out <- matrix(nrow=niterations+1, ncol=length(initstate))
-  out[1,] <- initstate
-  for (i in 2:(niterations+1)) {
-    out[i,] <- t(transitionmatrix) %*% out[i-1,]
-  }
-  return(out)
-}
-
-# merge the last #absorbingrows states of the transition matrix together into one absorbing state that only transitions to itself
-setabsorbingstate <- function(m, absorbingrows) {
-  ma <- m[1:(nrow(m)-absorbingrows),1:(nrow(m)-absorbingrows)]
-  # merge (sum) the final absorbingrows columns together for every row
-  ma <- cbind(ma, rowSums(m[1:nrow(ma),(1+nrow(m)-absorbingrows):nrow(m)]))
-  # single absorbing state that only transitions to itself
-  rbind(ma, c(rep(0, nrow(ma)), 1))
-}
 
 # discrete 'diff'-momentum, momentum term has 2*N+1 discrete levels in [-1, 1]
 diff.momentum.matrix <- function(N, ..., b=0) {
@@ -208,9 +187,9 @@ diff.momentum.matrix <- function(N, ..., b=0) {
 
   return(m)
 }
-diff.momentum.matrix(3)
-length(stationarydistribution(diff.momentum.matrix(10, .001))) 10*20?
-momentumstationarydistribution(diff.momentum.matrix(10, .001), 10)
+#diff.momentum.matrix(3)
+#length(stationarydistribution(diff.momentum.matrix(10, .001))) 10*20?
+#momentumstationarydistribution(diff.momentum.matrix(10, .001), 10)
 
 
 # four ways to compute bias at time of population turnover:

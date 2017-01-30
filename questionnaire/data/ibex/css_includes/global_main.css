@@ -1,0 +1,75 @@
+body {
+    color: black;
+    background-color: white;
+    margin: 1em 10%;
+    font-family: sans-serif;
+    text-align: center;
+}
+.lindent { margin-left: 5em; }
+.sending-results {
+    font-weight: bold;
+    font-size: medium;
+}
+div.bar-container {
+    border: 1px solid;
+    border-color: #9ea4b1;
+    background-color: white;
+}
+div.bar {
+    background-color: blue;
+}
+p.progress-text {
+    padding-top: 0.5em;
+    margin-top: 0;
+    margin-bottom: 2em;
+    font-style: italic;
+    font-size: small;
+}
+p.practice-box {
+    color: blue;
+    height: 1.5em;
+    padding-bottom: 1em;
+    font-size: small;
+    text-align: center;
+}
+span.retry {
+    color: blue;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+span.retry:hover {
+    text-decoration: underline;
+}
+span.retry:visited {
+    color: blue;
+}
+.error-text {
+    color: red;
+    font-weight: bold;
+}
+table {
+    margin-bottom: 7em;
+    margin-left: auto;
+    margin-right: auto;
+}
+td {
+    text-align: left;
+}
+th {
+    text-align: center;
+}
+.option {
+    width: 6%;
+    text-align: center;
+    padding: 1%;
+}
+.stimulus {
+    text-align: center;
+    font-style: italic;
+    padding-top: 2em;
+    padding-bottom: 3em;
+}
+.Message-continue-link {
+    text-align: center;
+}

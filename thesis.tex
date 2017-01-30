@@ -1,4 +1,6 @@
-\documentclass[oneside]{book}
+\documentclass[twoside,10pt]{book}
+\usepackage{emptypage}
+
 \input{preamble}
 
 \usepackage{bibentry}
@@ -10,6 +12,7 @@
 \graphicspath{{momentummodel/figures/}{questionnaire/}{modelling/}{conclusion/}{introduction/}}
 
 \usepackage{epigraph} % csquotes
+\usepackage{lettrine}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -29,20 +32,21 @@
   stringstyle=\color{red}
 }
 \newcommand{\includeR}[1]{\lstinputlisting[language=R]{#1}}
-%\newcommand{\includeR}[1]{#1}
 
 \input{knitr-preamb}
 
 \author{Kevin Stadler}
 %\title{Trends and directionality in language change}
 \title{Direction and directedness in language change\\\large An evolutionary model of selection by trend-amplification}
-\date{\vfill\includegraphics[width=0.25\textwidth]{../work/edcrest}\\
+\date{\vfill\includegraphics[width=0.25\textwidth]{edcrest}\\
 \vspace{1em}
 PhD Linguistics \& English Language\\
 The University of Edinburgh\\
-2016}
+2017}
 
 \begin{document}
+
+%\setcounter{page}{0}
 
 \maketitle
 
@@ -61,16 +65,16 @@ acknowledgement is made in the text.
 
 Only a few years ago I would have cringed at the idea of writing an Acknowledgments section listing endless swathes of names, but here we go! (This might seem unremarkable but it's another one of those things that fuels my fascination with change for the sake of change, which you have the opportunity the spend the next 200 pages reading about.)
 
-I guess it's only appropriate to start by thanking the people responsible for the fact that the thing in front of you is actually finished: over the past four years my supervisors Simon, Kenny, Richard and Jenny showed absolutely no mercy with my impatience at my own work as well as my curiosity and eagerness to quickly move on to many other topics. It was a real joy to be supervised by them, and also to witness the copious amounts of concordant swearing which no doubt even further fortified their authority in my eyes and helped much to keep me on track.
+I guess it's only appropriate to start by thanking the people responsible for the fact that the thing in front of you is actually finished: over the past four years my supervisors Simon, Kenny and Richard as well as supplementary slave driver Jenny showed absolutely no mercy with my impatience at my own work as well as my curiosity and eagerness to quickly move on to other topics. It was a real joy to be supervised by them, and also to witness the copious amounts of concordant swearing which no doubt even further fortified their authority in my eyes and helped much to keep me on track.
 
 For providing a stimulating atmosphere to work in I want to thank all members of the LEC/CLE, in particular my PhD cohort consisting of Matt, Mark and James who provided good and challenging company while they were around, and distant motivation once they had all left me behind the (presumably s-shaped) curve.
 For fear of ultimate revenge I have to thank my nemesis Yasamin Motamedi -- if you see her roaming around DSB in the near future with a smile on her face even more evil than here normal one it can only mean that the hardcopy of this thesis never made it to the college office and that I am in deep trouble. If not, she will receive her well-earned Dr.~Pepper or personalised Dutch class in due course.
 
-Of all the other postgrads that I had the joy of sharing room~1.15 with I am particularly indebted to my collaborator and future business partner Elyse Jamieson who was not only in charge of collecting the fieldwork data for Chapter~\ref{ch:questionnaire}, they also tolerated my attempts at writing emails in shoddy Scots, generally kept up the craic while enjoying crisps, and soon we're making so much money together that we'll be buying each other Klimt paintings for Christmas obvz.
+Of all the other postgrads that I had the joy of sharing room~1.15 with I am particularly indebted to my collaborator and future business partner Elyse Jamieson who was not only in charge of collecting the fieldwork data discussed in Chapter~\ref{ch:questionnaire}, they also tolerated my attempts at writing emails in shoddy Scots, generally kept up the craic while enjoying crisps, and soon we're making so much money together that we'll be buying each other Klimt paintings for Christmas.
 
 On a less linguistically-apt note I would like to thank my writing pal Rachael despite the fact that she utterly failed to teach me any Geordie at all, as well as fellow failed Geordie Vanessa for thesis writeup therapy and sharing my obsession with the New Mexican desert, amongst many other things. (Oh and this entire thesis started off from a paper that she mentioned once in one of our PhD supervisions early on in my first year. No biggie.)
 
-I might have gained most from learning and reading around outside the core of my subject, and as a consequence I am deeply indebted to the many interest groups at Edinburgh that have tolerated me over the years, in particular the Language Variation and Change research group as well as the Sociolinguistics and Historical Phonology reading groups, and all their members. My thinking was also much influenced by my former collagues at the AI~lab of the VUB, all the friends I made at the various LOT~schools and of course the SFI~Complex Systems Summer School in 2013, in particular Bruno Pace, as well as everyone else who I feel academically indebted to and whose legacy I hope to do justice~(Joachim De~Beule deserves special mention here).
+I might have gained most from learning and reading around outside the core of my subject, and as a consequence I am deeply indebted to the many academic groups at Edinburgh that have tolerated me over the years, in particular the Language Variation and Change research group as well as the Sociolinguistics and Historical Phonology reading groups, and all their members. My thinking was also much influenced by my former collagues at the AI~lab of the VUB, all the friends I made at the various LOT~schools and of course the SFI~Complex Systems Summer School in 2013, in particular Bruno Pace, as well as everyone else who I feel academically indebted to and whose legacy I hope to do justice~(Joachim De~Beule deserves special mention here).
 %Gottfried, for teaching me about the ways of the nomadic academic.
 
 This is probably a good point to acknowledge all the people who, while not accompanying us on the journey, manage to send us off our way by applying `a vector of energy to the rump' so forceful that we still find ourselves moving in the same general direction years down the line.
@@ -80,9 +84,9 @@ For allowing me to continue moving along that path I want to thank my family, in
 
 Last but not least I want to thank all the people who've made sure that all other aspects of life around me have always been a lot of fun. Particular victims in this regard, in approximate order of how much they've had to put up with my whining, are Megan, Theodora, Julia, Mote and Steffi.
 For uplifting and distracting harmonic excursions I have to thank my many musical co-conspirators, including but not limited to Dr.~Kieran~J.~Curran, my fellow \emph{sick kids of edinburgh}~(Max, Valerie and Doris) as well as Dani.
-Both eluding and transgressing any and all categories is co-PhD, desk sharer, yoga instructor, band mate, therapist, travel companion, fellow SHEEP and general 6-year-old Jasmeen. Large chunks of this thesis were written in her presence at Black Medicine on the Bruntsfield Links, who we are both most indebted to for providing us with heated office space and a great work soundtrack.
+Both eluding and transgressing any and all categories is co-PhD, desk sharer, yoga instructor, band mate, therapist, travel companion, fellow SHEEP and general 6-year-old Jasmeen. Large chunks of this thesis were written in her presence at Black Medicine on the Bruntsfield Links, who we are both most indebted to for providing us with heated office space and some great tunes.
 
-For making my respective homes feel like a home I want to thank the `uncountable' flatmates who've entertained and tolerated me over the years~(I've actually counted at least~55, which is the reason I'm not listing them here) as well as my two axolotls, T'Nealle and D'Brickashaw, for reminding me that I really shouldn't have pets, not even if they're capable of regrowing their limbs. % that might go missing in action.
+For making my respective homes feel like a home I want to thank the `uncountable' flatmates who've entertained and tolerated me over the years~(I've actually counted at least~55, which is the reason I'm not listing them here) as well as my two axolotls, T'Nealle and D'Brickashaw, for reminding me that it's really not a good idea for me to have pets, not even if they're capable of regrowing their limbs. % that might go missing in action.
 Thanks also to all those who I've knowingly or unknowingly omitted to name here, including everyone that I've had really \emph{intense} conversations with in the past few years, anyone who ever went flaneuring with me (whether on foot or bike), all the other people who kept me sane and, most of all, all those who drove me crazy.
 %\vfill
 %\begin{center}
@@ -92,10 +96,11 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 
 \tableofcontents
 
+%{\listoffigures \let\cleardoublepage\clearpage \listoftables}
 \listoffigures
 \listoftables
 
-\newpage
+\cleardoublepage
 \thispagestyle{empty}
 \epigraph{``Language moves down time in a current of its own making.''}{\citep[p.160]{Sapir1921}}
 
@@ -130,12 +135,13 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 %and the generation of linguistic variants
 % interacting pressures of variation and selection
 \label{ch:bigpicture}
-\label{ch:conclusion}
 \include{conclusion/bigpicture}
 
 %\bibliographystyle{unsrt}
 \bibliographystyle{momentummodel/ldc}
+%\bibliographystyle{thesis}
 \bibliography{../library}
+
 
 \newpage
 \index{bias|see{pressures}}
@@ -180,7 +186,8 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 
 \chapter{Questionnaire materials}
 \label{app:questionnaire}
-This appendix contains the various materials used for the questionnaire data collection and analysis: Section~\ref{app:paperquestionnaire} provides the four questionnaire sheets described in Chapter~\ref{ch:questionnaire} that were handed to participants on site. Only one randomisation is given. The online version of the questionnaire is still available at \url{http://spellout.net/ibexexps/kstadler/shetland/experiment.html}, and the source code both for the IBEX online questionnaire as well as the generation of the randomised questionnaire sheets is provided in Section~\ref{app:questionnairecode}.
+This appendix contains the various materials used for the questionnaire data collection and analysis: Section~\ref{app:paperquestionnaire} provides the four questionnaire sheets described in Chapter~\ref{ch:questionnaire} that were handed to participants on site. Only one randomisation is given. The online version of the questionnaire is still available at \url{http://spellout.net/ibexexps/kstadler/shetland/experiment.html}, and the source code %both for the IBEX online questionnaire as well as
+for the generation of the randomised questionnaire sheets is provided in Section~\ref{app:questionnairecode}.
 % app:questionnairedata?
 Section~\ref{app:questionnairedatacode} provides the R~code used to load and arrange the questionnaire and acceptability judgment data that form the basis of the statistical analyses in Chapter~\ref{ch:questionnaire}.
 
@@ -190,10 +197,10 @@ Section~\ref{app:questionnairedatacode} provides the R~code used to load and arr
 %\include{questionnaire/questions}
 \section{Questionnaire source code}
 \label{app:questionnairecode}
-\subsection{Paper questionnaire}
+%\subsection{Paper questionnaire}
 
-\includeR{../momentum/questionnaire/shetland/questionnaire.Rmd}
-\subsection{Online questionnaire}
+\includeR{questionnaire/data/questionnaire.Rmd}
+%\subsection{Online questionnaire}
 
 %\section{Questionnaire data}
 %\includeR{questionnaire/shetland.csv}
@@ -201,6 +208,6 @@ Section~\ref{app:questionnairedatacode} provides the R~code used to load and arr
 \section{Questionnaire data processing code}
 \label{app:questionnairedatacode}
 
-\includeR{questionnaire/shetland-data.R}
+\includeR{questionnaire/data/shetland-data.R}
 
 \end{document}

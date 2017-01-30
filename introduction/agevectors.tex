@@ -10,42 +10,29 @@ This same pattern of acquisition is found in a slightly refined fashion in \cite
 In the incrementation of change, children learn to talk differently from their parents and in the same direction in each successive generation. This can happen only if children align the variants heard in the community with the vector of age: that is, they grasp the relationship: the younger the speaker, the more advanced the change.~\citep[p.344]{Labov2001}
 \end{quote}
 
-<<setup, echo=FALSE, results="hide">>=
-source("../knitr-setup.R")
-@
 
-<<miltonkeynes, fig.cap="Phonetic targets of the \\texttt{GOAT} vowel for Milton Keynes children by age exhibit increasing alignment to community rather than caretaker speech~(data from~\\citealt{Kerswill1994}).", fig.scap="With age, Milton Keynes children exhibit increasing alignment to community rather than caretaker speech.", fig.height=smallwidth, fig.pos="t">>=
-# square circle + x 
-pchs <- c(4, 3, 1, 0)
 
-mk <- read.csv("miltonkeynes.csv")
-mk$group <- factor(mk$group, levels=c("caretakers", "4 year olds", "8 year olds", "12 year olds"))
-lattice::xyplot(percent ~ target, data=mk, groups=mk$group, type=c("p","l"), par.settings = list(superpose.symbol=list(col="black", pch=pchs), superpose.line=list(col="black", lty=4:1)),
-# key=list(space="right", points=list(pch=pchs), lines=list(lty=4:1), text=list(unique(as.character(mk$group)))))
-    auto.key=list(space="right", lines=TRUE),
-scales=list(x=list(labels=c("æi", "æy", "au"))))
-#labels=enc2utf8(as.character(levels(mk$target))))
-@
+\begin{figure}[t]
 
-<<tokpisin, fig.cap="Rate of secondary stress on the `bai' future tense marker in Tok Pisin. The relative difference between the rates of children~(circles) and their respective caretakers~(triangles) exhibit a similar pattern of increase across pairs~(data from~\\citealt[p.425]{Labov2001}).", fig.width=smallwidth, fig.pos="t">>=
-pchs <- 3:4
+{\centering \includegraphics[width=\maxwidth]{figure/miltonkeynes-1} 
 
-tp <- read.csv("tokpisin.csv", stringsAsFactors=FALSE)
-tp$family <- as.factor(tp$family)
-tp$parent <- substr(tp$id,1,1) == "M"
-vectors <- merge(subset(tp, parent), subset(tp, !parent), by="family")
+}
 
-# R reported to be .61 in graph, we find .67 here
-#cor.test(vectors$stress.x, vectors$stress.y)
+\caption[With age, Milton Keynes children exhibit increasing alignment to community rather than caretaker speech.]{Phonetic targets of the \texttt{GOAT} vowel for Milton Keynes children by age exhibit increasing alignment to community rather than caretaker speech~(data from~\citealt{Kerswill1994}).}\label{fig:miltonkeynes}
+\end{figure}
 
-par(pty="s")
-plot(tp$age, tp$stress, pch=1+tp$parent, xlab="age", ylab="percent stress", ylim=c(0, 100), yaxs="i")
-foo <- mapply(function(x2, y2, x1, y1) lines(c(x1, x2), c(y1, y2)), vectors$age.y, vectors$stress.y, vectors$age.x, vectors$stress.x)
 
-#lattice::xyplot(stress ~ age, data=tp, groups=tp$parent, ylim=c(0, 80))
-#lattice::lsegments(vectors$age.y, vectors$stress.y, vectors$age.x, vectors$stress.x)
-#lattice::llines(x=10, y=10)
-@
+
+\begin{figure}[t]
+
+{\centering \includegraphics[width=\maxwidth]{figure/tokpisin-1} 
+
+}
+
+\caption[Rate of secondary stress on the `bai' future tense marker in Tok Pisin]{Rate of secondary stress on the `bai' future tense marker in Tok Pisin. The relative difference between the rates of children~(circles) and their respective caretakers~(triangles) exhibit a similar pattern of increase across pairs~(data from~\citealt[p.425]{Labov2001}).}\label{fig:tokpisin}
+\end{figure}
+
+
 
 %Recently, speakers' perception of changes has even been proposed as a solution to the problem of \emph{incrementation}
 

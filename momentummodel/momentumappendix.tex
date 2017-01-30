@@ -1,0 +1,420 @@
+\section*{Further analytical results}
+
+%\subsection{\citet{Gureckis2009}'s momentum-based selection}
+
+%\citet{Gureckis2009} present a model of momentum-based selection to predict the popularity of baby names at time $t+1$ according to
+
+%$$x_{t+1} \propto x_t+bx_tm$$
+
+%where $m$ is the difference between two exponentially weighted moving averages $m = EWMA_\gamma - EWMA_\beta$ of the time-series of popularity observations in the direct past with $\gamma>\beta$. Again, it is interesting to note how $x$ is multiplied into the right-hand~(biased) side, leading biases to affect higher proportions more (i.e. the momentum-bias is applied proportionally, not absolutely, very similar to the replicator selection formulation in \citet{Blythe2012}). Since their model is geared towards the case where a large number of traits are coexisting for a long time (i.e. baby names or any other domain where uniformity of variant use is not desirable) they presumably included this parameter to model higher levels of fluctuation for higher frequency variants. Since this formulation implies a frequency-dependent bias of the momentum (rather than of the variant sampling alone) the multiplication with the bias term will be left out of our implementation.
+
+\subsection{The mathematics of EWMA-difference-based momentum}
+
+While the USM gives us more options regarding what time series we want to feed into our EWMAs do calculate the momentum,
+No matter which input source we use for the ultimate calculation of momentum, we can investigate the general dynamics of the difference of two EWMAs, based on their two parameters $\gamma>\beta$.
+
+\subsubsection{Initiation \& initial conditions}
+
+Most important to the \emph{triggering} of a trend is the question of how big some random slightly directed noise can alter the momentum away from $0$. Knowing that $\Delta x=\alpha(n-x)$ and assuming that any data point we get is maximally away from our current estimate (i.e. a change from 0 to 1 or vice versa), the values of $EWMA_{\beta,\gamma}$ will have changed by $\beta$ and $\gamma$ respectively, so that their difference will be $\beta-\alpha$. The magnitude of the \emph{absolute} difference between the two decay parameters will therefore have a strong effect on whether a change will be picked up.
+
+In terms of interaction with population size it should be noted that this initial change in the average momentum across the entire population will only be $\frac{1}{N}$ times as big after a single interaction. Therefore -- assuming full connectedness -- the initial likelihood of projecting and consequently actually starting a trend in noisy data should diminish with population size, and eventually lead to a pure neutral evolution regime in the limit. This prediction disregards both a) the small bias towards intermediate values of the USM discussed above and b) the role of network structure. While the latter is negligible according to the result in~\cite{Baxter2008}, it might potentially play a bigger role with momentum-based selection due to the nonlinearity of the replication algorithm that is very sensitive around some critical regimes, where biased sampling from specific (more highly connected) individuals or groups could lead to runaway effects different from the simple linear noise effects that -- in models like neutral evolution or BILM -- can only lead to diversification given unrealistically high learning rates, bottlenecks, or chance of mislearning.
+
+\subsubsection{Persistence \& maximal effect}
+
+The amplitude in momentum characterised above is only indicative of the initial sensitivity to changes in the input, but this tells us nothing about in how far a specific parameter combination can give rise to persistent change (by means of keeping a stable momentum value over time, as a change is steadily ongoing). For typical parameter settings the highest possible momentum is not reached after one interaction, but only when we repeatedly feed `trending' outliers to the learning process. Seeing that we have two decay processes with different decay constants now, at what point is the \emph{difference} between the two greatest~(i.e.~the momentum highest)? Figure~\ref{fig:decaydifference} shows the dynamics for the same pair of EWMAs but with different input data points.
+
+% really we should have two options regarding WHEN we counteract clipping - within f(u) or within the update-function:
+% USM: x -> (1-a)*x + a*limit(f(u))
+% alt: x -> limit((1-a)*x + a*f(u))
+% the first stops biases from applying in the majority direction when the input is categorically majority
+% the second stops biases from applying in the majority direction when the current value is strictly categorical
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(knitr)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{echo}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{fig.width}\hlstd{=}\hlnum{3.15}\hlstd{,} \hlkwc{fig.height}\hlstd{=}\hlnum{3.15}\hlstd{,} \hlkwc{fig.pos}\hlstd{=}\hlstr{'H'}\hlstd{,} \hlkwc{fig.align}\hlstd{=}\hlstr{'center'}\hlstd{,} \hlkwc{cache}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+
+\hlkwd{source}\hlstd{(}\hlstr{"momentum.R"}\hlstd{)}
+
+\hlstd{addmaxdifferenceinfo} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{alpha}\hlstd{,} \hlkwc{gamma}\hlstd{,} \hlkwc{t}\hlstd{=}\hlkwd{stepstomaxdifference}\hlstd{(alpha, gamma),} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{1}\hlstd{) \{}
+  \hlkwd{points}\hlstd{(t,} \hlnum{0}\hlstd{,} \hlkwc{pch}\hlstd{=}\hlnum{25}\hlstd{)}
+  \hlkwd{text}\hlstd{(t,} \hlnum{0}\hlstd{,} \hlkwd{round}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,t,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y)}\hlopt{-}\hlkwd{expdecay}\hlstd{(alpha,t,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),}\hlnum{3}\hlstd{),} \hlkwc{pos}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlstd{\}}
+
+\hlstd{addgammaanddifference} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{alpha}\hlstd{,} \hlkwc{gamma}\hlstd{,} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{1}\hlstd{) \{}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=GAMMA,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y)}\hlopt{-}\hlkwd{expdecay}\hlstd{(alpha,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=MOMENTUM,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{addmaxdifferenceinfo}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=x0,} \hlkwc{y}\hlstd{=y)}
+\hlstd{\}}
+\hlstd{addalphaanddifference} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{alpha}\hlstd{,} \hlkwc{gamma}\hlstd{,} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{1}\hlstd{) \{}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(alpha,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=ALPHA,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y)}\hlopt{-}\hlkwd{expdecay}\hlstd{(alpha,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=MOMENTUM,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{addmaxdifferenceinfo}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=x0,} \hlkwc{y}\hlstd{=y)}
+\hlstd{\}}
+
+\hlstd{decaydifferencecurve} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{alpha}\hlstd{,} \hlkwc{gamma}\hlstd{,} \hlkwc{maxt} \hlstd{=} \hlkwa{if} \hlstd{(}\hlopt{!}\hlstd{add)} \hlnum{2}\hlopt{*}\hlkwd{stepstomaxdifference}\hlstd{(alpha, gamma),} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{add}\hlstd{=}\hlnum{FALSE}\hlstd{) \{}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(alpha,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=ALPHA,} \hlkwc{to}\hlstd{=maxt,} \hlkwc{xlab}\hlstd{=}\hlstr{'t'}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlkwd{expression}\hlstd{(EWMA[gamma]}\hlopt{~}\hlstd{EWMA[alpha]}\hlopt{~}\hlstd{(EWMA[gamma]}\hlopt{-}\hlstd{EWMA[alpha])),} \hlkwc{ylim}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwc{add}\hlstd{=add)}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=GAMMA,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{curve}\hlstd{(}\hlkwd{expdecay}\hlstd{(gamma,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y)}\hlopt{-}\hlkwd{expdecay}\hlstd{(alpha,x,}\hlkwc{x0}\hlstd{=x0,}\hlkwc{y}\hlstd{=y),} \hlkwc{lty}\hlstd{=MOMENTUM,} \hlkwc{add}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlkwd{addmaxdifferenceinfo}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=x0,} \hlkwc{y}\hlstd{=y)}
+\hlstd{\}}
+
+\hlstd{alpha}\hlkwb{=}\hlnum{0.01}
+\hlstd{gamma}\hlkwb{=}\hlnum{0.02}
+\hlkwd{decaydifferencecurve}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlkwd{decaydifferencecurve}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{0.5}\hlstd{)}
+\hlkwd{decaydifferencecurve}\hlstd{(alpha, gamma,} \hlkwc{x0}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{y}\hlstd{=}\hlnum{0.25}\hlstd{)}
+\end{alltt}
+\end{kframe}\begin{figure}
+\subfloat[Decay from one extreme to the other (equivalent to repeatedly receiving the most contrastive input, i.e. going from 0 to 1 or vice versa).\label{fig:decaydifference1}]{\includegraphics[width=0.29\textwidth]{figure/decaydifference-1} }
+\subfloat[Decay towards an intermediate value ($0.5$).\label{fig:decaydifference2}]{\includegraphics[width=0.29\textwidth]{figure/decaydifference-2} }
+\subfloat[Decay towards a proximate value ($0.25$)\label{fig:decaydifference3}]{\includegraphics[width=0.29\textwidth]{figure/decaydifference-3} }\caption[Two exponential decays ]{Two exponential decays $\alpha=0.01, \gamma=0.02$ (dotted and solid line, respectively) and the difference between the two (dashed line). Both values are initialised at 0 and repeatedly fed some specific input value $>0$. The maximum value of the difference (i.e. the momentum) is reached after $\frac{\ln\frac{\alpha}{\gamma}}{\alpha-\gamma}$ iterations, independent of the (fixed) target value of the decay.}\label{fig:decaydifference}
+\end{figure}
+
+
+\end{knitrout}
+
+% <<baseline, fig.cap=paste('Plot of the most extreme learning curve that can happen, which is the case where $x_0=0$~(i.e.~0\\%~use) and the entire input is a stream of 100\\% input samples. This most extreme curve, here plotted for $\\lambda=', l, '$ is characterised by the complement of exponential decay, $x_t = 1-e^{-\\lambda t}$: with $x_0=0$ and $n_i=1$ for all $i$, $x_t=\\sum_{i=1}^t \\lambda(1-\\lambda)^i$, i.e. a rise of $\\lambda(1-\\lambda)^i$ per $t$, compared to a value $N$ undergoing exponential decay with $\\frac{dN}{dt}=-\\lambda N$')>>=
+
+Generally, we find that the maximum value is reached after $\frac{\ln\frac{\alpha}{\gamma}}{\alpha-\gamma}$ iterations of feeding a constant value to the process - i.e. the duration to full saturation of the momentum value is inversely proportional to the \emph{absolute difference} between the two decay constants (bigger difference $\rightarrow$ shorter duration until saturation) as well as proportional to the logarithm of the \emph{relative difference} between $\alpha$ and $\gamma$.
+
+Figure~\ref{fig:varyonedecayparameter} shows how this interaction works out when keeping $\alpha$ fixed and varying the short-term $\gamma$ (left) vs. keeping $\gamma$ fixed and varying the long-term learning rate $\alpha$ (right). Figure~\ref{fig:varybothdecayparameters} illustrates the interaction for the case where both $\alpha$ and $\gamma$ are varied while keeping their relative difference $\frac{\alpha}{\gamma}$ constant.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \subfloat[Fixed alpha, varying gamma: multiplying gamma by a linearly increasing factor (and moving it even further away from $\alpha$) decreases the time until saturation while making the overall time-course of momentum more peaky, with a higher maximum value and quicker decay.\label{fig:varyonedecayparameter1}]{\includegraphics[width=0.45\textwidth]{figure/varyonedecayparameter-1} }
+\subfloat[Fixed gamma, varying alpha: dividing alpha by a linearly increasing factor (and moving it even further away from $\gamma$) increases the time until saturation, while also increasing the maximum momentum that can be reached.\label{fig:varyonedecayparameter2}]{\includegraphics[width=0.45\textwidth]{figure/varyonedecayparameter-2} }
+\subfloat[Fixed alpha, time until saturation (peak) of momentum for various $\gamma\ge\alpha= 0.01 $.\label{fig:varyonedecayparameter3}]{\includegraphics[width=0.45\textwidth]{figure/varyonedecayparameter-3} }
+\subfloat[Fixed gamma, time until saturation (peak) of momentum for various $\alpha\le\gamma= 0.02 $.\label{fig:varyonedecayparameter4}]{\includegraphics[width=0.45\textwidth]{figure/varyonedecayparameter-4} }
+
+}
+
+\caption[Illustrating the interactions between decay rates ]{Illustrating the interactions between decay rates $\alpha$ and $\gamma$ on the time at which the maximum momentum value is reached.}\label{fig:varyonedecayparameter}
+\end{figure}
+
+
+\end{knitrout}
+
+% plot with identical relative+absolute differences between alpha/gamma
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \subfloat[Identical relative proportions between decay rates (in this case $\gamma=2\alpha$), with $\alpha= 0.01,0.0125,0.015,0.0175 $. The respective highest and lowest $\alpha$ and $\gamma$ decay lines belong to each other, and the lowest pair of decay lines give rise to the most strongly (and most early) rising momentum. Given equal relative proportions between the two decay parameters, higher decay parameters lead to an earlier (and also more rapid) saturation of momentum at the otherwise identical peak value.\label{fig:varybothdecayparameters1}]{\includegraphics[width=0.42\textwidth]{figure/varybothdecayparameters-1} }
+\subfloat[Decay and momentum plots of two exponential decays with an identical absolute difference $\gamma-\alpha=0.01$, at $\alpha=0.01, 0.0125, 0.015, 0.0175$. Again the respective highest and lowest $\alpha$ and $\gamma$ decay lines belong to each other, only this time the highest lines also give rise to the both highest and fastest rising momentum curve. Given an equal absolute difference between two decay parameters, lower decay parameters (which correspond to a higher relative difference between the two) lead to a later point of momentum saturation at a higher peak value, which in turn means that the initial rise in momentum with these lower parameters is going to be steeper as well.\label{fig:varybothdecayparameters2}]{\includegraphics[width=0.42\textwidth]{figure/varybothdecayparameters-2} }
+
+}
+
+\caption[Illustrating the effects of varying decay rates ]{Illustrating the effects of varying decay rates $\alpha$ and $\gamma$ while keeping the relative proportion $\frac{\alpha}{\gamma}$~(left) and absolute difference $\gamma-\alpha$~(right) constant.}\label{fig:varybothdecayparameters}
+\end{figure}
+
+
+\end{knitrout}
+
+Knowing when these maximal possible momentum values are reached we can determine numerically what those values are and, by setting the values against the initial sensitivity as well as the number of iterations required to reach the maximum, we can get a better picture of what different combinations of $\alpha,\gamma$ achieve, as summarised in Figure~\ref{fig:dynamicssummary}.
+
+\paragraph{Summary of relationships}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in alphasvsgammas(function(a, g) g - a): could not find function "{}image.plot"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in title(expression((E[gamma] - E[alpha]) \textasciitilde{} at \textasciitilde{} t[1])): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in alphasvsgammas(stepstomaxdifference): could not find function "{}image.plot"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in title(expression(t[max])): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.xy(xy.coords(x, y), type = type, ...): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in alphasvsgammas(maxdecaydifference): could not find function "{}image.plot"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in title(expression((E[gamma] - E[alpha]) \textasciitilde{} at \textasciitilde{} t[max])): plot.new has not been called yet}}\end{kframe}
+\end{knitrout}
+
+\begin{itemize}
+\item $\Delta m=(\gamma-\alpha)(x-n)$ (where $x$ is the current value and $n$ the incoming datapoint)
+\item $t_{max}=\frac{\ln\frac{\alpha}{\gamma}}{\alpha-\gamma}$
+\item $m_{max}$: looking at Figures~\ref{fig:varyonedecayparameter3} and \ref{fig:varyonedecayparameter4} this will be some logarithmic function of $\frac{\alpha}{\gamma}$
+\end{itemize}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \subfloat[Keeping the relative proportion $\alpha:\lambda$ constant.\label{fig:identicalbiases1}]{\includegraphics[width=0.47\textwidth]{figure/identicalbiases-1} }
+\subfloat[Keeping the absolute difference $\gamma-\alpha$ constant.\label{fig:identicalbiases2}]{\includegraphics[width=0.47\textwidth]{figure/identicalbiases-2} }
+
+}
+
+\caption[Based on the relationship established above we can normalise the bias strength ]{Based on the relationship established above we can normalise the bias strength $b$ which leads to identical maximum momentum values for different pairs of $\alpha,\gamma$. A number of idealised most extreme momentum curves, normalised so that the maximum value obtained is 1, are shown above. Normalisation occurs by dividing $EWMA_\gamma-EWMA_\alpha$ by the maximum possible momentum as calculated according to the results above.}\label{fig:identicalbiases}
+\end{figure}
+
+
+\end{knitrout}
+
+% TODO plot 'naive' slope estimate t[2]-t[1] and see whether it's positively correlated with tmax
+
+\subsection{Momentum-modulation in the USM}
+
+Regarding the actual calculation of the momentum in the USM there are at least three different `input sources' from which the data for the EWMAs can be drawn:
+
+\begin{itemize}
+\item the objective input $y$
+\item the `perceived' input $f(y)$, i.e. the objective input modulated by any already existing momentum bias
+\item $x$, i.e. tracking changes to the agent's own internal frequency of use variable, itself an EWMA of $f(y)$
+\end{itemize}
+
+We will consider these three options in turn. It should generally be noted that \citet{Gureckis2009}'s model is one for step-wise prediction, rather than a generative model of individual behaviour. While they use two EWMAs to calculate the momentum, the `updating rule' is itself not an EWMA but rather a memoryless point-estimate, which is why when incorporating their momentum calculation with the USM updating rule we end up with up to three different learning parameters (the original USM's $\alpha$ as well as the two EWMAs' $\beta$ and $\gamma$).
+
+%first question: take diff between two population estimates or between agent's value and (recent) population estimate? Will be the same after burn-in but not at more heteregeneous initial conditions! This will probably also be very prone to aliasing effects of sample size $T$ since steps taken towards values further away from the current value will be larger (but once a certain distance has been covered this relationship is inversed).
+
+%so: better use two EWMAs. second question: use ONLY diff as new expected value, or some combination of observed value + diff? probably latter, because then we can just make the momentum-modulation part of $f()$
+
+\subsection{Objective-momentum ($m=y_\gamma-y_\beta$)}
+
+Probably the most `objective' way to determine momentum in the population would be to track a long-term and short-term average of the \emph{actual} (not the `perceived') input data, and take the difference between the two. Apart from the agent's own $x$ value with learning rate $\alpha$ this would imply two more EWMAs with decay constants $\beta$ and $\gamma$ (presumably both $\ll\alpha$). Note how even when $\alpha=\beta$ the agent's $x$ and the $EWMA_\beta$ would not be identical since the latter would only include the raw data obtained from other agents while the former is based on the \emph{perceived} (i.e. biased) data, and might incorporate the agent's own productions as well.
+
+\subsection{Perceived-momentum ($m=f(y)_\gamma-f(y)_\beta$)}\label{momentum}
+
+To minimally incorporate momentum-based selection into the USM (and avoid the introduction of too many decay parameters) we can `mix' the two input sources and simply use the USM value of $x_t$ (which is really an EWMA of $f(y)$) as the long-term estimate of the use of a variant, which we will consequently also refer to as $EWMA_\alpha$.
+
+% $$x' = (1-\alpha)x + \alpha(n_i + bm)$$
+% $$x' = \frac{x_i+\lambda((1-H_{ij})f(n_i)+H_{ij}f(n_j))}{1+\lambda}$$
+
+%b in replicator selection is multiplicative, so let's take
+
+$$f(u) = u + b (EWMA_\gamma-EWMA_\alpha) = u + b EWMA_\gamma - b EWMA_\alpha$$
+
+with~$1\ge\gamma>\alpha>0$~(greater values weight recent observations more highly). A clear difference to multiplicative replicator selection here is that the bias that is applied is not dependent on what value $u \in \frac{i}{T}$ is sampled in that particular interaction, but dependent on the agent-internal long-term observed $EWMA_{\alpha,\gamma}$.
+
+What is also immediately evident is that the range of values that this momentum-difference takes on will vary based on both the difference between $\alpha$ and $\gamma$, but also on the relative magnitudes of the two. In order for the $b$ parameter to be meaningful across different settings of $\alpha$ and $\gamma$ we will have to normalise the self-momentum according to their values.
+
+\subsection{Self-momentum ($m=(x_\gamma-x_\beta)/\alpha=(f(y)_{\alpha_\gamma}-f(y)_{\alpha_\beta})/\alpha$)}
+
+Another objective way to determine momentum would be from the change of the agent's internal $x$ value alone. Any change observed will be by the magnitude of $\alpha$ smaller because the noisy samples obtained from the environment will be translated into much slower incremental change according to the learning rate. Other than that there are two main qualitative differences to Other-Other-Momentum as described above: firstly, instead of tracking changes to the input data $y$ itself, Self-self momentum tracks changes to $x$ which are proportional to $f(y)-x$, which means that this type of momentum shows different sensitivity to outliers at different positions of $x$. Since outliers can be `further away' for extreme $x$ (around either 0 or 1), the prediction is that momentum would build up more easily in these regions rather than at intermediate values. Secondly, `edge effects' should kick in (and thus diminish the momentum value) much later with Self-self momentum. Should a momentum bias have spread far enough to cause a lot of datapoints to be at the extreme values $\frac{0}{T}$ or $\frac{T}{T}$, Other-other-Momentum would quickly go to 0 since no change in the input data would be observed, even if the agent's internal $x$ is still far from the extreme (but constantly moving towards it). Self-self momentum on the other hand would be able to detect this ongoing change (and continue the sustained trend) for much longer, only attenuated by the slowing down of learning as the extreme target value is approached.
+
+A pure version of this momentum calculation would again use two extra decay rates $\beta, \gamma$.
+
+\subsection{Analysing the longer-term dynamics of momentum-modulation}
+
+All of these results are on static input (i.e. starting at $x_0=0$ and constantly feeding new data points $y=1$ to the process), but what we are really interested in next is how momentum can lead to runaway effects in the dynamics when the EWMA-updating process is turned on itself (i.e. its own productions). Crucially, Figure~\ref{fig:decaydifference} only displays the development of momentum (i.e. the difference) of two `pure' decays. This is not the case in the momentum-based USM specification, where the EWMAs do not just incorporate incoming datapoints, but where the datapoints themselves are momentum-modulated.
+
+In the following figures, instead of plotting the two EWMAs and their difference on the same axis, only two figures will be plotted: the solid line represents the internal proportion $x$ (also referred to as $EWMA_\alpha$), which can vary between 0 and 1. The dotted line indicates the momentum, i.e. $EWMA_\gamma-EWMA_\alpha$: the momentum can become both positive and negative, and its 0 axis is plotted for orientation.
+
+It should be noted that the momentum axis on the right hand side does not have arbitrary end points, the top and bottom actually represent the highest and lowest attainable momentum values according to the analysis above -- the bias value $b$ is rescaled/normalised for specific pairs of $\alpha, \gamma$, so that $b$ is always the maximum possible bias that could possibly be applied to the actually observed frequency, assuming that that maximum momentum is actually reached (see Figure~\ref{fig:identicalbiases}). While in the replicator selection model there is a natural upper bound at $b=1$ above which a further increase in the bias has no effect due to the capping of perceived data points at $1$, in the momentum-based model the bias value is multiplied with the normalised momentum value which can itself never be greater than $1$ (and which is typically much lower), so even bias values much greater than $1$ can in principle be meaningful, at least at the initial stages where momentum is low and noisy -- once the momentum value is big enough the large $b$ will essentially be capped.
+
+To understand the role of the bias parameter $b$, we can have a look at what bias values can lead to runaway effects/spikes in very small ($N=1$) populations following \emph{a single outlier}. Bias values in this regime are outright \emph{crazy} and should be avoided. All simulations shown in Figure~\ref{fig:oneshot} eventually return back to $0$ because following the outlier is again a constant stream of $0$s that the USM naturally imitates -- we even see a period of negative momentum!
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.new(): figure margins too large}}\end{kframe}
+\end{knitrout}
+
+
+
+\paragraph{Adding self-reinforcement on top of the momentum-modulation}
+
+Having established what input values lead to out-of-control perturbations following just a single outlier, we can have a look at what happens when there is a single outlier, and the following data points are produced by the agent \emph{itself}, i.e. we introduce the ordinary self-feedback loop we find in multi-agent simulations. In a first (and very idealised) approach we feed the exact internal $x$ value back to the agent, as can be seen in Figure~\ref{fig:oneshotrunaway}, where we find three different regimes: stability, linear growth and s-shaped curves. Figure~\ref{fig:oneshotrunawayx} shows the same conditions but from lower starting points $x_0$, with identical dynamics.
+
+%The linear growth regime: a single outlier leads to a momentum of $\gamma-\alpha$. The next datapoint then is going to be $b*(\gamma-\alpha)$ higher -- when $b=\frac{\gamma}{\alpha}$ then this datapoint is $x+\frac{\gamma^2}{\alpha}-\gamma$, which when fed back to the two EWMAs leads to no change between the difference between the two, and thus the same step size repeats again in the next iteration, leading to perfect linear growth until the ceiling is hit...
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.new(): figure margins too large}}\end{kframe}
+\end{knitrout}
+
+% running the same parameter values only from a different x0 appears to make no difference at all
+
+
+% BEGIN TOGGLE COMMENT
+
+% <<lineargrowth, cache=TRUE, out.width='0.3\\textwidth', fig.cap="Just because it's so beautiful, let's play around with the linear growth regime! The constant momentum value will be $(\\gamma-\\alpha)(y-x_0)$ -- the three trajectories of the internal value $x$ in every figure (from top to bottom) correspond to the conditions $2x_0, y=1$; $x_0, y=1$ and $x_0, y=0.5$. The second one exhibits the steepest slope since in this case $(y-x_0)$ is highest.", fig.subcap=paste('$\\alpha=', alphas, ', \\gamma=', gammas, ', b=', bs, '$: slopes $', captions, sep='')>>=
+
+% # linear growth: alpha, gamma, 0.5 | alpha, 2*gamma, 0.63 | 2*alpha, 2*gamma, 0.5 | 2*alpha, 4*gamma, 0.63
+% # less-than gro: alpha, 2*gamma, 0.625 | 2*alpha, 4*gamma, 0.62
+% alphas=c(alpha, alpha, alpha, 2*alpha, 2*alpha, 2*alpha)
+% gammas=c(2*alpha, 3*alpha, 4*alpha, 3*alpha, 4*alpha, 5*alpha)
+% bs=c(0.5, 0.5775, 0.6295, 0.445, 0.5, 0.542775)
+% x0=0.1
+% for (i in 1:length(alphas)) {
+%   captions[i] = plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlieranalytic, 5000, x0), alphas[i], gammas[i], slope=1)
+%   # four times the x0
+%   captions[i] = paste(captions[i], '$, $', plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlieranalytic, 5000, x0*4), alphas[i], gammas[i], slope=1, add=TRUE), '$ (with four times the $x_0$)', sep='')
+%   # twice the x0
+%   captions[i] = paste(captions[i], ', $', plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlieranalytic, 5000, x0*2), alphas[i], gammas[i], slope=1, add=TRUE), '$ (with double the $x_0$)', sep='')
+%   # half the outlier strength
+%   singleoutlieranalytichalf <- function(i, x, T) if (i==2) 0.5 else x
+  
+%   captions[i] = paste(captions[i], ', $', plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlieranalytichalf, 5000, x0), alphas[i], gammas[i], slope=1, add=TRUE), '$ (with half outlier amplitude).', sep='')
+% }
+% @
+
+% <<equallinearslopes, cache=TRUE, out.width='0.3\\textwidth', fig.cap='Construeing equal slopes by keeping $y-x_0$ identical. Note how the lower row of figures (with $\\alpha$ twice as high) has a different (halved) time scale.', fig.subcap=paste('$\\alpha=', alphas, ', \\gamma=', gammas, ', b=', bs, '$: slope=$', captions, '$.', sep='')>>=
+% # control amplitude so that (y-x0) is the same as when y=1
+% # first raise x0 so that the parallel lines are easier to grasp
+% x0=0.1 
+% singleoutlierequalslopehalf <- function(i, x, T) if (i==2) (1-x0/2) else x
+% singleoutlierequalslopethird <- function(i, x, T) if (i==2) (1-x0*2/3) else x
+% # we can't go to a higher x0 because the outlier required would be > 1!
+
+% for (i in 1:length(alphas)) {
+%   maxt=50/alphas[i]
+%   captions[i] = plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlieranalytic, maxt, x0), alphas[i], gammas[i], slope=1)
+%   # half the x0
+%   plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlierequalslopehalf, maxt, x0/2), alphas[i], gammas[i], slope=1, add=TRUE)
+%   # a third the x0
+%   plotandgetcaption(individualsimulation(alphas[i], gammas[i], bs[i], NULL, singleoutlierequalslopethird, maxt, x0/3), alphas[i], gammas[i], slope=1, add=TRUE)
+% }
+% @
+
+% END TOGGLE COMMENT
+
+% momentumreinforceddecaydifferencecurve <- function(alpha, gamma, b, x0=1, y=0) {
+%   # fast estimate
+%   ewmag = exp(-gamma*1:maxt)
+%   # self-reinforcing slow estimate
+%   trajectory = numeric(length=maxt)
+%   trajectory[1] = 1.0
+%   for (i in 2:length(trajectory)) {
+%     trajectory[i] = (1-alpha)*trajectory[i-1]+alpha*(y+b*(ewmag[i-1]-trajectory[i-1]))
+%   }
+%   lplot(trajectory, ylim=c(0,1))
+%   curve(expdecay(gamma,x,y=y), lty=3, add=TRUE)
+% }
+
+% bollocks?
+%A direct comparison between these 'pure' developments and the momentum-modulated USM is problematic because, according to the specification of the USM the $f(u)$ that the internal value $x$ is moving towards has to lie in the $[0,1]$ range, which means that if $u$ itself is already $0$ (or $1$), any potential bias towards the majority variant \emph{cannot apply}. It is this mechanism that causes the change to slow down as an individual gets closer to convergence on one variant. If we still want the bias to apply we therefore have to select an outlier input $u$ that still allows a momentum bias to meaningfully apply. Knowing the upper limit of momentum itself cannot be greater than $\gamma-\alpha$ we can therefore select a value that is $b(\gamma-\alpha)$ away from the extreme to guarantee that the bias is continuously applied and can never be cut off. This is again an idealisation, but the next-to-best-interesting one.
+
+\paragraph{Entering the more realistic realm of stochastic simulation}
+
+% self-reinforcement on top of the momentum-modulation
+In reality the self-feedback loop of data is of course stochastic, and we have to choose a discrete value for the resolution $T$ as well. Figure~\ref{fig:Ts} shows several runs for a number of parameter settings where one agent interacts with itself in a closed feedback loop. The first noticeable thing is a persistent draft towards middle values -- this draft is manifested both in the random walks with low $b$s (on the left) and particularly with low $T$s (top left corner), but also in the oscillations on the right: with the higher bias values momentum consistently picks up but tails off as $x$ approaches $1$, which leads the momentum to go down to 0 again -- due to the symmetry of the model this random walk in the $90\%$ region is again interrupted by triggers towards middle values, which leads to consistent oscillations. The draft is most likely due to the overshoot artefact mentioned in section~\ref{neutralevolutiondynamics}: even though irrelevant for large population sizes, any single individual who randomly produces an unlikely value very far off the current one causes a large step towards the middle which has to be migitated by many extreme ones back to the extreme -- but by producing a single large step towards the middle this has offset the current value towards the middle, making more such steps even more likely (or, conversely, decreasing the likelihood of an appropriate number of (small) counterbalancing steps occuring). In contrast to the normal neutral evolution condition where this artefact is supposedly negligible~\cite[p.7]{Baxter2006} the problem does seem to be aggravated by the momentum-based selection mechanism, presumably due to the fact that instead of only leading to a point change in $x$ the effect of any single outlier is prolonged over many interactions by how it affects the more permanently applied momentum-bias. %This can in principle be counteracted by increasing T?
+
+\paragraph{Increasing the population size}
+
+The following Figures~\ref{fig:n2} and~\ref{fig:n10} show stochastic simulations with the same parameter ranges, only in populations with 2 and 10 agents, respectively. Increasing the population size reduces the overall level of noise produced by random sampling, making the deterministic components (stationarity and self-reinforcing transitions) more robust, but the transitions between them (or rather the triggering of transitions) less likely.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (dataprodfun, alpha, biasfun, betafun, gammafun, interactions, : argument "{}x0"{} is missing, with no default}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (T, x) : unused argument (0.05)}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (T, x) : unused argument (0.05)}}\end{kframe}
+\end{knitrout}
+
+\paragraph{Counteracting the deregularisation bias}
+
+To counteract the apparent bias towards middle values, we can apply the nonlinear function $f(u)=u+au(1-u)(2u-1)$ as discussed in Section~\ref{nonlinearselection} \emph{after} the application of the momentum-bias. Simulation results for this condition (again with increasing population sizes in a fully connected network) can be found below for various settings of $a$. The nonlinear function makes no difference when $T=1$ or 2 due to the fact that 0, 1 and $\frac{1}{2}$ map to themselves, but effects can be seen for the other parameter settings: apart from stopping regular oscillations from occurring, it generally diminishes the chance of a trend picking up in the first place by exerting a constant pressure against any minority variant. While the stochastic simulations (particularly for 10 agents in Figure~\ref{fig:nonlinearn10}) might look unimpressive they are actually much closer to the situation we are interested in -- most innovated variants die out without ever gaining much use, so a large number of simulations have to be run to obtain the transition of a `successful' change, and a more quantitative evaluation of success rates is the next step of this analysis. Adding and investigating the possibility of repeated invention/mutation (i.e. asymmetry in the random \emph{generation} of a variant rather than in its replication) is a next point for investigation.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \subfloat[$T=1, b=0.25$, 2 runs.\label{fig:nonlinearTs1}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-1} }
+\subfloat[$T=1, b=0.5$, 2 runs.\label{fig:nonlinearTs2}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-2} }
+\subfloat[$T=1, b=0.75$, 2 runs.\label{fig:nonlinearTs3}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-3} }
+\subfloat[$T=1, b=1$, 2 runs.\label{fig:nonlinearTs4}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-4} }
+\subfloat[$T=2, b=0.25$, 2 runs.\label{fig:nonlinearTs5}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-5} }
+\subfloat[$T=2, b=0.5$, 2 runs.\label{fig:nonlinearTs6}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-6} }
+\subfloat[$T=2, b=0.75$, 2 runs.\label{fig:nonlinearTs7}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-7} }
+\subfloat[$T=2, b=1$, 2 runs.\label{fig:nonlinearTs8}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-8} }
+\subfloat[$T=3, b=0.25$, 2 runs.\label{fig:nonlinearTs9}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-9} }
+\subfloat[$T=3, b=0.5$, 2 runs.\label{fig:nonlinearTs10}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-10} }
+\subfloat[$T=3, b=0.75$, 2 runs.\label{fig:nonlinearTs11}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-11} }
+\subfloat[$T=3, b=1$, 2 runs.\label{fig:nonlinearTs12}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-12} }
+\subfloat[$T=4, b=0.25$, 2 runs.\label{fig:nonlinearTs13}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-13} }
+\subfloat[$T=4, b=0.5$, 2 runs.\label{fig:nonlinearTs14}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-14} }
+\subfloat[$T=4, b=0.75$, 2 runs.\label{fig:nonlinearTs15}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-15} }
+\subfloat[$T=4, b=1$, 2 runs.\label{fig:nonlinearTs16}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-16} }
+\subfloat[$T=5, b=0.25$, 2 runs.\label{fig:nonlinearTs17}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-17} }
+\subfloat[$T=5, b=0.5$, 2 runs.\label{fig:nonlinearTs18}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-18} }
+\subfloat[$T=5, b=0.75$, 2 runs.\label{fig:nonlinearTs19}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-19} }
+\subfloat[$T=5, b=1$, 2 runs.\label{fig:nonlinearTs20}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearTs-20} }
+
+}
+
+\caption[Same as above but with a single nonlinear (regularising) learner in a stochastic self-feedback loop with various ]{Same as above but with a single nonlinear (regularising) learner in a stochastic self-feedback loop with various $T$ and $b$ (identical $T$ along rows, identical $b$ along columns).}\label{fig:nonlinearTs}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \subfloat[$T=1, b=0.25$, 3 runs.\label{fig:nonlinearn21}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-1} }
+\subfloat[$T=1, b=0.5$, 3 runs.\label{fig:nonlinearn22}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-2} }
+\subfloat[$T=1, b=0.75$, 3 runs.\label{fig:nonlinearn23}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-3} }
+\subfloat[$T=1, b=1$, 3 runs.\label{fig:nonlinearn24}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-4} }
+\subfloat[$T=2, b=0.25$, 3 runs.\label{fig:nonlinearn25}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-5} }
+\subfloat[$T=2, b=0.5$, 3 runs.\label{fig:nonlinearn26}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-6} }
+\subfloat[$T=2, b=0.75$, 3 runs.\label{fig:nonlinearn27}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-7} }
+\subfloat[$T=2, b=1$, 3 runs.\label{fig:nonlinearn28}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-8} }
+\subfloat[$T=3, b=0.25$, 3 runs.\label{fig:nonlinearn29}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-9} }
+\subfloat[$T=3, b=0.5$, 3 runs.\label{fig:nonlinearn210}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-10} }
+\subfloat[$T=3, b=0.75$, 3 runs.\label{fig:nonlinearn211}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-11} }
+\subfloat[$T=3, b=1$, 3 runs.\label{fig:nonlinearn212}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-12} }
+\subfloat[$T=4, b=0.25$, 3 runs.\label{fig:nonlinearn213}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-13} }
+\subfloat[$T=4, b=0.5$, 3 runs.\label{fig:nonlinearn214}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-14} }
+\subfloat[$T=4, b=0.75$, 3 runs.\label{fig:nonlinearn215}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-15} }
+\subfloat[$T=4, b=1$, 3 runs.\label{fig:nonlinearn216}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-16} }
+\subfloat[$T=5, b=0.25$, 3 runs.\label{fig:nonlinearn217}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-17} }
+\subfloat[$T=5, b=0.5$, 3 runs.\label{fig:nonlinearn218}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-18} }
+\subfloat[$T=5, b=0.75$, 3 runs.\label{fig:nonlinearn219}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-19} }
+\subfloat[$T=5, b=1$, 3 runs.\label{fig:nonlinearn220}]{\includegraphics[width=0.22\textwidth]{figure/nonlinearn2-20} }
+
+}
+
+\caption[Same variation of ]{Same variation of $b$s and $T$s as above, but with 2 agents constantly interacting.}\label{fig:nonlinearn2}
+\end{figure}
+
+
+\end{knitrout}
+
+
+
+\paragraph{Additional symmetry concerns}
+
+The USM description used in~\citet{Blythe2012} is geared towards the special case of 2 competing variants which can be captured using a single variable $x$, and taking the complementary $x'=1-x$. Special care must be taken during the updating of $x$ when there is a bias function $f(u)$ in place, because this function might (in the case of symmetric functions) lead to only half of the bias strength when only applied to $x$ and not $x'$, to which an equally sized inverse bias would be applied. This becomes even more important when the bias function isn't symmetric as in the case of replicator selection, where a bias value $b$ does \emph{not} lead to identical (if reversed) dynamics as its inverse value $-b$ (see A21 and A22 in the appendix to~\citet{Blythe2012}).
+
+In the case of replicator selection this simplified one-sided update to $x$ only is not problematic because the model isn't symmetric to begin with, but it might be an issue with momentum-based selection -- the positive momentum of a rising variant is not necessarily the inverse of the momentum of its competing outgoing variant. That this is indeed a problem can be seen in various of the figures above, where an initial trend leads to a spike upwards which does however not converge on $1$, instead bouncing back to the other extreme where it \emph{does} converge on 0. This suggests that an explicit update of both $x$ and $x'$ (with subsequent normalisation $x=\frac{x}{x+x'}$ for storage in one variable) will be necessary (to be re-implemented).
+
+%Figure~\ref{fig:asymmetryissues} illustrates this problem which
+%
+%<<asymmetryissues, out.width='0.32\\textwidth', fig.cap='Asymmetry issues'>>=
+%
+%
+%@
+
+\paragraph{Effects of social network structure}
+
+One prediction for the model's behaviour in small world networks would be that it would attenuate the damping effect that large population sizes have on trends. Small world networks have typically been used to increase the level of uniform noise/variation by distributing nodes, but \cite{Baxter2008} would predict that there isn't actually a qualitatively different behaviour in those networks over fully connected ones. Momentum-based selection might make for an interesting special case due to the fact that network structure might have very different effects on its two deterministic regimes: noise and variation might be higher in peripheral nodes and smaller subgroups which would consequently be more likely to `detect', start to amplify and thus lead a trend. More well-connected nodes with a less idiosyncratic overview of the actual levels of variant use of the bigger speech community would remain stationary at first, but pick up on the trend once it is spreading through the subcommunities. This behaviour is very reminiscent of~\cite{Granovetter1973}, but the exact predictions of momentum spread throughout social networks remain to be tested!
+
+%\paragraph{Manipulating $\alpha, \gamma$, as well as their proportion}
+
+%correction: urgh, for symmetric impact this should have been
+
+%$$f(u) = u+b (EWMA_\gamma-EWMA_\alpha)$$
+
+

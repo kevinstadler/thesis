@@ -49,21 +49,18 @@ This formulation is equivalent to the original USM updating rule in Equation~\re
 \end{equation}
 the only difference being a rescaling of the parameter space from $\lambda\in[0,\infty)$ to $\alpha\in[0,1]$, as shown in Figure~\ref{fig:mapping}.
 
-<<setup, echo=FALSE>>=
-source("../knitr-setup.R")
-@
 
-<<mapping, fig.scap="Mapping between the two USM learning rate parameter spaces", fig.cap='Mapping between the $\\alpha$ and $\\lambda$ parameter spaces, $\\alpha = \\frac{\\lambda}{1+\\lambda}$ or $\\lambda = \\frac{\\alpha}{1-\\alpha}$, respectively. $\\lambda = 0$ corresponds to $\\alpha = 0$, $\\lambda = 1$ to $\\alpha = 0.5$, and $\\alpha = 1$ to the limit of $\\lambda\\rightarrow\\infty$.'>>=
-# It should be noted that for our purposes only values of $\\lambda\\ll 1$ are of interest, so the only region which we really care about is the left half of the subfigure~(b).
 
-lambdatoalpha <- function(lambda) lambda/(1+lambda)
-alphatolambda <- function(alpha) alpha/(1-alpha)
+\begin{figure}[htbp]
 
-tightmargin(mfrow=c(1, 2), pty="s", xaxs="i", yaxs="i")
-curve(alphatolambda, from=0.001, to=1, xlab=expression(alpha), ylab=expression(lambda), log="y", xlim=0:1)
-curve(lambdatoalpha, from=0.01, to=100, xlab=expression(lambda), ylab=expression(alpha), log="x", ylim=0:1)
-#curve(alphatolambda, from=0, to=1, xlab=expression(alpha), ylab=expression(lambda), log="y")
-@
+{\centering \includegraphics[width=\maxwidth]{figure/mapping-1} 
+
+}
+
+\caption[Mapping between the two USM learning rate parameter spaces]{Mapping between the $\alpha$ and $\lambda$ parameter spaces, $\alpha = \frac{\lambda}{1+\lambda}$ or $\lambda = \frac{\alpha}{1-\alpha}$, respectively. $\lambda = 0$ corresponds to $\alpha = 0$, $\lambda = 1$ to $\alpha = 0.5$, and $\alpha = 1$ to the limit of $\lambda\rightarrow\infty$.}\label{fig:mapping}
+\end{figure}
+
+
 
 The USM's dynamics beyond the simple update rule are controlled by a number of other parameters which will be briefly introduced here, before their individual effects are explained in more detail in the following Sections.
 Firstly, at every point in time a new pair of distinct agents~$i, j$ has to be chosen from the population, which consists of a fixed number of~$N$ agents total. Interacting agents are randomly drawn based on a matrix~$G$ which specifies the probabilities of interacting for all pairs of agents. 
@@ -141,37 +138,27 @@ Using this simple assumption, we can investigate when the agents' internal~$x$~v
 Firstly, Figure~\ref{fig:singledxpern} shows the point change away from a internal usage proportion~$x=0$ for different input data points~$y$ as a function of the agent's learning rate~(plots are provided for both the $\alpha$ as well as the~$\lambda$ formulation of the learning rate).
 The equal spacing between the curves for different~$y$ means that the impact of different input data points is proportional to their difference to the agent's internal value~$x$.
 
-<<singledxpern, fig.cap="Absolute point change to the agent's usage rate for different learning rates with the same initial value $x=0$ given different input datapoints~$y$. Left: absolute point change as a function of the learning rate~$\\alpha$. Given an x value at one extreme and input data at the other, the maximum change to x is equal to $\\alpha$. Right: absolute point change as a function of the learning rate~$\\lambda$.">>=
-ns = c(1, 0.75, 0.5, 0.25, 0)
-#barplot(dx, beside=TRUE, yaxt='n', ylab='absolute change dx', names.arg=sapply(x0s, Curry(paste, 'x=', sep='')), legend=sapply(ns, Curry(paste, 'n=', sep='')), args.legend=list(x='topright'))
-#axis(2, at=seq(-0.25, 0.5, 0.25), labels=c(expression(-lambda/4), 0, expression(lambda/4), expression(lambda/2)))
+\begin{figure}[htbp]
 
-# plot multiple curves in one plot using different line styles. length(pars) should not be more than 6.
-# passing ... to both plot() AND curve() will inadvertently cause warnings, but it's the only way to
-# get plot options like xlim/ylim applied to the initial plot
-# TODO FIXME make explicitly past xlim override c(from,to)
-curves <- function(fun, pars, from=0, to=1, parname=NULL, legendpos="topleft", ...) {
-  plot(0, xlim=c(from, to), xaxs='i', ..., type='n')
-  ltys = rep_len(1:5, length(pars))
-  mapply(function(p, l) curve(fun(p, x), add=TRUE, lty=l, from=from, to=to, ...), pars, ltys)
-  if (!is.null(parname))
-    legend(legendpos, sapply(pars, function(x) paste(parname, "=", x)), lty=ltys)
+{\centering \includegraphics[width=\maxwidth]{figure/singledxpern-1} 
+
 }
 
-x0=0 # 0.1
-tightmargin(mfrow=c(1, 2), pty="s")
-curves(function(n, alpha) {alpha*(n-x0)}, ns, to=0.5, xlab=expression(alpha), ylab=expression(Delta ~ x), parname='y', ylim=0:1)
-curves(function(n, lambda) {lambda*(n-x0)/(1+lambda)}, ns, xlab=expression(lambda), ylab=expression(Delta ~ x), parname='y', ylim=0:1)
-#abline(h=c(0.125, 0.25, 0.5), lty=2)
-@
+\caption[Absolute point change to the agent's usage rate for different learning rates with the same initial value ]{Absolute point change to the agent's usage rate for different learning rates with the same initial value $x=0$ given different input datapoints~$y$. Left: absolute point change as a function of the learning rate~$\alpha$. Given an x value at one extreme and input data at the other, the maximum change to x is equal to $\alpha$. Right: absolute point change as a function of the learning rate~$\lambda$.}\label{fig:singledxpern}
+\end{figure}
 
-<<singledxperx, fig.cap='Absolute changes for the same input data $y=1$ for different values of $x$ given a range of learning rates $\\alpha$~(left) and $\\lambda$~(right). Given an x value of $0$ at one extreme and input data $y=1$ at the other, the maximum change to x is equal to $\\alpha$.'>>=
-x0s = rev(ns)
-# could normalise this to [0,1] by plotting dx/alpha instead of dx
-tightmargin(mfrow=c(1, 2), pty="s")
-curves(function(x0, alpha) {alpha*(1-x0)}, x0s, to=0.5, xlab=expression(alpha), ylab=expression(Delta ~ x), parname='x', ylim=0:1)
-curves(function(x0, lambda) {lambda*(1-x0)/(1+lambda)}, x0s, xlab=expression(lambda), ylab=expression(Delta ~ x), parname='x', ylim=0:1)
-@
+
+
+\begin{figure}[htbp]
+
+{\centering \includegraphics[width=\maxwidth]{figure/singledxperx-1} 
+
+}
+
+\caption[Absolute changes for the same input data ]{Absolute changes for the same input data $y=1$ for different values of $x$ given a range of learning rates $\alpha$~(left) and $\lambda$~(right). Given an x value of $0$ at one extreme and input data $y=1$ at the other, the maximum change to x is equal to $\alpha$.}\label{fig:singledxperx}
+\end{figure}
+
+
 
 In fact, an identical picture emerges in the case of a fixed input data point~$y=1$ that is incorporated into different internal values~$x$, as shown in Figure~\ref{fig:singledxperx}. %Moreover, the straight lines What this tells us is that there is no interaction at all between the learning rate $\alpha$ and input data $y$, both of which have a strictly linear effect on the outcome of individual learning events given the same starting frequency~$x$.
 Generally, given our EWMA update rule we find that
@@ -195,35 +182,17 @@ f(u) = u + a\cdot u\cdot (1-u)\cdot(2u-1)\;,
 where values of the parameter~$a>0$ lead to a \emph{boost} of variants whose relative frequency is already greater than~$50\%$, while settings of~$a<0$ implement selection in favour of any variants currently in the minority.
 The two regimes of this non-linear selection function are displayed in Figure~\ref{fig:usmregularisation1}, giving a visual sense of the function's symmetry: mirroring the plots along both axes yields an identical curve, an indication that, mathematically, the function satisfies the symmetry criterion $f(u) = 1 - f(1-u)$~\citep{Blythe2012}.
 
-<<usmregularisation, fig.cap="The dynamics of frequency-dependent selection as implemented in the utterance selection model through Equation~\\ref{eq:usmregularisation}.", fig.subcap=c("The frequency-dependent selection mapping function from Equation~\\ref{eq:usmregularisation} against the baseline of neutral evolution, $f(u)=u$, indicated by the dotted line. \\emph{(i)}~conformity copying with $a=1$: all input frequencies $u>.5$ are mapped to even higher perceived frequencies so that~$f(u)>u$. \\emph{(ii)}~anti-conformity copying with $a=-.5$, leading to an effect in the opposite direction.", "Mean expected change to an agent's usage level~$x$ for different values of~$T$, assuming learning rate~$\\lambda=1$.")>>=
-# The higher~$T$, the more points in the
-lplot <- function(...) plot(..., type='l')
-lplot2 <- function(...) lplot(..., lty=3) # dotted lines as default alternative, 2 for dashed
+\begin{figure}[htbp]
 
-plotf <- function(fun, new=F, ...) {
-  if (new) {
-    lplot2(c(0,1), c(0,1), xaxs="i", xlab="u", ylab="f(u)", ...)
-  }
-  curve(sapply(x, fun), from=0, to=1, add=TRUE)
+{\centering \subfloat[The frequency-dependent selection mapping function from Equation~\ref{eq:usmregularisation} against the baseline of neutral evolution, $f(u)=u$, indicated by the dotted line. \emph{(i)}~conformity copying with $a=1$: all input frequencies $u>.5$ are mapped to even higher perceived frequencies so that~$f(u)>u$. \emph{(ii)}~anti-conformity copying with $a=-.5$, leading to an effect in the opposite direction.\label{fig:usmregularisation1}]{\includegraphics[width=\maxwidth]{figure/usmregularisation-1} }
+\subfloat[Mean expected change to an agent's usage level~$x$ for different values of~$T$, assuming learning rate~$\lambda=1$.\label{fig:usmregularisation2}]{\includegraphics[width=\maxwidth]{figure/usmregularisation-2} }
+
 }
 
-plotg <- function(fun, ylim=c(0, 0.2), T=4:2, ...)
-  curves(fun, T, from=0, to=1, parname="T", xlab="x", ylab=expression("mean" ~ Delta ~ x), ylim=ylim, ...) # TODO per lambda?
+\caption{The dynamics of frequency-dependent selection as implemented in the utterance selection model through Equation~\ref{eq:usmregularisation}.}\label{fig:usmregularisation}
+\end{figure}
 
-regularisation <- function(a, x)
-  x+a*x*(1-x)*(2*x-1)
 
-regularisationt <- function(a, t, xs)
-  sapply(xs, function(x) (weighted.mean(regularisation(a, 0:t/t), dbinom(p=x, x=0:t, size=t)) - x))
-
-tightmargin(mfrow=c(1, 2), pty="s", xaxs="i", yaxs="i")
-plotf(function(x) regularisation(1, x), T, main="(i)")
-plotf(function(x) regularisation(-0.5, x), T, main="(ii)")
-
-tightmargin(mfrow=c(1, 2), pty="s", xaxs="i", yaxs="i")
-plotg(Curry(regularisationt, 1), ylim=c(-.1, .1))
-plotg(Curry(regularisationt, -0.5), ylim=c(-.1, .1))
-@
 
 What is crucial to understand about the USM is that these mapping functions~$f(.)$ affect the selection dynamics only somewhat indirectly. First of all, according to the definitions above the choice of resolution parameter~$T$ constrains the points in the $[0,1]$ range at which~$f(.)$ is actually ever evaluated, namely only at the fractions which can be sampled from the underlying binomial distribution, i.e.~$\{\frac{n}{T}\;|\;n=0\dots T\}$.
 %These intermediate plots~(call them~$g_T(u)$) are crucial in understanding the analytical solutions that can be derived for the trajectories for different $f(u)$. The mathematical appendix to~\citet{Blythe2012} lays out how we can derive these solutions: given a function of the general form $f(u)=u+\lambda g(u)$
@@ -276,72 +245,18 @@ For $T=2$ as well as $T=3$ the selection dynamics can be shown to be identical t
 
 % Filling in the three different replicator biases and solving the differential equations for them we can thus deduce the average trajectories:
 
-<<replicatorselection, fig.cap="Analysis of the selection dynamics for the original, multiplicative (left column) as well as additive (right column) replicator selection bias.", fig.subcap=c("Objective to perceived frequency mapping under replicator selection. \\emph{(i)}~multiplicative replicator bias presented in~\\citet{Blythe2012}, with $b_m=0.1$. \\emph{(ii)} additive bias with equivalent bias strength~$b_a=b_m/2=0.05$. All mapping functions are capped at 0 and 1 and impose $f(0)=f(1)=0$. The dotted line indicates the unbiased mapping characteristic of neutral evolution, i.e.~$f(u)=u$.", "Average bias applied with multiplicative and additive replicator selection for different values of~$T$, assuming~$\\lambda=1$. The asymmetry of bias functions leads to an increase of the innovative variant across all frequency ranges, with generally stronger selection for higher~$T$. Mathematical derivations for the functions can be found in Appendix~\\ref{app:usm}.", "Typical average trajectories resulting from applying the multiplicative and additive replicator biases. For higher~$T$ the multiplicative bias extends the initial period of exponential growth, while the additive bias remains symmetric around the mid-point with fast growth from the very start of the trajectory.")>>=
+\begin{figure}[htbp]
 
-# purely ADDITIVE selection
-additiveselection <- function(lambda, b, t, x)
-  b*(1-x^t)/lambda
+{\centering \subfloat[Objective to perceived frequency mapping under replicator selection. \emph{(i)}~multiplicative replicator bias presented in~\citet{Blythe2012}, with $b_m=0.1$. \emph{(ii)} additive bias with equivalent bias strength~$b_a=b_m/2=0.05$. All mapping functions are capped at 0 and 1 and impose $f(0)=f(1)=0$. The dotted line indicates the unbiased mapping characteristic of neutral evolution, i.e.~$f(u)=u$.\label{fig:replicatorselection1}]{\includegraphics[width=\maxwidth]{figure/replicatorselection-1} }
+\subfloat[Average bias applied with multiplicative and additive replicator selection for different values of~$T$, assuming~$\lambda=1$. The asymmetry of bias functions leads to an increase of the innovative variant across all frequency ranges, with generally stronger selection for higher~$T$. Mathematical derivations for the functions can be found in Appendix~\ref{app:usm}.\label{fig:replicatorselection2}]{\includegraphics[width=\maxwidth]{figure/replicatorselection-2} }
+\subfloat[Typical average trajectories resulting from applying the multiplicative and additive replicator biases. For higher~$T$ the multiplicative bias extends the initial period of exponential growth, while the additive bias remains symmetric around the mid-point with fast growth from the very start of the trajectory.\label{fig:replicatorselection3}]{\includegraphics[width=\maxwidth]{figure/replicatorselection-3} }
 
-correctedadditiveselection <- function(lambda, b, t, x)
-  2*b*(1-x^t-(1-x)^t)/lambda
-
-#ibeta <- function(x,a,b)
-#  pbeta(x,a,b)*beta(a,b)
-
-additiveselectiontrajectory <- function(x0, lambda, b, t, x)
-  (1-exp(-2*b*x/lambda+log(1-x0^t)))^(1/t)
-
-correctedadditiveselectiontrajectory <- function(x0, lambda, b, t, x)
-  exp(2*b*t*x/lambda)/(1/x0 - 1 + exp(2*b*t*x/lambda))
-#  x0/(x0^(t-1)+((1-x0)^(t-1))*exp(-2*(t-1)*b*x*10/lambda))^(1/(t-1))
-
-usmreplicatorselection <- function(lambda, b, t, x)
-  (x*2*b*(1-x^(t-1)))/lambda # (30) mathematical appendix
-
-plottrajectory <- function(fun, tmax=50, T=4:2) {
-#  tmax = max(sapply(4:2, maxfun))
-  curves(fun, T, from=0, to=tmax, parname="T", legendpos="bottomright", ylim=c(0,1), yaxs="i", xlab="t", ylab="x(t)")
-#  abline(1, 0, lty="dotted")
-#  abline(0, 1/tmax, lty="dotted")
 }
 
-# returns the time t at which x(t) = 1-x0
-usmreplicatorselectioncompletion <- function(x0, lambda, b, t) {
-#  if (t == 2) {
-#    (lambda * log(1/x0 - 1))/b
-#  } else {
-    (lambda*log(((x0/(1-x0))^(t-1)-x0^(t-1))/(1-x0)^(t-1)))/(-10*2*b*(t-1))
-#  }
-}
-usmreplicatorselectiontrajectory <- function(x0, lambda, b, t, x) {
-  # TODO figure out completion so that we can rescale x to [0,1]
-  x0/(x0^(t-1)+((1-x0)^(t-1))*exp(-2*(t-1)*b*x*lambda))^(1/(t-1)) # (31) math. appdx.
-}
+\caption[Analysis of the selection dynamics for the original, multiplicative (left column) as well as additive (right column) replicator selection bias]{Analysis of the selection dynamics for the original, multiplicative (left column) as well as additive (right column) replicator selection bias.}\label{fig:replicatorselection}
+\end{figure}
 
-ba = 0.05
-bm = 2*ba
 
-tightmargin(mfrow=c(1, 3), pty="s")
-plotf(function(x){min(1,x*(1+bm))}, T, main="(i)")
-plotf(function(x){min(1,x+ba)}, T, main="(ii)"); points(0,0,pch=16); points(0,ba,pch=1)
-
-lambda <- 1 # 0.2
-
-library(functional)
-tightmargin(mfrow=c(1, 3), pty="s")
-# additive selection
-#plotg(Curry(additiveselection, lambda, ba))
-# multiplicative selection
-plotg(Curry(usmreplicatorselection, lambda, bm), T=c(8, 4, 3, 2))
-# corrected additive selection
-plotg(Curry(correctedadditiveselection, lambda, ba), T=c(8, 4, 3, 2))
-
-x0 = 0.01
-tightmargin(mfrow=c(1, 3), pty="s")
-#plottrajectory(Curry(additiveselectiontrajectory, x0, lambda, ba))
-plottrajectory(Curry(usmreplicatorselectiontrajectory, x0, lambda, bm), T=c(8, 4, 3, 2))
-plottrajectory(Curry(correctedadditiveselectiontrajectory, x0, lambda, ba), T=3:2)
-@
 
 With this analysis we come to the end of an overview of some of the most relevant results that have been obtained from the computational version of the Utterance Selection Model originally due to~\citet{Baxter2006}.
 Starting from an investigation of its baseline learning dynamics, which were shown to implement a model of \emph{neutral evolution}, we recapitulated the survey of pressures provided in \citet{Blythe2012} to determine which evolutionary replication mechanisms could lead to directed, s-shaped trajectories. \citeauthor{Blythe2012} concluded that only an inherent asymmetry between variants, implemented as a preference for the innovative variant that is shared by the majority of interacting agents, can reliably produce directed transitions. This conclusion can help us rule out some of the proposed pressures which, while not completely ineffective, do not appear to have the necessary leverage to be the main driving force behind the adoption of individual language changes, at least as far as one accepts the model's underlying assumptions regarding the behaviour of individual agents and their interactions.

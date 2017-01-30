@@ -1,0 +1,349 @@
+---
+title: Awareness of a syntactic change in Shetland
+author: Kevin Stadler and Elyse Jamieson
+date: November 24, 2015
+header-includes:
+   - \makeatletter
+   - \def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+   - \makeatother
+   - \newcommand{\qbox}[3][]{\begin{framed}\tiny#1\begin{center}\emph{#2}\hspace{3cm}\emph{#3}\end{center}\end{framed}}
+   - \usepackage{array}
+   - \usepackage{framed}
+   - \newcolumntype{x}{>{\centering\arraybackslash}p{1.5cm}}
+output:
+  beamer_presentation:
+    fig_width: 8
+    fig_height: 5
+    keep_tex: true
+bibliography: ~/library.bib
+---
+
+# Motivation
+
+<!--   - \renewenvironment{Shaded} {\begin{snugshade}\tiny} {\end{snugshade}} -->
+
+- Age vectors [@Labov2001;@Sankoff2007]
+
+<!-- > "In the incrementation of change, children learn to talk differently from their parents and in the same direction in each successive generation. This can happen only if children align the variants heard in the community with the vector of age: that is, they grasp the relationship: the younger the speaker, the more advanced the change." [@Labov2001, p.344] -->
+
+> "The target of language learning for Philadelphia children is therefore not the pattern of their parents but an updated pattern which contains an age vector. How that vector is acquired by 3 year old children is a problem that lies at the forefront of our efforts to understand the mechanism of linguistic change." [@Labov2012, p.20]
+
+# Awareness of changes
+
+- social commentary on changes is omnipresent
+
+> "Studies of change in progress indicate that speakers do have an awareness of what is old and what is new [...]<!--, what is archaic and moribund in their language versus what is fresh and expanding. Sometimes this awareness is unconscious, but often it is quite conscious: in Australia, for example, --> virtually everybody contacted for the Horvath and Guy study (Guy et al. 1986) was aware of the innovative nature of the high-rising intonation in declaratives" [@Guy2003]
+
+- quantitative evidence?
+
+<!-- - @Walker2011: matching 'word age'/'voice age' facilitates lexical access -->
+
+# The current project
+
+are speakers aware of apparent time differences in ongoing changes?
+
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\begin{itemize}
+\item four variables\begin{itemize}\item varying with age\begin{itemize}
+  \item imperatives
+  \item yes/no questions
+  \item wh questions
+\end{itemize}
+\item varying with location
+\begin{itemize}
+  \item negation (stable control)
+\end{itemize}
+\end{itemize}
+\item questionnaire methodology
+\begin{itemize}
+\item 5 questions
+\item about \emph{variable usage rates}
+\item 1 minute/variable
+\item reliability?
+\item low-frequency variable
+\end{itemize}
+\end{itemize}
+\end{column}
+\column{0.5\textwidth}
+\includegraphics{shetlandold}
+\end{columns}
+
+<!-- - self-assessment of speaker's *own* usage of phonetic variables
+    - 2-level response
+
+> "In the conscious report of their own usage [...] respondents are very inaccurate." [@Labov1966] -->
+
+# Questionnaire: Q1+Q2
+
+\qbox[You are probably familiar with these two ways of asking somebody to do something:]{Mak du dy ain denner!}{Du mak dy ain denner!}
+
+- estimate 'self' & 'community' usage rates
+
+\begin{framed}\tiny
+How much do you use either of these variants?
+
+\begin{tabular}{ x x x x x } $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\ I use only `Mak~du..' & I use more `Mak~du..' & I use both equally & I use more `Du~mak..' & I use only `Du~mak..' \end{tabular}\end{framed}
+
+\begin{framed}\tiny
+How much do you think are people around you using either of the
+variants?
+
+\begin{tabular}{ x x x x x } $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\ People use only `Mak~du..' & People use more `Mak~du..' & People use both equally & People use more `Du~mak..' & People use only `Du~mak..' \end{tabular}
+\end{framed}
+
+- order of variants randomised between individuals
+
+# Q3: 'the speaker as linguistic historian'
+
+- speakers' beliefs or connotations regarding variant `age'
+
+\begin{framed}\tiny
+Which of the two variants do you think is \emph{older}?
+
+\begin{tabular}{ x x x } $\square$ & $\square$ & $\square$ \\ `Mak~du..' is older & `Du~mak..' is older & People have always used both \end{tabular}
+\end{framed}
+
+- no explicit attention drawn to the change (yet)
+
+# Q4+Q5: 'the speaker as sociolinguist'
+
+- tap into perceived *apparent time differences*
+
+\begin{framed}\tiny
+How much do you think\emph{ younger speakers }use either of the variants?
+
+\begin{tabular}{ x x x x x } $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\ younger speakers use only `Mak~du..' & younger speakers use more `Mak~du..' & younger speakers use both equally & younger speakers use more `Du~mak..' & younger speakers use only `Du~mak..' \end{tabular}\end{framed}
+
+\begin{framed}\tiny
+How much do you think\emph{ older speakers }use either of the variants?
+
+\begin{tabular}{ x x x x x } $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\ older speakers use only `Mak~du..' & older speakers use more `Mak~du..' & older speakers use both equally & older speakers use more `Du~mak..' & older speakers use only `Du~mak..' \end{tabular}
+\end{framed}
+
+- order of questions randomised between individuals
+
+# Five questions $\times$ four variables
+
+\qbox[You are probably familiar with these two ways of asking somebody to do something:]{Mak du dy ain denner!}{Du mak dy ain denner!}
+\qbox[You are probably familiar with these two ways of negating a sentence:]{He didnoo go}{He didna go}
+\qbox[You are probably familiar with these two ways of asking somebody a question:]{Kens du Sarah?}{Does du ken Sarah?}
+\qbox[You are probably familiar with these two ways of asking somebody a question:]{Whit gae du him?}{Whit did du gie him?}
+
+# Results: method & hypotheses
+
+- ordinal data
+1. classification and regression trees
+    - recursive binary partitioning
+2. ordered logistic regression
+    - effect sizes
+
+- expected effects
+    - perception of apparent time differences?
+    - gender? [@Trudgill1972]
+
+# Data collection
+
+- balanced sample (N=24)
+    - paper-based questionnaires filled out on-site
+    - *following* an hour-long interview on the syntactic variables
+        - $\rightarrow$ heavily conditioned?
+- convenience sample (N=53)
+    - online version of the questionnaire (IBEX)
+    - \footnotesize{\url{http://spellout.net/ibexexps/kstadler/shetland/experiment.html}}
+    - distributed via social media
+
+- all speakers from & currently living in Shetland
+
+# Results: estimated own usage
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+source("shetland-data.R")
+suppressMessages(library(party))
+
+lattice::histogram( ~ self | var, data=d, col=temp.colors(5))
+#dt <- merge(meanmatchedjudgments, da)
+#cor.test(as.numeric(dt$self), dt$reldiff, method="kendall")
+```
+
+- consistent with acceptability judgment data
+
+<!-- # Results: estimated own usage - model
+{r echo=TRUE}
+plot(party::ctree(self~condition+loc+age+gender+var+firstvar, data=changing))
+-->
+
+# Results: estimated own usage - model {.fragile}
+
+```{r}
+suppressMessages(library(rms, warn.conflicts=FALSE))
+m <- ordinal::clm(self ~ age, data=changing)
+```
+
+\begin{verbatim}
+formula: self ~ age
+data:    changing
+
+ link  threshold nobs logLik  AIC    niter max.grad cond.H 
+ logit flexible  215  -234.95 479.90 5(0)  7.68e-08 7.4e+04
+
+Coefficients:
+     Estimate Std. Error z value Pr(>|z|)   
+age -0.026017   0.008959  -2.904  0.00368 **
+
+Threshold coefficients:
+onlyout|moreout    moreout|both     both|morein   morein|onlyin 
+         -5.301          -3.855          -2.715          -1.141 
+\end{verbatim}
+
+\footnotesize `r coef(m)[["age"]]` $\rightarrow$ probability of selecting the same or a higher category multiplied by `r round(exp(coef(m)[["age"]]), 3)` for every year
+\pause
+
+```{r fig.height=2.2, results='hide'}
+ages <- c(20, 50, 80)
+p <- predict(m, expand.grid(age=ages))[[1]]
+#rms: p <- predict(m, expand.grid(age=c(20,50,80)), type="fitted.ind")
+par(mfrow=c(1,3), mar=rep(1,4))
+sapply(1:3, function(i) barplot(p[i,], main=paste("Prediction for age=", ages[i], sep=""), col=temp.colors(5), ylim=c(0, 0.7)))
+# effect is mainly driven by whq, but still evident (if not significant) for the other two variables
+```
+
+# Results: estimated 'community' usage
+
+```{r}
+#plot(party::ctree(other~condition+loc+age+gender+var+firstvar, data=changing))
+lattice::histogram( ~ other | var, data=d, col=temp.colors(5))
+```
+
+- only measure where gender is significant
+    - females report higher community usage of incoming variants
+
+<!--
+plotbygender <- function(d) {
+  bygender <- table(d$gender, d$other)
+  bygender <- bygender/rowSums(bygender)
+  barplot(bygender, beside=TRUE, ylim=c(0, 0.85))
+}
+par(mfrow=c(2,2)); plotbygender(neg); plotbygender(imp); plotbygender(whq); plotbygender(ynq)
+
+m <- ordinal::clm(other~gender, data=changing)
+p <- predict(m, data.frame(gender=c("M", "F")))[[1]]
+par(mfrow=1:2)
+barplot(p[1,], main="M", ylim=c(0, 0.75))
+barplot(p[2,], main="F", ylim=c(0, 0.75))
+-->
+
+# Results: difference between own & community usage
+
+- *derived* measure
+    - number of ordinal categories between Q1 & Q2 answers
+    - where people see themselves relative to community
+- age is a significant predictor
+
+```{r fig.height=2.5, results='hide'}
+m <- ordinal::clm(selfdiff ~ age, data=changing)
+p <- predict(m, expand.grid(age=ages))[[1]]
+#rms: p <- predict(m, expand.grid(age=c(20,50,80)), type="fitted.ind")
+par(mfrow=c(1,3))
+sapply(1:3, function(i) barplot(p[i,], main=paste("Prediction for age=", ages[i], sep=""), col=temp.colors(5), ylim=c(0, 0.7)))
+```
+
+# Results: variant `age'
+
+"Which of the two variants do you think is *older*?"
+
+```{r}
+model <- party::ctree(oldervarfreq ~ loc+age+gender+firstvar+firstolder+condition+var, na.omit(d))
+plot(model, terminal_panel=party::node_barplot(model, fill=temp.colors(3, intensity=.7), id=F))
+```
+
+- people `know' what the outgoing variants are
+- (local) minority negation still often identified as 'older'?
+
+# Results: apparent time differences
+
+- another derived measure
+    - relative difference of 'younger' minus 'older' usage
+
+```{r out.width='0.92\\textwidth'}
+counts <- table(d$apparentdiff, d$var)
+par(mar=par("mar")+c(0,0,0,3))
+barplot(counts, legend=rownames(counts), col=temp.colors(-2,4), xlab="sociolinguistic variable", ylab="no. of responses", args.legend=list(x="topright", inset=c(-.1,-.1), bty="n"), bty="l")
+```
+
+- negation?
+
+# Apparent time differences vs. variant 'age'
+
+- answers highly correlated
+- 'age connotation' question precedes 'apparent time' question
+- apparent time differences reported for negation?
+    - 'local' > dialectal > old-fashioned > older speakers?
+
+```{r out.width='0.5\\textwidth'}
+#mosaicplot(table(d$var, d$oldervar, d$apparentdiff), color=temp.colors(-2, 4), main="variant age vs. apparent time")
+#plot(party::ctree(apparentrelative ~ oldervar+loc+age+gender+firstvar+firstolder+condition+var, changing))
+#plot(party::ctree(oldervar ~ apparentdiff+loc+age+gender+firstvar+firstolder+condition+var, changing))
+
+# apparent time diff of only oldervar==same people?
+#lattice::histogram( ~ apparentdiff | oldervar+changing, data=subset(d, oldervar!="in"), col=temp.colors(-1, 4))
+lattice::histogram( ~ apparentdiff | oldervar, data=subset(neg, oldervar!="in"), col=temp.colors(-1, 4), main="stable negation")
+lattice::histogram( ~ apparentdiff | oldervar, data=subset(changing, oldervar!="in"), col=temp.colors(-1, 4), main="changing variables")
+
+#ordinal::clm(apparentdiff ~ oldervar, data=changing)
+# conversely: oldervar guess of only people reporting no apparentdiff?
+#lattice::histogram( ~ oldervar | apparentrelative, data=d, type="count", col=temp.colors(3))
+```
+
+# Conclusions
+
+- simple questionnaire methodology
+- self-reported usage levels
+    - consistent with (& complementary to) acceptability judgments
+    - age-dependent positioning ahead of/behind the community
+- people have (correct) beliefs about
+    - the 'age' of syntactic variants
+    - apparent time differences (?)
+
+- control for social connotations/indexicality?
+    - randomise order of questions 3 vs. 4+5
+
+\pause
+\centering Thank you!
+
+# Estimated usage rates <> acceptability judgments
+
+- 'acceptability' of *individual* variants
+    - based on active production and/or passive perception
+- present methodology directly opposes the competing variants
+    - disentangles production & perception
+
+```{r fig.height=4, out.width='0.8\\textwidth'}
+plotjudgments()
+```
+
+- divergence in acceptability of the incoming+outgoing variants
+    - $\rightarrow$ indicative of a change *near completion*?
+
+# Demographics: gender + location
+
+```{r echo=FALSE}
+par(mfrow=c(1,2))
+counts <- table(participants$gender, participants$condition)
+barplot(counts, legend=rownames(counts), col=topo.colors(2))
+
+counts <- table(participants$loc, participants$condition)
+barplot(counts, legend=rownames(counts), col=rainbow(length(levels(participants$loc))))
+```
+
+# Demographics: age
+
+```{r}
+lattice::histogram( ~ age | condition, data=participants, type="count", col=rev(temp.colors(7)))
+```
+
+- mean age `r round(mean(subset(participants, condition=="online")$age))`/`r round(mean(subset(participants, condition=="paper")$age))`, median age `r median(subset(participants, condition=="online")$age)`/`r median(subset(participants, condition=="paper")$age)`
+
+# References
+\tiny

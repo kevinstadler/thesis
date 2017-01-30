@@ -190,7 +190,6 @@ plotchain <- function(data, xlab="generation", ylab="frequency", graylevels=24, 
 
 
 # typesetting
-
 formatalpha <- function(alpha)
   bquote(alpha/2 ~ "=" ~ .(alpha/2))
 
