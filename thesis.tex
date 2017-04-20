@@ -4,6 +4,9 @@
 
 \input{preamble}
 
+\usepackage{floatpag}
+%\floatpagestyle{empty}
+
 \usepackage{bibentry}
 \nobibliography*
 
@@ -13,12 +16,13 @@
 \graphicspath{{momentummodel/figures/}{questionnaire/}{modelling/}{conclusion/}{introduction/}}
 
 \usepackage{epigraph} % csquotes
-\usepackage{yfonts}
-%\usepackage[T1]{fontenc}
-\usepackage{lettrine}
 
-% Fuchsia or RoyalPurple, OliveGreen, RoyalBlue, Mahogany or Maroon, PineGreen, Periwinkle
-\newcommand{\illuminate}[2][Maroon]{\lettrine[lines=8]{\textcolor{#1}{\initfamily #2}}{ }}
+%\usepackage{yfonts}
+\usepackage{fontspec}
+\newfontface\yinit{Yinit.otf}
+\usepackage{lettrine}
+% Fuchsia or RoyalPurple, OliveGreen, Mahogany or Maroon, PineGreen, Periwinkle
+\newcommand{\illuminate}[2][Maroon]{\lettrine[lines=8,loversize=-0.3]{\textcolor{#1}{\yinit{#2}}}{ }}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -33,9 +37,10 @@
   keepspaces=true,
   breaklines=true,
   backgroundcolor=\color{listingbackground},
+  % https://en.wikibooks.org/wiki/LaTeX/Colors#Predefined_colors
   commentstyle=\color{darkgray},
-  keywordstyle=\color{blue},
-  stringstyle=\color{red}
+  keywordstyle=\color{violet},
+  stringstyle=\color{olive}
 }
 \newcommand{\includeR}[1]{\lstinputlisting[language=R]{#1}}
 
@@ -48,7 +53,7 @@
 \vspace{1em}
 PhD Linguistics \& English Language\\
 The University of Edinburgh\\
-2017}
+2016}
 
 \begin{document}
 
@@ -58,46 +63,62 @@ The University of Edinburgh\\
 
 \frontmatter
 
+% delay page numbering until abstract
+\pagenumbering{gobble}
 \chapter*{Declaration}
 I hereby declare that this thesis is of my own composition, and that it contains no material previously submitted for the award of any other degree. The work reported in this thesis has been executed by myself, except where due
 acknowledgement is made in the text.
 
 \vspace{1in}\hfill Kevin Stadler
 
-\chapter*{Abstract}
+\chapter{Abstract}
+\pagenumbering{roman}
+\setcounter{page}{1}
 \input{abstract}
 
-\chapter*{Acknowledgments}
+\chapter{Lay Summary}
+The languages that we humans speak are constantly undergoing change. Words, sounds, phrases and complex grammatical patterns fall in and out of fashion, with some of them staying in use for centuries, others only for a matter of months. The explanations for these changes which are put forward by laypeople and those by professional linguists are sometimes surprisingly similar, from talk about `lazy' articulation leading to eroded pronunciation to the fact that changes are often driven by young speakers as an act of demarcating their linguistic identity. What is common to most explanations of this kind is that they are typically `just so' stories: accounts of specific historical changes that are come up with after the fact. This approach to `explaining' changes fails to take into account a fundamental feature of language change, namely that it can under most circumstances not be \emph{predicted}.
 
-Only a few years ago I would have cringed at the idea of writing an Acknowledgments section listing endless swathes of names, but here we go! (This might seem unremarkable but it's another one of those things that fuels my fascination with change for the sake of change, which you have the opportunity the spend the next 200 pages reading about.)
+In this thesis I argue for a framework that can explain why language changes cannot be predicted, while also accounting for the fact that the types of changes that \emph{do} occur are very similar all over the globe. To do this, I follow an evolutionary approach to language change which assumes two separate mechanisms: the first governs the creation or \emph{innovation} of new linguistic forms, such as new words or pronunciations, while the second mechanism is responsible for the \emph{selection} of these new forms which help them spread through a language.
 
-I guess it's only appropriate to start by thanking the people responsible for the fact that the thing in front of you is actually finished: over the past four years my supervisors Simon, Kenny and Richard as well as supplementary slave driver Jenny showed absolutely no mercy with my impatience at my own work as well as my curiosity and eagerness to quickly move on to other topics. It was a real joy to be supervised by them, and also to witness the copious amounts of concordant swearing which no doubt even further fortified their authority in my eyes and helped much to keep me on track.
+Focussing on the second step of selection, I first study the dynamics of a mathematical model of \emph{trend amplification}. The model shows how the usage of different language forms changes over time given two simple assumptions: firstly, that people can track changes in the popularity of linguistic forms that are used around them, and secondly that individuals prefer to use forms which they think are gaining in popularity. Under these assumptions, we find that the model predicts occasional changes in usage similar to what we find in real world language change, but with no way to predict \emph{when} exactly those changes are going to occur.
+
+Next, I present fieldwork data collected through a linguistic questionnaire filled out by inhabitants of the Shetland Islands, found to the North of Scotland. The data shows that its speakers are aware of changes in the frequency of word order patterns that are currently going on in the dialect of Scots spoken in their community.
+
+Finally, I study a modification of a mathematical model from population biology that combines the trend-based selection mechanism with innovation pressures that favour one linguistic form over the other. While it is still not possible to predict the occurrence of particular changes, the model shows that we can see the effects of the underlying preferences for specific forms, as long as we track the occurrence of changes over long periods of time.
+
+\chapter{Acknowledgements}
+
+Only a few years ago I would have cringed at the idea of writing an Acknowledgements section listing endless swathes of names, but here we go! (This might seem unremarkable but it's another one of those things that fuels my fascination with change for the sake of change, which you have the opportunity to spend the next 200 pages reading about.)
+
+I guess it's only appropriate to start by thanking the people responsible for the fact that the thing in front of you is actually finished: over the past four years my supervisors Simon, Kenny and Richard as well as auxiliary pundit Jenny showed absolutely no tolerance towards my impatience at my own work as well as my curiosity and eagerness to quickly move on to other topics. It was a real joy to be supervised by them, and also to witness the copious amounts of concordant swearing emanating from them, which no doubt even further fortified their authority in my eyes and helped much to keep me on track.
 
 For providing a stimulating atmosphere to work in I want to thank all members of the LEC/CLE, in particular my PhD cohort consisting of Matt, Mark and James who provided good and challenging company while they were around, and distant motivation once they had all left me behind the (presumably s-shaped) curve.
-For fear of ultimate revenge I have to thank my nemesis Yasamin Motamedi -- if you see her roaming around DSB in the near future with a smile on her face even more evil than here normal one it can only mean that the hardcopy of this thesis never made it to the college office and that I am in deep trouble. If not, she will receive her well-earned Dr.~Pepper or personalised Dutch class in due course.
+For fear of ultimate revenge I have to thank my nemesis Yasamin Motamedi -- if you see her roaming around DSB in the near future with a smile on her face even more evil than usual it can only mean that the hardcopy of this thesis never made it to the college office and that I am in deep trouble. If not, she will receive her well-earned Dr.~Pepper or personalised Dutch class in due course.
 
-Of all the other postgrads that I had the joy of sharing room~1.15 with I am particularly indebted to my collaborator and future business partner Elyse Jamieson who was not only in charge of collecting the fieldwork data discussed in Chapter~\ref{ch:questionnaire}, they also tolerated my attempts at writing emails in shoddy Scots, generally kept up the craic while enjoying crisps, and soon we're making so much money together that we'll be buying each other Klimt paintings for Christmas.
+Of all the other postgrads that I had the joy of sharing room~1.15 with I am particularly indebted to my collaborator and future business partner E who was not only in charge of collecting the fieldwork data discussed in Chapter~\ref{ch:questionnaire}, they also tolerated my attempts at writing emails in shoddy Scots and generally kept up the craic while enjoying crisps. I'm looking forward to the time when we're making so much money together that we'll be buying each other Klimt paintings for Christmas.
 
-On a less linguistically-apt note I would like to thank my writing pal Rachael despite the fact that she utterly failed to teach me any Geordie at all, as well as fellow failed Geordie Vanessa for thesis writeup therapy and sharing my obsession with the New Mexican desert, amongst many other things. (Oh and this entire thesis started off from a paper that she mentioned once in one of our PhD supervisions early on in my first year. No biggie.)
+I also extend my gratitude to everyone who has proofread parts of this thesis, particularly my dad for pointing out the minor detail that I've been misspelling the word \emph{pronunciation} my entire life.
+On a less linguistically apt note I would like to thank my writing pal Rachael, despite the fact that she utterly failed to teach me any Geordie at all, as well as fellow failed Geordie Vanessa for thesis write-up therapy and sharing my obsession with the New Mexican desert, amongst many other things. (Oh and this entire thesis started off from a paper that she mentioned once in one of our PhD supervisions early on in my first year. No biggie.)
 
-I might have gained most from learning and reading around outside the core of my subject, and as a consequence I am deeply indebted to the many academic groups at Edinburgh that have tolerated me over the years, in particular the Language Variation and Change research group as well as the Sociolinguistics and Historical Phonology reading groups, and all their respective members. My thinking was also much influenced by my former colleagues at the AI~lab of the VUB, all the friends I made at the various LOT~schools and of course the SFI~Complex Systems Summer School in 2013, in particular Bruno Pace, as well as everyone else who I feel academically indebted to and whose legacy I hope to do justice~(Joachim De~Beule deserves special mention here, as well as Gottfried, for his ceaseless efforts to teach me about the ways of the nomadic academic).
+I might have gained most from learning and reading around outside the core of my subject, and as a consequence I am deeply indebted to the many academic groups at Edinburgh that have tolerated me over the years, in particular the Language Variation and Change research group as well as the Sociolinguistics and Historical Phonology reading groups, and all their respective members. My thinking was also much influenced by my former colleagues at the AI~lab of the VUB, all the friends I made at the various LOT~schools and of course the SFI~Complex Systems Summer School in 2013, in particular Bruno Pace, as well as everyone else who I feel academically indebted to (my examiners Andy Wedel and Joe Fruehwald, former colleagues Joachim De~Beule, Dr.~Brian Gray and Dr.~Benjamin Fischer as well as Gottfried, for his ceaseless efforts to teach me about the ways of the nomadic academic).
 
-This is probably a good point to acknowledge all the people who, while not accompanying us on the journey, manage to send us off our way by applying `a vector of energy to the rump' so forceful that we still find ourselves moving in the same general direction years down the line.
-The first person that deserves being credited for this very reason is the same one that I owe this lyrical version of a well-known metaphorical image to, namely Harald Neuhold. At the start of most anyone's curiosity stand teachers who manage to convey topics in a gripping way, and I certainly wouldn't be doing what I am doing today if it wasn't for Hans Christian Luschützky's introduction to Indo-European (as well as several other courses) that I had the pleasure to attend at the University of Vienna many (many) years ago.
+Some people, while not accompanying us on the journey, manage to send us off our way by applying `a vector of energy to the rump' so forceful that we still find ourselves moving in the same general direction years down the line.
+I owe this poetic version of a well-known metaphorical image to a person who deserves being credited on these very grounds, namely Harald Neuhold. At the start of most anyone's curiosity stand teachers who manage to convey topics in a gripping way, and I certainly wouldn't be doing what I am doing today if it wasn't for Hans Christian Luschützky's introduction to Indo-European (as well as several other courses) that I had the pleasure to attend at the University of Vienna many (many) years ago.
 
 For allowing me to continue moving along that path I want to thank my family, in particular my parents, as well as the \emph{Vienna University of Technology}, the Flemish \emph{Agentschap voor Innovatie door Wetenschap en Technologie}~(IWT) as well as the \emph{College of Arts, Humanities and Social Sciences}~(HSS) at The University of Edinburgh, all of which helped keep me well-fed all this time. (This is probably also a good point to acknowledge the various Mosque Kitchens around Edinburgh who've provided most of my nutritional input over the past few years.)
 
 Last but not least I want to thank all the people who've made sure that all other aspects of life around me have always been a lot of fun. Particular victims in this regard, in approximate order of how much they've had to put up with my whining, are Megan, Theodora, Julia, Mote and Steffi.
-For uplifting and distracting harmonic excursions I have to thank my many musical co-conspirators, including but not limited to Dr.~Kieran~J.~Curran, my fellow \emph{sick kids of edinburgh}~(Max, Valerie and Doris) as well as Dani.
-Both eluding and transgressing any and all categories is co-PhD, desk sharer, yoga instructor, band mate, therapist, travel companion, fellow SHEEP and general 6-year-old Jasmeen. Large chunks of this thesis were written in her company at Black Medicine on the Bruntsfield Links, who we are both most indebted to for providing us with heated office space and some great tunes.
+For uplifting and distracting harmonic excursions I have to thank my many musical co-conspirators, including but not limited to Dr.~Kieran~J.~Curran, my fellow \emph{sick kids of edinburgh}~(Max, Valerie, Doris and Dora) as well as Dani.
+Both eluding and transgressing any and all categories is co-PhD, desk sharer, yoga instructor, band mate, therapist, travel companion, fellow SHEEP and general 6-year-old Jasmeen. Large chunks of this thesis were written in her company at Black Medicine on the Bruntsfield Links~(RIP), who we are both most indebted to for providing us with heated office space and some great tunes.
 
-For making my respective homes feel like a home I want to thank the `uncountable' flatmates who've entertained and tolerated me over the years~(I've actually counted at least~55, which is the reason I'm not listing them here) as well as my two axolotls, T'Nealle and D'Brickashaw, for reminding me that it's really not a good idea for me to have pets, not even if they're capable of regrowing their limbs. % that might go missing in action.
-Thanks also to all those who I've knowingly or unknowingly omitted to name here, including everyone that I've had really \emph{intense} conversations with in the past few years, anyone who ever went flaneuring with me (whether on foot or bike), all the other people who kept me sane and, most of all, all those who drove me crazy.
-\vfill
-\begin{center}
-\includegraphics[width=.4\textwidth]{angelusnovus}\\
+For making my respective homes feel like a home I want to thank the countless flatmates who've entertained and tolerated me over the years~(I've actually counted at least~60\ldots) as well as my two axolotls, T'Nealle and D'Brickashaw, for reminding me that I shouldn't have pets, not even ones that are capable of regrowing their limbs. Thanks also to all those who I've knowingly or unknowingly omitted to name here, including everyone that I've had really \emph{intense} conversations with in the past few years, anyone who ever went flaneuring with me (whether on foot or bike), all the other people who kept me sane and, most of all, all those who drove me crazy.
+\begin{figure}[p]
+\thisfloatpagestyle{empty}
+\centering
+\includegraphics[width=.4\textwidth]{angelus-novus}
 %\footnotesize Paul Klee -- Angelus Novus (1920) \texttt{CC BY-SA 3.0}
-\end{center}
+\end{figure}
 
 \tableofcontents
 
@@ -107,9 +128,12 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 
 \cleardoublepage
 \thispagestyle{empty}
+\vspace*{4cm}
 \epigraph{``Language moves down time in a current of its own making.''}{\citep[p.160]{Sapir1921}}
 
 \mainmatter
+%http://tex.stackexchange.com/questions/73591/how-to-have-a-blank-even-page-before-every-chapter/73594#73594
+%\renewcommand{\clearforchapter}{\clearpage~\thispagestyle{cleared}\cleartorecto}
 
 \chapter{Introduction}
 \label{ch:intro}
@@ -142,10 +166,9 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 \label{ch:bigpicture}
 \include{conclusion/bigpicture}
 
-%\bibliographystyle{unsrt}
 \bibliographystyle{thesis}
-\bibliography{../library}
-
+%\bibliography{../library}
+\bibliography{references}
 
 \newpage
 \index{bias|see{pressures}}
@@ -163,14 +186,6 @@ Thanks also to all those who I've knowingly or unknowingly omitted to name here,
 \printindex
 
 \appendix
-%\chapter{Historiography of concepts}
-%\label{app:concepts}
-% s-shaped curves
- % sporadicity of changes / actuation problem
-% age vectors
-% pandoc -no-header historiography.md
-%\input{historiography}
-
 \chapter[Derivation of replicator selection trajectories]{Derivation of replicator selection trajectories in the Utterance Selection Model}
 \label{app:math}
 %\section{Replicator selection: mathematical derivations}
@@ -203,7 +218,7 @@ Section~\ref{app:questionnairedatacode} provides the R~code used to load and arr
 \label{app:questionnairecode}
 %\subsection{Paper questionnaire}
 
-\includeR{questionnaire/data/questionnaire.Rmd}
+\lstinputlisting{questionnaire/data/questionnaire.Rmd}
 %\subsection{Online questionnaire}
 
 %\section{Questionnaire data}

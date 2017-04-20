@@ -1,4 +1,5 @@
 *.aux
+*.bbl
 *.blg
 *.fdb_latexmk
 *.fls
@@ -11,3 +12,4 @@
 *.lot
 *.out
 *.toc
+*.xdv

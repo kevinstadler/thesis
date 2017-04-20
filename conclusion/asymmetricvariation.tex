@@ -55,7 +55,7 @@ While models of pure diffusion in complex population structures are interesting 
 
 % best reference it seems: http://numerical.recipes/whp/notes/wrightfisher.pdf
 
-Under the Wright-Fisher model with \emph{mutation}~(henceforth referred to more generally as \emph{innovation}), the probability of producing an instance of variant~$0$ at the next generation is not completely equivalent to its current relative frequency~$x$. Instead, with probability~$\mu_{1}$, one of the $n_0$ type~0 variants present in the population will spontaneously mutate into an instance of variant~1 during its replication. Conversely, there is a probability of~$\mu_{0}$ that one of the instances of the other variant~(of which there are $n_1$) will spontaneously mutate into a variant~0. Under this assumption, the relative probability of producing an instant of variant~1 at the next generation is
+Under the Wright-Fisher model with \emph{mutation}~(henceforth referred to more generally as \emph{innovation}), the probability of producing an instance of variant~$0$ at the next generation is not completely equivalent to its current relative frequency~$x$. Instead, with probability~$\mu_{1}$, any of the $n_0$ type~0 variants present in the population can spontaneously mutate into an instance of variant~1 during its replication. Conversely, there is a probability of~$\mu_{0}$ that any of the instances of the other variant~(of which there are $n_1$) will spontaneously mutate into one of variant~0. Under this assumption, the relative probability of producing an instant of variant~1 at the next generation is
 \begin{equation}\label{eq:mutation}
 f(x) = x\cdot(1-\mu_0) + (1-x)\cdot\mu_1 \;.
 \end{equation}
@@ -186,7 +186,7 @@ A more efficient way to look at this is by simply considering the \emph{diffusio
 
 }
 
-\caption[Diffusion outcomes for different population sizes ]{Diffusion outcomes for different population sizes $N$ and selection coefficients $s$.}\label{fig:diffusionselection}
+\caption[Diffusion outcomes for different population sizes $N$ and selection coefficients $s$]{Diffusion outcomes for different population sizes $N$ and selection coefficients $s$.}\label{fig:diffusionselection}
 \end{figure}
 
 
@@ -230,7 +230,7 @@ While models of (syntactic) grammar competition typically consider more complex~
 
 In order to avoid raising the preferred innovation rate to unrealistically high levels, all comparisons between different degrees of innovation asymmetries will be based on holding the preferred innovation probability $\alpha_1$ constant and setting the opposite rate~$\alpha_0$ to a diminishing fraction of the baseline rate. In this way, the degree of asymmetry can simply be expressed by the fraction~$\alpha_1/\alpha_0$, with higher numbers corresponding to greater asymmetries.
 
-That even small asymmetric innovation probabilities can have a strong effect on the expected synchronic distribution of variants can be seen from the stationary distributions in Figure~\ref{fig:asymmetricmutationprobabilities1}, showing domination of the preferrably innovated variant to become increasingly more likely as its relative likelihood of innovation over competitor variants increases.
+That even small asymmetries in the innovation probabilities can have a strong effect on the expected synchronic distribution of variants can be seen from the stationary distributions in Figure~\ref{fig:asymmetricmutationprobabilities1}, showing domination of the preferrably innovated variant to become increasingly more likely as its relative likelihood of innovation over competitor variants increases.
 While this suggests that asymmetries in innovation could be just as influential as an asymmetric selection bias, we also find evidence against the strongly directed nature of individual transitions predicted under the infinite population size assumption in Section~\ref{sec:wrightfisher}. Under this simplifying assumption it was demonstrated that changes in one direction actuate instantly and are not s-shaped, but rather exhibit \emph{r-shaped} or \emph{logarithmic growth} that starts off rapidly but slows down as it approaches saturation.
 
 %<<asymmetricmutation, fig.scap="Dynamics of the Wright-Fisher model with strong mutation in one direction", fig.cap=paste("Dynamics of the Wright-Fisher model with strong mutation in one direction ($\\mu_1=", mu[2], ", \\mu_0=", mu[1], "$) for three different population sizes~$N=", paste(Ns, collapse=", "), "$.", sep=""), fig.subcap=c(paste("Stationary distribution for different population sizes given the same asymmetric mutation rates $\\mu_0=", mu[1], "\\mu_1=", mu[2], "$.", sep=""), "Development of the state probability distribution over time, eventually converging to the stationary distributions above.")>>=
@@ -253,8 +253,8 @@ While the stationary distribution shows that this model is much more likely to r
 %In contrast to the selection bias~$s$ which exhibits an ever increasing impact on the diffusion probability of the preferred variant, an asymmetry in innovation does not have a strong effect,
 At least as long as the innovation rates are relatively low in absolute terms, even an increase in asymmetry does not significantly raise the probability of the favoured variant diffusing without interruption.
 
-A comparison of the dynamics of selection and innovation in Figures~\ref{fig:diffusionselection} and~\ref{fig:asymmetricmutationprobabilities} highlights that, while the expected stationary distributions of the different scenarios of asymmetric are very similar in that they predict a strong \emph{dominance} of the preferred variant, the typical trajectories of each might differ wildly.
-The latter point is of particular interest since, as discussed above, the population size can interact with the effectiveness with which different asymmetric biases express themselves in the evolutionary dynamics. As a next step we can therefore analyse the effect that a \emph{bottleneck} in terms of a constrained population or sample size has on the two types of pressures as well as the interaction between the two.
+A comparison of the dynamics of selection and innovation in Figures~\ref{fig:diffusionselection} and~\ref{fig:asymmetricmutationprobabilities} highlights that, while the expected stationary distributions of these two modes of asymmetry are very similar in that they predict a strong \emph{dominance} of the preferred variant, the typical trajectories of each might differ wildly.
+The latter point is of particular interest since, as discussed above, the population size can interact with the effectiveness with which different asymmetric biases express themselves in the evolutionary dynamics. As a next step we can therefore analyse the effect that a \emph{bottleneck} as implemented by a constrained population or sample size has on the two types of pressures as well as the interaction between the two.
 % What this tells us is that, if we assume that there is a constant selection pressure in favour of one of the variants applying, then we should (almost) always only ever find this variant attested in language data that we collect synchronically.
 
 %In reality we are dealing with finite population sizes though, where random sampling increases the impact of neutral drift on the population makeup at the expense of both innovation and selection pressures. But which pressure is affected more?
@@ -301,7 +301,9 @@ This effect can be explained based on the dynamics of selection demonstrated abo
 %@
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htbp]
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+\begin{figure}[htbp]
 
 {\centering \includegraphics[width=\maxwidth]{figure/populationsizeeffectiveness-1} 
 
@@ -327,7 +329,7 @@ In this configuration we see an inversion of the frequency distribution at a pop
 
 The present analysis of the relative force of innovation and selection pressures sheds the amplification of biases in iterated learning in a new light: adopting \citeauthor{Reali2009}'s equivalence between the Wright-Fisher model and iterated learning chains, the imposition of a bottleneck corresponds to a reduction of population size in the biological sense. Based on our characterisation of the effectiveness of different asymmetric pressures in the Wright-Fisher model I conclude that, at least when it comes to the general interpretation of bottlenecks causing an amplification of biases, the biases that see themselves relatively amplified during iterated learning experiments are more likely of the \emph{innovation}, rather than the \emph{selection} type, which see a decrease in their impact. % They are conventions that are more likely to be invented.
 
-Most studies in the Language as a Complex Adaptive System tradition are based on the assumption that biases which become exacerbated in simulation and experimental settings are of the \emph{selection} type~(e.g.~\citealt[ch.6]{Kirby1999}, \citealt{Chater2010evolution}), without taking into account the effect that other evolutionary pressures, in particular innovation and drift, have on the systems under investigation~\citep[see][p.127-9]{Henrich2008}.
+Most studies in the Language as a Complex Adaptive System tradition are based on the assumption that biases which become exacerbated in simulation and experimental settings are of the \emph{selection} type~(e.g.~\citealt[ch.6]{Kirby1999}, \citealt{Chater2010evolution}), without taking into account the effect that other evolutionary pressures, in particular innovation and drift, have on the systems under investigation~\citep[see][p.127-129]{Henrich2008}.
 
 %However, the present analysis does not contradict all iterated learning results
 Recall that the original finding of iterated learning models was that the bottleneck triggers \emph{generalisation}, i.e.~the emergence of new items that are consistent with other known elements of a production system. In situations where learners have to infer productive \emph{systems}, such as reconstructing recursive language~\citep{Kirby2002} or function learning~\citep{Griffiths2013}, %on the micro-level of individual signs or utterance,
@@ -505,8 +507,8 @@ In order to affect the dynamics of the system, the probabilities of transitionin
 For the upper and lower rows in the diagram, corresponding to a positive~(top)
  or negative~(bottom) momentum term, the momentum affects the probabilities of producing a certain number of $x$~tokens by exerting a selection pressure on the variant that is currently `trending', i.e.~whose frequency~$x$ has increased at the last time step. To this end the transition probabilities out of a state with $m=1$ are calculated according to the Wright-Fisher model with innovation and selection as given in Equation~\ref{eq:mutationselection}, with the selection coefficient~$s$ in favour of the incoming variant~1 set to a fixed constant. Conversely, the transition probabilities for states with~$m=-1$ are controlled by the same equation, only that the same selection coefficient is selecting variant~1. Note how, as long as the innovation probabilities are equal, this system is again symmetric, and thus replicator-neutral. Even though there are clear paths of directed selection, e.g.~towards higher values of~$x$ along the top of the state space, these paths are mirrored exactly on the other side. A concrete example of a Markov chain transition matrix for such a momentum model is given in Table~\ref{tbl:momentumtransitionmatrix}.
 
-% latex table generated in R 3.2.3 by xtable 1.8-2 package
-% Wed Jul 13 17:10:00 2016
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Mar 22 12:28:01 2017
 \begin{sidewaystable}[htbp]
 \centering
 \begin{tabular}{rrrrrrrrrrrrr}
@@ -542,7 +544,7 @@ Despite the selection bias being ineffective in this model, the colour indicatio
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htbp]
 
-{\centering \subfloat[Without a momentum bias~($b=0$) the stationary distribution is identical to \citet{Reali2009}'s \emph{averaging} learner~(compare Figure~\ref{fig:averagerstationarydistribution}). The colour-coded differentiation between the three different states for each usage level makes the temporal dynamics of the model more explicit, but the extra states do not otherwise change the dynamics of the original model.\label{fig:momentumstationary1}]{\includegraphics[width=\maxwidth]{figure/momentumstationary-1} }
+{\centering \subfloat[Without a momentum bias~($b=0$) the stationary distribution is identical to \citet{Reali2009}'s \emph{averaging} learner~(compare Figure~\ref{fig:averagerstationarydistribution}). The differentiation between the triples of states representing the same variable frequency but different momentum values (colour-coded as red for positive, blue for negative, and white for no momentum) makes the temporal dynamics of the model more explicit, but the extra states do not otherwise change the dynamics of the original model.\label{fig:momentumstationary1}]{\includegraphics[width=\maxwidth]{figure/momentumstationary-1} }
 \subfloat[With a momentum bias of $b=3$, the model naturally avoids states corresponding to mixed usage of the competing variants, as it preferentially sweeps through this middle region in a directed fashion. The higher the momentum bias, the less time the model spends in regions of mixed usage of the two variants.\label{fig:momentumstationary2}]{\includegraphics[width=\maxwidth]{figure/momentumstationary-2} }
 
 }
@@ -585,7 +587,7 @@ However, this bias towards one variant was not strongly evident in the dynamics 
 
 While Figure~\ref{fig:asymmetricmomentumcompletionprobabilities1} shows that having symmetric momentum-based selection on top of asymmetric innovation biases does not significantly alter the expected synchronic distribution of variants, the probabilities of diffusion out of states with positive momentum draw a picture of a very different dynamic.
 Figure~\ref{fig:asymmetricmomentumcompletionprobabilities2} shows the probability of successful diffusion for both of the competing variants across different initial frequencies. While in the case of asymmetric innovation without a momentum bias~($b=0$) an increase in one variant's diffusion probability entails a decrease in that of the other, the presence of a momentum bias actually raises the likelihood of successful transitions above the neutral evolution baseline for \emph{both} of the variants, albeit at slightly different rates.
-That there is still a difference between the diffusion probabilities of the two variants throughout can be explained by the asymmetry in innovation, since the less frequently generated variant is still slightly more likely to have its directed transition interrupted by the spontaneous generation of an instance of its competitor variant.
+That there is still a difference between the diffusion probabilities of the two variants throughout can be explained by the asymmetry in innovation, since the less frequently generated variant is still slightly more likely to have its actuated transition interrupted by the spontaneous generation of instances of its competitor variant.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[htbp]

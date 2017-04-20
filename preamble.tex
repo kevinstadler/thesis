@@ -1,4 +1,5 @@
-\usepackage[utf8]{inputenc}
+% not necessary with luatex
+%\usepackage[utf8]{inputenc}
 
 %http://www.ed.ac.uk/files/atoms/files/thesisbinding.pdf
 \usepackage[a4paper,left=4cm,right=2.5cm,bottom=4cm]{geometry} % top=2cm
@@ -11,13 +12,27 @@
                 \item\relax}
                {\endlist}
 
+% a serif font – for example Times (New Roman) or Palatino - should be used for the main text and a sans serif font – for example Helvetica or Arial - for headings and labelling diagrams, etc.
+\usepackage{titlesec}
+\titleformat{\chapter}[display]{\Large\bfseries\sffamily}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat*{\section}{\Large\bfseries\sffamily}
+\titleformat*{\subsection}{\large\bfseries\sffamily}
+\titleformat*{\subsubsection}{\bfseries\sffamily}
+
+% for \copyright
+\usepackage{textcomp}
+
 \usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{automata,calc}%,arrows,positioning}
 \usepackage{xifthen}
 
 \usepackage{subcaption} % for e.g. subtable
-\usepackage{float}
+%\usepackage{float}
+\usepackage{floatrow}
+\floatsetup[table]{font=footnotesize}
+\usepackage{capt-of}
+\usepackage{placeins}
 
 \usepackage{pdfpages}
 \usepackage{rotating}
@@ -34,9 +49,6 @@
 
 \usepackage{makeidx}
 \makeindex
-
-%\usepackage{floatpag}
-%\floatpagestyle{empty}
 
 %\usepackage{fancyhdr}
 %\pagestyle{fancy}
